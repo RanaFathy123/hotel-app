@@ -1,10 +1,10 @@
 import axios from "axios";
 
 let axiosInstance = axios.create({
-  baseURL: "https://upskilling-egypt.com:3000/api/v1",
+  baseURL: "https://upskilling-egypt.com:3000/api/v0",
 });
 let axiosInstanceWithHeaders = axios.create({
-  baseURL: "https://upskilling-egypt.com:3000/api/v1",
+  baseURL: "https://upskilling-egypt.com:3000/api/v0",
 });
 
 axiosInstanceWithHeaders.interceptors.request.use((config) => {
