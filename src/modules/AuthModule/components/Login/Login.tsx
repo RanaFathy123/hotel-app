@@ -37,7 +37,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
-  const {saveLoginData} =React.useContext(AuthContext)
+  const { saveLoginData } = React.useContext(AuthContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -95,7 +95,7 @@ const Login = () => {
             <Formik
               initialValues={initalValues}
               validationSchema={object({
-                email:string()
+                email: string()
                   .required("Please enter email")
                   .email("Invalid email"),
                 password: string().required("Please enter password"),
@@ -110,14 +110,14 @@ const Login = () => {
                     "/portal/users/login",
                     values
                   );
-                  const token = response.data.data.token
+                  const token = response.data.data.token;
                   localStorage.setItem("token", token);
-                  saveLoginData()
-                  toast.success("login Successfully");
+                  saveLoginData();
+                  toast.success(  response.data.message || "Login Success");
                   navigate("/dashboard");
-              
-                } catch (error) {
+                } catch (error: any) {
                   console.log(error);
+                  toast.error(error.response?.data?.message || "Login Fail");
                   setLoading(false);
                 }
               }}
