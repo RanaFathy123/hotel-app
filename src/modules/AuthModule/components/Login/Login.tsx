@@ -62,7 +62,7 @@ const Login = () => {
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid item xs={12} sm={6} md={6} component={Paper} elevation={6} square>
-          <h1 className="p-5 text-xl font-serif font-bold">
+          <h1 className="px-4 py-3 text-xl font-serif font-bold">
             <span className="text-[#152C5B]">Stay</span>cation.
           </h1>
           <Box
@@ -114,7 +114,7 @@ const Login = () => {
                   const token = response.data.data.token;
                   localStorage.setItem("token", token);
                   saveLoginData();
-                  toast.success(  response.data.message || "Login Success");
+                  toast.success(response.data.message || "Login Success");
                   navigate("/dashboard");
                 } catch (error: any) {
                   console.log(error);
@@ -127,7 +127,7 @@ const Login = () => {
                 <Form>
                   <InputLabel
                     htmlFor="outlined-adornment-email"
-                    className="my-2 lg:w-[5rem] xl:w-[35rem]  md:w-[10rem] 2xl:w-[40rem] "
+                    className="my-2 lg:w-[5rem] xl:w-[10rem]  md:w-[10rem] 2xl:w-[40rem] "
                   >
                     <h1 className="text-[#152C5B] mb-1">Email Address</h1>
                   </InputLabel>
