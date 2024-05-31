@@ -20,3 +20,9 @@ export interface FormValuesLogin {
   password: string;
   email: string;
 }
+
+export interface FormChangePass {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
