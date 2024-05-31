@@ -4,7 +4,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.js';
 import '@fortawesome/fontawesome-free';
 import "./index.css";
+import AuthContextProvider from "./context/AuthContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-<App />
+
+  <AuthContextProvider>
+    <App />
+  </AuthContextProvider>
+
 );

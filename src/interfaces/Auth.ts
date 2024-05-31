@@ -1,3 +1,13 @@
+
+import { LoginData } from "../types/Auth";
+
+export interface AuthContextType {
+    loginData: LoginData | null;
+    saveLoginData: () => void;
+    resetLoginData:()=>void  
+  }
+
+
 export interface FormDataRegister {
     userName: string;
     email: string;

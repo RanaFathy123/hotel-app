@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
+  Alert,
+  CircularProgress,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -10,33 +12,33 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Field, Form, Formik } from "formik";
 import * as React from "react";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link href="https://mui.com/">Your Website</Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { Link, useNavigate } from "react-router-dom";
+import { object, string } from "yup";
+import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../../context/AuthContext";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
+interface FormValues {
+  password: string;
+  email: string;
+}
+const initalValues: FormValues = {
+  email: "",
+  password: "",
+};
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const navigate = useNavigate();
+  const { saveLoginData } = React.useContext(AuthContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -45,14 +47,7 @@ const Login = () => {
   ) => {
     event.preventDefault();
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+
   const backgroundStyle = {
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -62,7 +57,6 @@ const Login = () => {
     justifyContent: "flex-end",
     alignItems: "center",
   };
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
@@ -72,86 +66,144 @@ const Login = () => {
             <span className="text-[#152C5B]">Stay</span>cation.
           </h1>
           <Box
-            className="px-[0.5em] md:px-[0.5em] lg:px-[5em]"
             sx={{
               my: 8,
               mx: 8,
               display: "flex",
               flexDirection: "column",
-              justifyContent: "center",
+              alignItems: "start",
+              textAlign: "left",
             }}
           >
-            <Typography component="h1" variant="h5">
+            <Typography
+              component="h1"
+              variant="h5"
+              sx={{
+                marginBottom: "0.5em",
+                fontWeight: "bold",
+                fontSize: "30px",
+              }}
+            >
               Sign in
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
-              <InputLabel htmlFor="outlined-adornment-email" className="my-4">
-                email
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email"
-                fullWidth
-                type="text"
-                label="email"
-                placeholder="Please Type Here"
-                className="bg-[#F5F6F8] mb-10"
-                name="email"
-              />
-              <InputLabel
-                htmlFor="outlined-adornment-password "
-                className="my-3"
-              >
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                fullWidth
-                name="password"
-                placeholder="Please Type Here"
-                className="bg-[#F5F6F8]"
-                type={showPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
+            <h1>If you don’t have an account register</h1>
+            <h1 className="mb-3">
+              You can
+              <Link className="text-blue-800 mx-2" to="/register">
+                Register here !
+              </Link>
+            </h1>
+            <Formik
+              initialValues={initalValues}
+              validationSchema={object({
+                email: string()
+                  .required("Please enter email")
+                  .email("Invalid email"),
+                password: string().required("Please enter password"),
+              })}
+              onSubmit={async (values, formikHelpers) => {
+                formikHelpers.resetForm();
+                formikHelpers.setSubmitting(true);
+                setLoading(true);
 
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 12, mb: 2 }}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-              <Copyright sx={{ mt: 5 }} />
-            </Box>
+                try {
+                  let response = await axiosInstance.post(
+                    "/admin/users/login",
+                    values
+                  );
+                  const token = response.data.data.token;
+                  localStorage.setItem("token", token);
+                  saveLoginData();
+                  toast.success(  response.data.message || "Login Success");
+                  navigate("/dashboard");
+                } catch (error: any) {
+                  console.log(error);
+                  toast.error(error.response?.data?.message || "Login Fail");
+                  setLoading(false);
+                }
+              }}
+            >
+              {({ errors, isValid, touched, dirty, isSubmitting }) => (
+                <Form>
+                  <InputLabel
+                    htmlFor="outlined-adornment-email"
+                    className="my-2 lg:w-[5rem] xl:w-[35rem]  md:w-[10rem] 2xl:w-[40rem] "
+                  >
+                    <h1 className="text-[#152C5B] mb-1">Email Address</h1>
+                  </InputLabel>
+                  <Field
+                    name="email"
+                    as={OutlinedInput}
+                    fullWidth
+                    type="text"
+                    label="email"
+                    placeholder="Please Type Here"
+                    className="bg-[#F5F6F8] mb-7"
+                    error={Boolean(errors.email) && Boolean(touched.email)}
+                  />
+                  {errors.email && touched.email ? (
+                    <Alert severity="error" className="mb-4">
+                      {errors.email}
+                    </Alert>
+                  ) : null}
+                  <InputLabel
+                    htmlFor="outlined-adornment-password "
+                    className="my-2 lg:w-[5rem] xl:w-[35rem]  md:w-[10rem] 2xl:w-[40rem]"
+                  >
+                    <h1 className="text-[#152C5B] mb-1">Password</h1>
+                  </InputLabel>
+                  <Field
+                    name="password"
+                    as={OutlinedInput}
+                    placeholder="Please Type Here"
+                    className="bg-[#F5F6F8] mb-10"
+                    variant="outlined"
+                    color="primary"
+                    fullWidth
+                    type={showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                    error={
+                      Boolean(errors.password) && Boolean(touched.password)
+                    }
+                  />
+                  {errors.password && touched.password ? (
+                    <Alert severity="error" className="mb-4">
+                      {errors.password}
+                    </Alert>
+                  ) : null}
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                    className="mt-[2em]"
+                    size="large"
+                    disabled={isSubmitting || !isValid || !dirty}
+                  >
+                    {loading ? <CircularProgress disableShrink /> : "Login"}
+                  </Button>
+                  <Grid container>
+                    <Grid item xs className="text-end text-blue-700 py-4">
+                      <Link to="/forget-pass" className="mt-5">
+                        Forgot password?
+                      </Link>
+                    </Grid>
+                  </Grid>
+                </Form>
+              )}
+            </Formik>
           </Box>
         </Grid>
         <Grid
@@ -173,7 +225,7 @@ const Login = () => {
             <h1 className="font-bold line-clamp-6 md:text-2xl lg:text-4xl">
               Sign in to Roamhome
             </h1>
-            <h1 className="text-lg my-2">Homes as unique as you.</h1>
+            <h1 className="text-lg my-2 ">Homes as unique as you.</h1>
           </Box>
         </Grid>
       </Grid>

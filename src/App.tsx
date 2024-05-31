@@ -20,6 +20,9 @@ import Dashboard from "./modules/DashboardModule/components/Dashboard";
 import Home from "./modules/HomeModule/components/Home";
 import Favorites from "./modules/FavoritesModule/components/Favorites";
 // import VerifyAccount from "./modules/AuthModule/components/VerifyAccount/VerifyAccount";
+import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
+
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -47,7 +50,11 @@ const App = () => {
     },
     {
       path: "/dashboard",
-      element: <AdminLayout />,
+      element: (
+        <ProtectedRoute>
+          <AdminLayout />
+        </ProtectedRoute>
+      ),
       children: [
         { path: "", element: <Dashboard /> },
         { path: "rooms-list", element: <RoomsTable /> },
