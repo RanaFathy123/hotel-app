@@ -19,10 +19,10 @@ import { Field, Form, Formik } from "formik";
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { object, string } from "yup";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
 import { AuthContext } from "../../../../context/AuthContext";
 import { FormValuesLogin } from "../../../../interfaces/Auth";
+import { LoginValidationSchema } from "../../../../validations/validations";
 
 const defaultTheme = createTheme();
 
@@ -94,17 +94,11 @@ const Login = () => {
             </h1>
             <Formik
               initialValues={initalValues}
-              validationSchema={object({
-                email: string()
-                  .required("Please enter email")
-                  .email("Invalid email"),
-                password: string().required("Please enter password"),
-              })}
+              validationSchema={LoginValidationSchema}
               onSubmit={async (values, formikHelpers) => {
                 formikHelpers.resetForm();
                 formikHelpers.setSubmitting(true);
                 setLoading(true);
-
                 try {
                   let response = await axiosInstance.post(
                     "/admin/users/login",
