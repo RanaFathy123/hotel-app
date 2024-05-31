@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import axios from "axios";
 
 let axiosInstance = axios.create({

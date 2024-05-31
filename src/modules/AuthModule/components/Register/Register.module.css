@@ -1,0 +1,42 @@
+.ConStay{
+    font-weight: 500 !important;
+  
+  }
+  
+  .wordLogin{
+    font-weight: 600 !important;
+  
+  }
+  
+  .imgRe{
+    width: 100%;
+    height: 100%;
+  }
+  
+  .textField{
+    width: 100% !important;
+  } 
+  /* Upload img */
+.filelable {
+  position: relative;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  min-width: 322px;
+  max-width: 1300px;
+  height: 90px;
+  border: 2px dashed  rgba(50, 82, 223, 1);
+  padding: 8px 16px 8px 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  -webkit-box-flex: 0;
+  flex-grow: 0;
+  background-color: rgba(50, 82, 223, 0.1);
+}
+.filelable > input {
+  display: block;
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+

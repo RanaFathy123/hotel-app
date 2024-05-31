@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Alert,
