@@ -1,9 +1,12 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
+  Alert,
+  FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  TextField,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -14,28 +17,19 @@ import Paper from "@mui/material/Paper";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link href="https://mui.com/">Your Website</Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FormDataResetPass } from "../../../../interfaces/Auth";
+import { emailValidation, passwordValidation } from "./../../../../validations/validations";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 const ResetPass = () => {
 
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
@@ -43,6 +37,17 @@ const ResetPass = () => {
 
   const handleClickShowConfirmassword = () => setShowConfirmPassword((show) => !show);
 
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormDataResetPass>();
+
+  const validatePasswordMatch = (value: unknown) => {
+    const password = watch("password");
+    return value === password || "Confirm Password doesn't match Password";
+  };
 
   function handleMouseDownPassword(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
@@ -50,14 +55,7 @@ const ResetPass = () => {
   function handleMouseDownConfirmPassword(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
   }
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+
   const backgroundStyle = {
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -66,6 +64,19 @@ const ResetPass = () => {
     flexDirection: "column",
     justifyContent: "flex-end",
     alignItems: "center",
+  };
+
+  const onSubmit: SubmitHandler<FormDataResetPass> = async (data) => {
+    // setLoadingBtn(true);
+    try {
+      const response = await axiosInstance.post("/admin/users/reset-password", data);
+      toast.success(response.data.message ||"Password changed successfully");
+      navigate("/login");
+    } catch (error : any) {
+      toast.error(error.response.data.message || "error");
+    } 
+    console.log(data);
+    
   };
 
   return (
@@ -93,11 +104,12 @@ const ResetPass = () => {
             <p className="mt-4">If you already have an account register <br /> You can <span className="text-[red]">Login here !</span></p>
             <Box
               component="form"
+              onSubmit={handleSubmit(onSubmit)}
               noValidate
-              onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
-              <InputLabel htmlFor="outlined-adornment-email" className="my-1">
+
+            <InputLabel htmlFor="outlined-adornment-email" className="my-1">
                 email
               </InputLabel>
               <OutlinedInput
@@ -107,9 +119,16 @@ const ResetPass = () => {
                 label="email"
                 placeholder="Please Type Here"
                 className="bg-[#F5F6F8] mb-3"
-                name="email"
+                {...register(
+                  "email",emailValidation
+                )}
               />
-  
+              {errors.email && (
+                <Alert sx={{ mt: 1 }} severity="error">
+                  {errors.email.message?.toString()}
+                </Alert>
+              )}
+            
               <InputLabel htmlFor="outlined-adornment-email" className="my-1">
                 OTP
               </InputLabel>
@@ -120,8 +139,15 @@ const ResetPass = () => {
                 label="OTP"
                 placeholder="Please Type Here"
                 className="bg-[#F5F6F8] mb-3"
-                name="OTP"
+                {...register("seed", {
+                  required: "Invalid OTP",
+                })}
               />
+              {errors.seed && (
+                <Alert sx={{ mt: 1 }} severity="error">
+                  {errors.seed.message?.toString()}
+                </Alert>
+              )}
 
               <InputLabel
                 htmlFor="outlined-adornment-password "
@@ -132,9 +158,9 @@ const ResetPass = () => {
               <OutlinedInput
                 id="outlined-adornment-password"
                 fullWidth
-                name="password"
                 placeholder="Please Type Here"
                 className="bg-[#F5F6F8] mb-3"
+                {...register("password",passwordValidation)}
                 type={showPassword ? "text" : "password"}
                 endAdornment={
                   <InputAdornment position="end">
@@ -150,6 +176,11 @@ const ResetPass = () => {
                 }
                 label="Password"
               />
+              {errors.password && (
+                <Alert sx={{ mt: 1 }} severity="error">
+                  {errors.password.message?.toString()}
+                </Alert>
+              )}
 
               <InputLabel
                 htmlFor="outlined-adornment-password "
@@ -160,10 +191,13 @@ const ResetPass = () => {
               <OutlinedInput
                 id="outlined-adornment-password"
                 fullWidth
-                name="Confirm Password"
                 placeholder="Please Type Here"
                 className="bg-[#F5F6F8]"
                 type={showConfirmPassword ? "text" : "password"}
+                {...register("confirmPassword", {
+                  required: "confirmPassword is required",
+                  validate: validatePasswordMatch,
+                })}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -178,6 +212,11 @@ const ResetPass = () => {
                 }
                 label="Confirm Password"
               />
+              {errors.confirmPassword && (
+                <Alert sx={{ mt: 1 }} severity="error">
+                  {errors.confirmPassword.message?.toString()}
+                </Alert>
+              )}
 
               <Button
                 type="submit"

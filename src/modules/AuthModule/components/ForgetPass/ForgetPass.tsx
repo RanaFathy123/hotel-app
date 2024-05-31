@@ -1,4 +1,5 @@
 import {
+  Alert,
   InputLabel,
   OutlinedInput,
 } from "@mui/material";
@@ -10,7 +11,13 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import { emailValidation } from "./../../../../validations/validations";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FormValuesForgetPass } from "../../../../interfaces/Auth";
+import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props: any) {
   return (
@@ -33,14 +40,15 @@ const defaultTheme = createTheme();
 
 const ForgetPass = () => {
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  const [loadingBtn, setLoadingBtn] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValuesForgetPass>();
+
   const backgroundStyle = {
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -49,6 +57,22 @@ const ForgetPass = () => {
     flexDirection: "column",
     justifyContent: "flex-end",
     alignItems: "center",
+  };
+
+  const onSubmit: SubmitHandler<FormValuesForgetPass> = async (data) => {
+    // setLoadingBtn(true);
+    try {
+      const response = await axiosInstance.post("admin/users/forgot-password", data);
+      console.log(response);
+      toast.success(response.data.message ||"check your email");
+      navigate("/reset-pass");
+    } catch (error : any) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    } 
+    console.log(data);
+    
+    
   };
 
   return (
@@ -77,7 +101,7 @@ const ForgetPass = () => {
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               sx={{ mt: 1 }}
             >
               <InputLabel htmlFor="outlined-adornment-email" className="mt-5 my-1">
@@ -90,8 +114,15 @@ const ForgetPass = () => {
                 label="email"
                 placeholder="Please Type Here"
                 className="bg-[#F5F6F8] mb-3"
-                name="email"
+                {...register(
+                  "email",emailValidation
+                )}
               />
+              {errors.email && (
+                <Alert sx={{ mt: 1 }} severity="error">
+                  {errors.email.message?.toString()}
+                </Alert>
+              )}
 
               <Button
                 type="submit"
