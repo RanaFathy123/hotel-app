@@ -107,7 +107,7 @@ const Login = () => {
 
                 try {
                   let response = await axiosInstance.post(
-                    "/portal/users/login",
+                    "/admin/users/login",
                     values
                   );
                   const token = response.data.data.token;
