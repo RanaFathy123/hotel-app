@@ -1,17 +1,15 @@
-import * as React from "react";
-import Backdrop from "@mui/material/Backdrop";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { IconButton, TextField, ThemeProvider, createTheme } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { axiosInstanceWithHeaders } from "../../../../axiosConfig/axiosInstance";
 import { useFormik } from "formik";
-import { IconButton, createTheme, ThemeProvider } from "@mui/material";
-import { TextField } from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { validationSchema } from "../../../../validations/validations";
+import * as React from "react";
 import { toast } from "react-toastify";
+import { axiosInstanceWithHeaders } from "../../../../axiosConfig/axiosInstance";
 import { FormChangePass } from "../../../../interfaces/Auth";
+import { validationSchema } from "../../../../validations/validations";
 
 const defaultTheme = createTheme();
 
@@ -52,9 +50,6 @@ const ChangePass = () => {
     borderRadius: 8,
     p: 4,
   };
-
- 
-  
   const initialValues: FormChangePass = {
     oldPassword: "",
     newPassword: "",
