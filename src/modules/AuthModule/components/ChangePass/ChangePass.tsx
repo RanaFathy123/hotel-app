@@ -10,8 +10,8 @@ import { TextField } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { validationSchema } from "../../../../validations/validations";
-import { Form } from "../../../../interfaces/interfaces";
 import { toast } from "react-toastify";
+import { FormChangePass } from "../../../../interfaces/Auth";
 
 const defaultTheme = createTheme();
 
@@ -55,14 +55,14 @@ const ChangePass = () => {
 
  
   
-  const initialValues: Form = {
+  const initialValues: FormChangePass = {
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
    
   };
 
-  async function onSubmit(values: Form) {
+  async function onSubmit(values: FormChangePass) {
     try {
       let response = await axiosInstanceWithHeaders.post(
         `admin/users/change-password`,
