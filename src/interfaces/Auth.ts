@@ -16,13 +16,24 @@ export interface FormDataRegister {
   role: string;
   profileImage: FileList;
 }
+
 export interface FormValuesLogin {
   password: string;
   email: string;
 }
 
+export interface FormDataResetPass {
+  email: string;
+  seed: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface FormValuesForgetPass {
+  email: string;
+}
 export interface FormChangePass {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
-}
+
