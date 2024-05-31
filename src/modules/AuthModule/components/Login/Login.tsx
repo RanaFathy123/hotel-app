@@ -4,6 +4,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  TextField,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,7 +14,10 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { useFormik } from "formik";
 import * as React from "react";
+import { axiosInstanceWithHeaders } from "../../../../axiosConfig/axiosInstance";
+import * as Yup from "yup";
 
 function Copyright(props: any) {
   return (
@@ -31,7 +35,6 @@ function Copyright(props: any) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 const Login = () => {
@@ -39,19 +42,39 @@ const Login = () => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
+  const validationSchema = Yup.object({
+    email: Yup.string()
+      .required("Email is required")
+      .email("Invalid email address"),
+    password: Yup.string().required("Password is required"),
+  });
+
+  const onSubmit = async (values: any) => {
+    try {
+      let response = await axiosInstanceWithHeaders.post(`https://upskilling-egypt.com:3000/api/v0/admin/users/login`, values);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const Myform = useFormik({
+    initialValues,
+    onSubmit,
+    validationSchema,
+  });
+
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
     event.preventDefault();
   };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+
   const backgroundStyle = {
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -83,58 +106,58 @@ const Login = () => {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
-              <InputLabel htmlFor="outlined-adornment-email" className="my-4">
-                email
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email"
-                fullWidth
-                type="text"
+            <Box component="form" noValidate sx={{ mt: 1 }} onSubmit={Myform.handleSubmit}>
+              <TextField
                 label="email"
-                placeholder="Please Type Here"
-                className="bg-[#F5F6F8] mb-10"
+                variant="outlined"
+                color="primary"
+                type="text"
                 name="email"
-              />
-              <InputLabel
-                htmlFor="outlined-adornment-password "
-                className="my-3"
-              >
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
+                placeholder="John Doe"
+                sx={{ mb: 3 }}
                 fullWidth
-                name="password"
-                placeholder="Please Type Here"
-                className="bg-[#F5F6F8]"
+                value={Myform.values.email}
+                onChange={Myform.handleChange}
+                onBlur={Myform.handleBlur}
+                error={Myform.touched.email && Boolean(Myform.errors.email)}
+                helperText={Myform.touched.email && Myform.errors.email}
+                InputProps={{
+        endAdornment: (
+          <IconButton onClick={togglePasswordVisibility} edge="end">
+            {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+          </IconButton>
+        ),
+      }}
+              />
+              <TextField
+                label="password"
+                variant="outlined"
+                color="primary"
                 type={showPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-
-              <Button
-                type="submit"
+                name="password"
+                placeholder="Your Password"
                 fullWidth
-                variant="contained"
-                sx={{ mt: 12, mb: 2 }}
-              >
+                sx={{ mb: 3 }}
+                value={Myform.values.password}
+                onChange={Myform.handleChange}
+                onBlur={Myform.handleBlur}
+                error={Myform.touched.password && Boolean(Myform.errors.password)}
+                helperText={Myform.touched.password && Myform.errors.password}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+              <Button variant="contained" color="primary" type="submit" fullWidth size="medium" disabled={!Myform.isValid}>
                 Sign In
               </Button>
               <Grid container>
