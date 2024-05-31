@@ -22,15 +22,13 @@ import { object, string } from "yup";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../../context/AuthContext";
+import { FormValuesLogin } from "../../../../interfaces/Auth";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-interface FormValues {
-  password: string;
-  email: string;
-}
-const initalValues: FormValues = {
+
+const initalValues: FormValuesLogin = {
   email: "",
   password: "",
 };
