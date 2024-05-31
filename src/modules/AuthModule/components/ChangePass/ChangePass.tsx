@@ -12,6 +12,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { validationSchema } from "../../../../validations/validations";
 import { toast } from "react-toastify";
 import { FormChangePass } from "../../../../interfaces/Auth";
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
@@ -19,6 +20,7 @@ const ChangePass = () => {
   const [showOldPassword, setShowOldPassword] = React.useState(false);
   const [showNewPassword, setShowNewPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const navigate = useNavigate()
 
   const handleClickShowOldPassword = () => setShowOldPassword((show) => !show);
   const handleMouseDownOldPassword = (
@@ -69,6 +71,7 @@ const ChangePass = () => {
         values
       );
       toast.success('Your Password has changed successfully' || response?.data?.message)
+      navigate('/login')
     } catch (error:any) {
       toast.error("there's an eror" || error?.response?.data?.message)
 
@@ -197,7 +200,7 @@ const ChangePass = () => {
                     width: "11em",
                     boxShadow: "0px 3px 6px rgba(0, 0, 0, 0.16)",
                   }}
-                  disabled={ !formik.isValid}
+                 disabled={formik.isSubmitting || ! formik.isValid|| ! formik.dirty}
                   type="submit"
                 >
                   Submit
