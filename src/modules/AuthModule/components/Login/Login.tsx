@@ -6,7 +6,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  OutlinedInput,
+  OutlinedInput
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -18,13 +18,12 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Field, Form, Formik } from "formik";
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { object, string } from "yup";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
-import { toast } from "react-toastify";
 import { AuthContext } from "../../../../context/AuthContext";
 import { FormValuesLogin } from "../../../../interfaces/Auth";
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 
@@ -39,6 +38,8 @@ const Login = () => {
   const { saveLoginData } = React.useContext(AuthContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+
 
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
