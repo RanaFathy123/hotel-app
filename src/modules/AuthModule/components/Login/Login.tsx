@@ -103,7 +103,6 @@ const Login = () => {
                 formikHelpers.resetForm();
                 formikHelpers.setSubmitting(true);
                 setLoading(true);
-
                 try {
                   let response = await axiosInstance.post(
                     "/admin/users/login",
