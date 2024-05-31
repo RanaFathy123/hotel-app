@@ -1,19 +1,29 @@
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Form, useNavigate ,Link } from "react-router-dom";
+import { Form, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import imgRegister from "../../../../assets/images/Register.png";
 import styleRegister from "./Register.module.css";
-import { FormDataRegister  } from "../../../../interfaces/Auth";
+import { FormDataRegister } from "../../../../interfaces/Auth";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import {Alert,Box,Button,CircularProgress,Container,FilledInput,
-  FormControl,Grid,IconButton,InputAdornment,TextField,Typography
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  FilledInput,
+  FormControl,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
 } from "@mui/material";
-import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 export default function Register() {
-
   const navigate = useNavigate();
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -26,8 +36,6 @@ export default function Register() {
   const handleInputContent = () => {
     setFileInputContent("File Uploaded Successfully");
   };
-
-
 
   const {
     register,
@@ -57,17 +65,13 @@ export default function Register() {
       if (data.profileImage && data.profileImage[0]) {
         formData.append("profileImage", data.profileImage[0]);
       }
-      const response = await axiosInstance.post(
-        "/admin/users",
-        formData
-      );
-          console.log(response);
+      const response = await axiosInstance.post("/admin/users", formData);
+      console.log(response);
       toast.success("User created successfully");
       navigate("/login");
     } catch (error) {
       console.log(error);
       toast.error("User Faild");
-
     } finally {
       setLoadingBtn(false);
     }
@@ -94,9 +98,12 @@ export default function Register() {
           <Typography variant="body1" gutterBottom>
             If you already have an account register <br />
             You can{" "}
-            <Link to="/login" className={`${styleRegister.wordLogin} text-decoration-none`}>
+            <Link
+              to="/login"
+              className={`${styleRegister.wordLogin} text-decoration-none`}
+            >
               <Box
-        className={`${styleRegister.wordLogin}  `}
+                className={`${styleRegister.wordLogin}  `}
                 component="span"
                 color="#EB5148"
               >
@@ -126,7 +133,7 @@ export default function Register() {
                 </Alert>
               )}
             </FormControl>
-                {/* Phone Number& Country */}
+            {/* Phone Number& Country */}
             <Grid container spacing={2}>
               {/* Phone Number */}
               <Grid item xs={12} md={6}>
@@ -243,7 +250,7 @@ export default function Register() {
                 </Alert>
               )}
             </FormControl>
-                    {/* ConfirmPassword */}
+            {/* ConfirmPassword */}
             <FormControl sx={{ width: 1, mt: 1, mb: 3 }} variant="standard">
               <label htmlFor="ConfirmPassword">Confirm Password</label>
               <FilledInput
@@ -275,40 +282,42 @@ export default function Register() {
                 </Alert>
               )}
             </FormControl>
-                  {/* Upload Img */}
-            <FormControl sx={{ mb: 1 }} fullWidth >
-            <div className="mt-3">
-                    <label htmlFor="uploadFile" className={`${styleRegister.filelable} `}>
-                      <div className="d-flex w-100 flex-column  justify-content-center  align-items-center ">
-                      <DriveFolderUploadIcon /> 
-                        <div className="m-2 fw-bold">{fileInputContent}</div>
-                      </div>
-                      <input
-                        type="file"
-                        accept=".jpg,.png"
-                        id="uploadFile"
-                        {...register("profileImage", {
-                          required: "profileImage is Required",
-                        })}
-                        onChange={handleInputContent}
-                      />
-                    </label>
+            {/* Upload Img */}
+            <FormControl sx={{ mb: 1 }} fullWidth>
+              <div className="mt-3">
+                <label
+                  htmlFor="uploadFile"
+                  className={`${styleRegister.filelable} `}
+                >
+                  <div className="d-flex w-100 flex-column  justify-content-center  align-items-center ">
+                    <DriveFolderUploadIcon />
+                    <div className="m-2 fw-bold">{fileInputContent}</div>
                   </div>
-                  {errors.profileImage && (
+                  <input
+                    type="file"
+                    accept=".jpg,.png"
+                    id="uploadFile"
+                    {...register("profileImage", {
+                      required: "profileImage is Required",
+                    })}
+                    onChange={handleInputContent}
+                  />
+                </label>
+              </div>
+              {errors.profileImage && (
                 <Alert sx={{ mt: 1 }} severity="error">
                   {errors.profileImage.message?.toString()}
                 </Alert>
-              )} 
+              )}
             </FormControl>
-              {/* Button */}
+            {/* Button */}
             <Button
               sx={{ width: 1 }}
               variant="contained"
               type="submit"
               disabled={loadingBtn}
             >
-              {loadingBtn ?
-              <CircularProgress color="inherit" /> : "Sign up"}
+              {loadingBtn ? <CircularProgress color="inherit" /> : "Sign up"}
             </Button>
           </Form>
         </Grid>
