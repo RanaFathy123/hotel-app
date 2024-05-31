@@ -85,3 +85,4 @@ export const OTPValidation = {
     message: "OTP must be exactly 4 characters long",
   },
 };
+
