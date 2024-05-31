@@ -32,3 +32,8 @@ export interface FormDataResetPass {
 export interface FormValuesForgetPass {
   email: string;
 }
+export interface FormChangePass {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+

@@ -19,10 +19,9 @@ import FacilitesData from "./modules/FacilitesModule/components/FacilitesData/Fa
 import Dashboard from "./modules/DashboardModule/components/Dashboard";
 import Home from "./modules/HomeModule/components/Home";
 import Favorites from "./modules/FavoritesModule/components/Favorites";
-// import VerifyAccount from "./modules/AuthModule/components/VerifyAccount/VerifyAccount";
 import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
-
+import ChangePass from "./modules/AuthModule/components/ChangePass/ChangePass";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -46,6 +45,7 @@ const App = () => {
         // { path: "verify", element: <VerifyAccount /> },
         { path: "forget-pass", element: <ForgetPass /> },
         { path: "reset-pass", element: <ResetPass /> },
+        { path: "change-pass", element: <ChangePass/> },
       ],
     },
     {
