@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Padding, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Alert,
   CircularProgress,
@@ -120,7 +120,7 @@ const Login = () => {
                 <Form>
                   <InputLabel
                     htmlFor="outlined-adornment-email"
-                    className="my-2 lg:w-[5rem] xl:w-[10rem]  md:w-[10rem] 2xl:w-[40rem] "
+                    className="my-2 lg:w-[5rem] xl:w-[10rem]  md:w-[10rem] 2xl:w-[35rem]"
                   >
                     <h1 className="text-[#152C5B] mb-1">Email Address</h1>
                   </InputLabel>
@@ -131,7 +131,7 @@ const Login = () => {
                     type="text"
                     label="email"
                     placeholder="Please Type Here"
-                    className="bg-[#F5F6F8] mb-7 px-3"
+                    className="bg-[#F5F6F8] mb-7 "
                     error={Boolean(errors.email) && Boolean(touched.email)}
                   />
                   {errors.email && touched.email ? (
@@ -141,7 +141,7 @@ const Login = () => {
                   ) : null}
                   <InputLabel
                     htmlFor="outlined-adornment-password "
-                    className="my-2 lg:w-[5rem] xl:w-[35rem]  md:w-[10rem] 2xl:w-[40rem]"
+                    className="my-2 lg:w-[5rem] xl:w-[35rem]  md:w-[10rem] 2xl:w-[35rem]"
                   >
                     <h1 className="text-[#152C5B] mb-1">Password</h1>
                   </InputLabel>
