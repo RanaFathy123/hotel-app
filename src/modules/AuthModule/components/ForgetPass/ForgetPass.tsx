@@ -71,8 +71,6 @@ const ForgetPass = () => {
       toast.error(error.response.data.message);
     } 
     console.log(data);
-    
-    
   };
 
   return (

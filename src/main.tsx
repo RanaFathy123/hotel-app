@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import AuthContextProvider from "./context/AuthContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-
   <AuthContextProvider>
     <App />
   </AuthContextProvider>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Padding, Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Alert,
   CircularProgress,
@@ -49,7 +49,7 @@ const Login = () => {
 
   const backgroundStyle = {
     backgroundSize: "cover",
-    backgroundPosition: "center",
+    backgroundPosition: "center", 
     backgroundRepeat: "no-repeat",
     display: { xs: "none", sm: "flex" },
     flexDirection: "column",
@@ -131,7 +131,7 @@ const Login = () => {
                     type="text"
                     label="email"
                     placeholder="Please Type Here"
-                    className="bg-[#F5F6F8] mb-7"
+                    className="bg-[#F5F6F8] mb-7 px-3"
                     error={Boolean(errors.email) && Boolean(touched.email)}
                   />
                   {errors.email && touched.email ? (
@@ -199,13 +199,13 @@ const Login = () => {
             </Formik>
           </Box>
         </Grid>
-        <Grid
+        <Grid container
           item
           xs={12}
           sm={6}
           md={6}
           sx={backgroundStyle}
-          className="bg-[url('./assets/images/login.png')] rounded"
+          className="bg-[url('./assets/images/login.png')] rounded "
         >
           <Box
             sx={{
