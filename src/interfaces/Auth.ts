@@ -36,4 +36,4 @@ export interface FormChangePass {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
-
+}
