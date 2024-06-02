@@ -1,11 +1,13 @@
 /* eslint-disable prefer-const */
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_REACT_API_URL;
+
 let axiosInstance = axios.create({
-  baseURL: "https://upskilling-egypt.com:3000/api/v0",
+  baseURL: baseUrl,
 });
 let axiosInstanceWithHeaders = axios.create({
-  baseURL: "https://upskilling-egypt.com:3000/api/v0",
+  baseURL: baseUrl,
 });
 
 axiosInstanceWithHeaders.interceptors.request.use((config) => {

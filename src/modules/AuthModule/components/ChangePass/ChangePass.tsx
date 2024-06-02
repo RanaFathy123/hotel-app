@@ -83,7 +83,6 @@ const ChangePass = () => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-   
           <Box sx={style}>
           <h1 className="p-5 text-4xl font-serif font-bold text-center" >
             <span className="text-[#152C5B] font-[4rem]" >Stay</span>cation.

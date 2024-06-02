@@ -195,7 +195,6 @@ const ResetPass = () => {
                     {errors.password.message?.toString()}
                   </Alert>
                 )}
-
                 <InputLabel
                   htmlFor="outlined-adornment-confirm-password "
                   className="my-1"

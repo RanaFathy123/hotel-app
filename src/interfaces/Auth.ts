@@ -36,4 +36,9 @@ export interface FormChangePass {
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
+}
 
+export interface FormDataLogin {
+  email:string
+  password:string
+}

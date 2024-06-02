@@ -6,7 +6,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  OutlinedInput
+  OutlinedInput,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -26,7 +26,6 @@ import { LoginValidationSchema } from "../../../../validations/validations";
 
 const defaultTheme = createTheme();
 
-
 const initalValues: FormValuesLogin = {
   email: "",
   password: "",
@@ -39,8 +38,6 @@ const Login = () => {
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-
-
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -49,7 +46,7 @@ const Login = () => {
 
   const backgroundStyle = {
     backgroundSize: "cover",
-    backgroundPosition: "center", 
+    backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     display: { xs: "none", sm: "flex" },
     flexDirection: "column",
@@ -60,18 +57,28 @@ const Login = () => {
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <Grid item xs={12} sm={6} md={6} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={6}
+          component={Paper}
+          elevation={6}
+          square
+          container
+        >
           <h1 className="px-4 py-3 text-xl font-serif font-bold">
             <span className="text-[#152C5B]">Stay</span>cation.
           </h1>
           <Box
+            className="w-full"
             sx={{
               my: 8,
-              mx: 8,
+              mx: 10,
               display: "flex",
               flexDirection: "column",
-              alignItems: "start",
-              textAlign: "left",
+              justifyContent: "center",
+          
             }}
           >
             <Typography
@@ -118,10 +125,7 @@ const Login = () => {
             >
               {({ errors, isValid, touched, dirty, isSubmitting }) => (
                 <Form>
-                  <InputLabel
-                    htmlFor="outlined-adornment-email"
-                    className="my-2 lg:w-[5rem] xl:w-[10rem]  md:w-[10rem] 2xl:w-[35rem]"
-                  >
+                  <InputLabel htmlFor="outlined-adornment-email">
                     <h1 className="text-[#152C5B] mb-1">Email Address</h1>
                   </InputLabel>
                   <Field
@@ -139,10 +143,7 @@ const Login = () => {
                       {errors.email}
                     </Alert>
                   ) : null}
-                  <InputLabel
-                    htmlFor="outlined-adornment-password "
-                    className="my-2 lg:w-[5rem] xl:w-[35rem]  md:w-[10rem] 2xl:w-[35rem]"
-                  >
+                  <InputLabel htmlFor="outlined-adornment-password ">
                     <h1 className="text-[#152C5B] mb-1">Password</h1>
                   </InputLabel>
                   <Field
@@ -199,7 +200,8 @@ const Login = () => {
             </Formik>
           </Box>
         </Grid>
-        <Grid container
+        <Grid
+          container
           item
           xs={12}
           sm={6}
@@ -227,4 +229,3 @@ const Login = () => {
 };
 
 export default Login;
-
