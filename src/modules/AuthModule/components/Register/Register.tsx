@@ -23,7 +23,10 @@ import {
   Typography,
 } from "@mui/material";
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
-import { emailValidation, passwordValidation } from "./../../../../validations/validations";
+import {
+  emailValidation,
+  passwordValidation,
+} from "./../../../../validations/validations";
 export default function Register() {
   const navigate = useNavigate();
   const [loadingBtn, setLoadingBtn] = useState(false);
@@ -206,9 +209,7 @@ export default function Register() {
                 placeholder="Enter Your Email Address"
                 variant="filled"
                 type="email"
-                {...register(
-                  "email",emailValidation
-                )}
+                {...register("email", emailValidation)}
               />
               {errors.email && (
                 <Alert sx={{ mt: 1 }} severity="error">
@@ -223,7 +224,7 @@ export default function Register() {
                 id="Password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter Your Password "
-                {...register("password",passwordValidation)}
+                {...register("password", passwordValidation)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -280,9 +281,9 @@ export default function Register() {
               <div className="mt-3">
                 <label
                   htmlFor="uploadFile"
-                  className={`${styleRegister.filelable} `}
+                  className={`${styleRegister.filelable}`}
                 >
-                  <div className="d-flex w-100 flex-column  justify-content-center  align-items-center ">
+                  <div className="flex w-100 flex-col  justify-center  items-center ">
                     <DriveFolderUploadIcon />
                     <div className="m-2 fw-bold">{fileInputContent}</div>
                   </div>

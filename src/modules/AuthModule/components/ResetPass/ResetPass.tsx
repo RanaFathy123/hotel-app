@@ -1,41 +1,41 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Alert,
-  FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextField,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import * as React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormDataResetPass } from "../../../../interfaces/Auth";
-import { emailValidation, passwordValidation } from "./../../../../validations/validations";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
+import { FormDataResetPass } from "../../../../interfaces/Auth";
+import {
+  emailValidation,
+  passwordValidation,
+} from "./../../../../validations/validations";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 const ResetPass = () => {
-
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleClickShowConfirmassword = () => setShowConfirmPassword((show) => !show);
+  const handleClickShowConfirmassword = () =>
+    setShowConfirmPassword((show) => !show);
 
   const {
     register,

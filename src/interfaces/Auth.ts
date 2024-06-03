@@ -37,3 +37,15 @@ export interface FormChangePass {
   newPassword: string;
   confirmPassword: string;
 }
+
+export interface FormDataLogin {
+  email:string
+  password:string
+}
+
+export interface Room {
+  capacity: number
+  discount: number
+  price: number
+  images: File
+}
