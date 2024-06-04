@@ -3,23 +3,22 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { emailValidation } from "./../../../../validations/validations";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormValuesForgetPass } from "../../../../interfaces/Auth";
-import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
-import { useState } from "react";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
+import { FormValuesForgetPass } from "../../../../interfaces/Auth";
+import { emailValidation } from "./../../../../validations/validations";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 const ForgetPass = () => {
-  const [loadingBtn, setLoadingBtn] = useState(false);
+
+  // const [loadingBtn, setLoadingBtn] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -41,18 +40,12 @@ const ForgetPass = () => {
   const onSubmit: SubmitHandler<FormValuesForgetPass> = async (data) => {
     // setLoadingBtn(true);
     try {
-      const response = await axiosInstance.post(
-        "admin/users/forgot-password",
-        data
-      );
-      console.log(response);
-      toast.success(response.data.message || "check your email");
+      const response = await axiosInstance.post("admin/users/forgot-password", data);
+      toast.success(response.data.message ||"check your email");
       navigate("/reset-pass");
-    } catch (error: any) {
-      console.log(error);
+    } catch (error : any) {
       toast.error(error.response.data.message);
-    }
-    console.log(data);
+    } 
   };
 
   return (
