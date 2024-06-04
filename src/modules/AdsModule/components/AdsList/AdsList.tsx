@@ -9,9 +9,10 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 // import img from '../../../../assets/images/avatar.png'
 // import { Room } from '../../../interfaces/Auth';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import { axiosInstanceWithHeaders } from '../../../../axiosConfig/axiosInstance';
-
+import DeleteIcon from "@mui/icons-material/Delete";
+import { RemoveRedEyeSharp, Upload } from '@mui/icons-material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,6 +33,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const ActionTableCell = styled(TableCell)({
+  textAlign: "left",
+  marginLeft: 5,
+});
+
+const StyledIconButton = styled(IconButton)({
+  color: "#4CAF50",
+});
+
+const DeleteIconButton = styled(IconButton)({
+  color: "#FF0000",
+});
+
 const AdsList = () => {
 
   const [ads, setAds] = useState([]);
@@ -46,6 +60,10 @@ const AdsList = () => {
       console.log("error");
     }
   }
+
+  const handle = () => {
+    console.log("r");
+  };
 
   useEffect(() => {
     getFacilites();
@@ -71,7 +89,7 @@ const AdsList = () => {
           <StyledTableCell align="right">Discount</StyledTableCell>
           <StyledTableCell align="right">Capacity</StyledTableCell>
           <StyledTableCell align="right">Active</StyledTableCell>
-          {/* <StyledTableCell align="right">Actions</StyledTableCell> */}
+          <StyledTableCell align="right">Actions</StyledTableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -84,7 +102,17 @@ const AdsList = () => {
             <StyledTableCell align="right">{item.room.discount}</StyledTableCell>
             <StyledTableCell align="right">{item.room.capacity}</StyledTableCell>
             <StyledTableCell align="right">{item.isActive ? "Yes"  : "No"}</StyledTableCell>
-
+            <ActionTableCell align="right" sx={{ display: "flex" }}>
+                <StyledIconButton onClick={handle}>
+                  <Upload />
+                </StyledIconButton>
+                <DeleteIconButton>
+                  <DeleteIcon />
+                </DeleteIconButton>
+                <StyledIconButton>
+                  <RemoveRedEyeSharp />
+                </StyledIconButton>
+              </ActionTableCell>
           </StyledTableRow>
         ))}
       </TableBody>
