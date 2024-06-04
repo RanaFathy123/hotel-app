@@ -74,7 +74,7 @@ const RoomsList = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {roomTable.map((item : any) => (
+        {roomTable?.map((item : any) => (
           <StyledTableRow key={item._id}>
             <StyledTableCell component="th" scope="row">
               {item.roomNumber}

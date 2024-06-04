@@ -23,6 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import ChangePass from "./modules/AuthModule/components/ChangePass/ChangePass";
 import LoginTest from "./modules/AuthModule/components/Login/LoginTest";
+import DeleteData from "./modules/SharedModule/components/DeleteData/DeleteData";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -65,6 +66,8 @@ const App = () => {
         { path: "facilites", element: <FacilitesList /> },
         { path: "facilites-data", element: <FacilitesData /> },
         { path: "ads", element: <AdsList /> },
+        { path: "DeleteData", element: <DeleteData /> },
+
       ],
     },
   ]);
