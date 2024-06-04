@@ -11,7 +11,7 @@ let axiosInstanceWithHeaders = axios.create({
 });
 
 axiosInstanceWithHeaders.interceptors.request.use((config) => {
-  const token = `Bearer ${localStorage.getItem("token")}`;
+  const token = localStorage.getItem("token");
   config.headers.Authorization = token;
   return config;
 });

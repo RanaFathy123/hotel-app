@@ -1,12 +1,17 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Alert, IconButton, InputAdornment, TextField } from "@mui/material";
+import {
+  Alert,
+  CircularProgress,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { createTheme } from "@mui/material/styles";
 import * as React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -35,10 +40,10 @@ export default function LoginTest() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormDataLogin>();
   const onSubmit: SubmitHandler<FormDataLogin> = async (data) => {
-    // setLoadingBtn(true);
+    setLoading(true);
     try {
       let response = await axiosInstance.post("/admin/users/login", data);
       const token = response.data.data.token;
@@ -51,7 +56,6 @@ export default function LoginTest() {
       toast.error(error.response?.data?.message || "Login Fail");
       setLoading(false);
     }
-    console.log(data);
   };
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -65,8 +69,8 @@ export default function LoginTest() {
         elevation={6}
         square
       >
-        <Typography component="h1" sx={{margin:3 ,fontWeight:'bold'}}>
-          <Typography component="span"sx={{color:'blue'}}>
+        <Typography component="h1" sx={{ margin: 3, fontWeight: "bold" }}>
+          <Typography component="span" sx={{ color: "blue" }}>
             Stay
           </Typography>
           cation.
@@ -80,11 +84,17 @@ export default function LoginTest() {
             alignItems: "flex-start",
           }}
         >
-          <Typography component="h1" variant="h5" sx={{ fontWeight: "bold",marginBottom:3 }}>
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{ fontWeight: "bold", marginBottom: 3 }}
+          >
             Sign in
           </Typography>
-          <Typography component='h1' sx={{marginBottom:1}}>If you don’t have an account register</Typography>
-          <Typography component="h1" sx={{marginBottom:2}}>
+          <Typography component="h1" sx={{ marginBottom: 1 }}>
+            If you don’t have an account register
+          </Typography>
+          <Typography component="h1" sx={{ marginBottom: 2 }}>
             You can
             <Link to="/register" style={{ marginLeft: "0.5em", color: "blue" }}>
               Register here !
@@ -147,14 +157,13 @@ export default function LoginTest() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 1 }}
+              disabled={isSubmitting}
             >
-              Sign In
+              {loading ? <CircularProgress disableShrink /> : "Login"}
             </Button>
             <Grid container>
-              <Grid item xs sx={{textAlign:'end',color:'blue'}}>
-                <Link to="/forget-pass">
-                  Forgot password?
-                </Link>
+              <Grid item xs sx={{ textAlign: "end", color: "blue" }}>
+                <Link to="/forget-pass">Forgot password?</Link>
               </Grid>
             </Grid>
           </Box>

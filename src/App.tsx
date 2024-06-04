@@ -1,28 +1,27 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import MasterLayout from "./modules/SharedModule/components/MasterLayout/MasterLayout";
-import NotFound from "./modules/SharedModule/components/NotFound/NotFound";
-import RoomDetails from "./modules/RoomsModule/components/RoomDetails/RoomDetails";
-import RoomsList from "./modules/RoomsModule/components/RoomsList/RoomsList";
-import AuthLayout from "./modules/SharedModule/components/AuthLayout/AuthLayout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Register from "./modules/AuthModule/components/Register/Register";
-import Login from "./modules/AuthModule/components/Login/Login";
-import ForgetPass from "./modules/AuthModule/components/ForgetPass/ForgetPass";
-import ResetPass from "./modules/AuthModule/components/ResetPass/ResetPass";
-import AdminLayout from "./modules/SharedModule/components/AdminLayout/AdminLayout";
-import RoomsTable from "./modules/RoomsTable/components/RoomsTable";
-import RoomsData from "./modules/RoomsModule/components/RoomsData/RoomsData";
-import FacilitesList from "./modules/FacilitesModule/components/FacilitesList/FacilitesList";
 import AdsList from "./modules/AdsModule/components/AdsList/AdsList";
-import FacilitesData from "./modules/FacilitesModule/components/FacilitesData/FacilitesData";
-import Dashboard from "./modules/DashboardModule/components/Dashboard";
-import Home from "./modules/HomeModule/components/Home";
-import Favorites from "./modules/FavoritesModule/components/Favorites";
-import "react-toastify/dist/ReactToastify.css";
-import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import ChangePass from "./modules/AuthModule/components/ChangePass/ChangePass";
+import ForgetPass from "./modules/AuthModule/components/ForgetPass/ForgetPass";
+import Login from "./modules/AuthModule/components/Login/Login";
 import LoginTest from "./modules/AuthModule/components/Login/LoginTest";
+import Register from "./modules/AuthModule/components/Register/Register";
+import ResetPass from "./modules/AuthModule/components/ResetPass/ResetPass";
+import Dashboard from "./modules/DashboardModule/components/Dashboard";
+import FacilitesData from "./modules/FacilitesModule/components/FacilitesData/FacilitesData";
+import FacilitesList from "./modules/FacilitesModule/components/FacilitesList/FacilitesList";
+import Favorites from "./modules/FavoritesModule/components/Favorites";
+import Home from "./modules/HomeModule/components/Home";
+import RoomDetails from "./modules/RoomsModule/components/RoomDetails/RoomDetails";
+import RoomsData from "./modules/RoomsModule/components/RoomsData/RoomsData";
+import RoomsList from "./modules/RoomsModule/components/RoomsList/RoomsList";
+import RoomsTable from "./modules/RoomsTable/components/RoomsTable";
+import AdminLayout from "./modules/SharedModule/components/AdminLayout/AdminLayout";
+import AuthLayout from "./modules/SharedModule/components/AuthLayout/AuthLayout";
+import MasterLayout from "./modules/SharedModule/components/MasterLayout/MasterLayout";
+import NotFound from "./modules/SharedModule/components/NotFound/NotFound";
+import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 
 const App = () => {
   const routes = createBrowserRouter([

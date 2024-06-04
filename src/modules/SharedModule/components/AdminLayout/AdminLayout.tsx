@@ -21,9 +21,9 @@ import { Link, Outlet } from "react-router-dom";
 import profileImage from "../../../../assets/images/avatar.png";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import CampaignIcon from "@mui/icons-material/Campaign";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const drawerWidth = 240;
-
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
@@ -96,6 +96,7 @@ export default function AdminLayout() {
   const theme = useTheme();
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const [open, setOpen] = React.useState(isLargeScreen);
+  const [isShowDrawer, setIsShowDrawer] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -103,10 +104,16 @@ export default function AdminLayout() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  const handleShowDrawer = () => {
+    setIsShowDrawer(!isShowDrawer);
+  };
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" open={open} sx={{ background: "#F8F9FB" }}>
+      <AppBar
+        position="fixed"
+        open={isLargeScreen ? open : false}
+        sx={{ background: "#F8F9FB" }}
+      >
         <Toolbar>
           {isLargeScreen && (
             <IconButton
@@ -114,6 +121,16 @@ export default function AdminLayout() {
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               edge="start"
+            >
+              <MenuIcon />
+            </IconButton>
+          )}
+          {!isLargeScreen && (
+            <IconButton
+              color="primary"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleShowDrawer}
             >
               <MenuIcon />
             </IconButton>
@@ -127,78 +144,203 @@ export default function AdminLayout() {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        open={open}
-        sx={{
-          "& .MuiDrawer-paper": {
-            backgroundColor: "#002366", // Custom background color
-          },
-        }}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon sx={{ color: "white" }} />
-            ) : (
-              <ChevronLeftIcon sx={{ color: "white" }} />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <List>
-          {[
-            { text: "Home", path: "/dashboard", icon: <HomeIcon /> },
-            { text: "Users", path: "/settings", icon: <PeopleIcon /> },
-            {
-              text: "Rooms",
-              path: "/dashboard/rooms-list",
-              icon: <MeetingRoomIcon />,
+      {isLargeScreen && (
+        <Drawer
+          variant="permanent"
+          open={open}
+          sx={{
+            "& .MuiDrawer-paper": {
+              backgroundColor: "#002366", // Custom background color
             },
-            {
-              text: "Ads",
-              path: "/dashboard/ads",
-              icon: <CampaignIcon />,
-            },
-            {
-              text: "Facilites",
-              path: "/dashboard/facilites",
-              icon: <CampaignIcon />,
-            },
-            // Add more items as needed
-          ].map((item) => (
-            <ListItem
-              key={item.text}
-              disablePadding
-              sx={{ display: "block", color: "white" }}
-            >
-              <ListItemButton
-                component={Link}
-                to={item.path}
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? "initial" : "center",
-                  px: 2.5,
-                }}
+          }}
+        >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon sx={{ color: "white" }} />
+              ) : (
+                <ChevronLeftIcon sx={{ color: "white" }} />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <List>
+            {[
+              { text: "Home", path: "/dashboard", icon: <HomeIcon /> },
+              { text: "Users", path: "/settings", icon: <PeopleIcon /> },
+              {
+                text: "Rooms",
+                path: "/dashboard/rooms-list",
+                icon: <MeetingRoomIcon />,
+              },
+              {
+                text: "Ads",
+                path: "/dashboard/ads",
+                icon: <CampaignIcon />,
+              },
+              {
+                text: "Facilites",
+                path: "/dashboard/facilites",
+                icon: <CampaignIcon />,
+              },
+              // Add more items as needed
+            ].map((item) => (
+              <ListItem
+                key={item.text}
+                disablePadding
+                sx={{ display: "block", color: "white" }}
               >
-                <ListItemIcon
+                <ListItemButton
+                  component={Link}
+                  to={item.path}
                   sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : "auto",
-                    justifyContent: "center",
-                    color: "white", // Icon color
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
                   }}
                 >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  sx={{ opacity: open ? 1 : 0 }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "white", // Icon color
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.text}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <ListItem
+            key="Logout"
+            disablePadding
+            sx={{ display: "block", color: "white" }}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                  color: "white", // Icon color
+                }}
+              >
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+        </Drawer>
+      )}
+      {!isLargeScreen && isShowDrawer && (
+        <Drawer
+          variant="permanent"
+          sx={{
+            "& .MuiDrawer-paper": {
+              backgroundColor: "#002366", // Custom background color
+            },
+          }}
+        >
+          <DrawerHeader>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon sx={{ color: "white" }} />
+              ) : (
+                <ChevronLeftIcon sx={{ color: "white" }} />
+              )}
+            </IconButton>
+          </DrawerHeader>
+          <List>
+            {[
+              { text: "Home", path: "/dashboard", icon: <HomeIcon /> },
+              { text: "Users", path: "/settings", icon: <PeopleIcon /> },
+              {
+                text: "Rooms",
+                path: "/dashboard/rooms-list",
+                icon: <MeetingRoomIcon />,
+              },
+              {
+                text: "Ads",
+                path: "/dashboard/ads",
+                icon: <CampaignIcon />,
+              },
+              {
+                text: "Facilites",
+                path: "/dashboard/facilites",
+                icon: <CampaignIcon />,
+              },
+              // Add more items as needed
+            ].map((item) => (
+              <ListItem
+                key={item.text}
+                disablePadding
+                sx={{ display: "block", color: "white" }}
+              >
+                <ListItemButton
+                  component={Link}
+                  to={item.path}
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2.5,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "white", // Icon color
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={item.text}
+                    sx={{ opacity: open ? 1 : 0 }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+          <ListItem
+            key="Logout"
+            disablePadding
+            sx={{ display: "block", color: "white" }}
+          >
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2.5,
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                  color: "white", // Icon color
+                }}
+              >
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+            </ListItemButton>
+          </ListItem>
+        </Drawer>
+      )}
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <Outlet />
