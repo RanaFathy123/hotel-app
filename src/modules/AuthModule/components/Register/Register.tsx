@@ -88,7 +88,7 @@ export default function Register() {
         </Typography>
       </Grid>
       <Grid container spacing={3} >
-        <Grid item xs={12} md={5} sx={{ mx:5 }}>
+        <Grid item xs={12} md={5} sx={{marginLeft:"5%",marginRight:"3%" }}>
           <Typography sx={{ mt: 5 ,mb:3 }} variant="h4" component="h4">
             Sign up
           </Typography>
