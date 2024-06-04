@@ -10,7 +10,10 @@ import { useEffect, useState } from 'react';
 import { axiosInstanceWithHeaders } from '../../../axiosConfig/axiosInstance';
 import img from '../../../assets/images/avatar.png'
 import { Room } from '../../../interfaces/Auth';
-import { Button } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { RemoveRedEyeSharp, Upload } from '@mui/icons-material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -31,6 +34,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+const ActionTableCell = styled(TableCell)({
+  textAlign: "left",
+  marginLeft: 5,
+});
+
+const StyledIconButton = styled(IconButton)({
+  color: "#4CAF50",
+});
+
+const DeleteIconButton = styled(IconButton)({
+  color: "#FF0000",
+});
+
 const RoomsList = () => {
 
   const [roomTable, setRoomTable] = useState<Room[]>([]);
@@ -46,6 +62,10 @@ const RoomsList = () => {
     }
   }
 
+  const handle = () => {
+    console.log("r");
+  };
+
   useEffect(() => {
     getRomedata();
   }, []);
@@ -56,7 +76,10 @@ const RoomsList = () => {
       sx={{ 
         backgroundColor: '#203FC7',
         color: '#fff',
-        margin: 2 
+        margin: 2 ,
+        display: 'flex',
+        justifyContent: 'end',
+        alignItems: 'flex-end'
       }}
     >
       Add New Room
@@ -70,7 +93,7 @@ const RoomsList = () => {
           <StyledTableCell align="right">Price</StyledTableCell>
           <StyledTableCell align="right">Discount</StyledTableCell>
           <StyledTableCell align="right">Capacity</StyledTableCell>
-          {/* <StyledTableCell align="right">Actions</StyledTableCell> */}
+          <StyledTableCell align="right">Actions</StyledTableCell>
         </TableRow>
       </TableHead>
       <TableBody>
@@ -90,6 +113,17 @@ const RoomsList = () => {
             <StyledTableCell align="right">{item.price}</StyledTableCell>
             <StyledTableCell align="right">{item.discount}</StyledTableCell>
             <StyledTableCell align="right">{item.capacity}</StyledTableCell>
+            <ActionTableCell align="right" sx={{ display: "flex" }}>
+                <StyledIconButton onClick={handle}>
+                  <Upload />
+                </StyledIconButton>
+                <DeleteIconButton>
+                  <DeleteIcon />
+                </DeleteIconButton>
+                <StyledIconButton>
+                  <RemoveRedEyeSharp />
+                </StyledIconButton>
+              </ActionTableCell>
           </StyledTableRow>
         ))}
       </TableBody>

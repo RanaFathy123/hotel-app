@@ -62,6 +62,7 @@ const App = () => {
         { path: "", element: <Dashboard /> },
         { path: "rooms-list", element: <RoomsTable /> },
         { path: "room-data", element: <RoomsData /> },
+        { path: "room-list", element: <RoomsList /> },
         { path: "facilites", element: <FacilitesList /> },
         { path: "facilites-data", element: <FacilitesData /> },
         { path: "ads", element: <AdsList /> },
