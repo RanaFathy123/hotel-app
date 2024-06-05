@@ -6,7 +6,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
-  OutlinedInput
+  OutlinedInput,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -26,7 +26,6 @@ import { LoginValidationSchema } from "../../../../validations/validations";
 
 const defaultTheme = createTheme();
 
-
 const initalValues: FormValuesLogin = {
   email: "",
   password: "",
@@ -38,8 +37,6 @@ const Login = () => {
   const { saveLoginData } = React.useContext(AuthContext);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-
 
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -60,18 +57,28 @@ const Login = () => {
     <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <Grid item xs={12} sm={6} md={6} component={Paper} elevation={6} square>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={6}
+          component={Paper}
+          elevation={6}
+          square
+          container
+        >
           <h1 className="px-4 py-3 text-xl font-serif font-bold">
             <span className="text-[#152C5B]">Stay</span>cation.
           </h1>
           <Box
+            className="w-full"
             sx={{
               my: 8,
-              mx: 8,
+              mx: 10,
               display: "flex",
               flexDirection: "column",
-              alignItems: "start",
-              textAlign: "left",
+              justifyContent: "center",
+          
             }}
           >
             <Typography
@@ -227,4 +234,3 @@ const Login = () => {
 };
 
 export default Login;
-
