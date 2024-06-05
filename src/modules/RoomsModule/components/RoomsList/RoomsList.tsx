@@ -57,9 +57,6 @@ const rows: RowData[] = [
 ];
 
 const RoomsList: React.FC = () => {
-  const handle = () => {
-    console.log("r");
-  };
 
   return (
     <StyledTableContainer>
@@ -113,7 +110,7 @@ const RoomsList: React.FC = () => {
                 </StyledIconButton>
               </ActionTableCell>
               <ActionTableCell sx={{ display: "flex" }}>
-                <StyledIconButton onClick={handle}>
+                <StyledIconButton >
                   <EditIcon />
                 </StyledIconButton>
                 <DeleteIconButton>

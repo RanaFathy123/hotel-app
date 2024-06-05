@@ -1,38 +1,75 @@
-import React from 'react';
-import imgTrash from '../../../../assets/images/Email.png';
-import { Box, Stack, Typography } from '@mui/material';
+import React from "react";
+import imgTrash from "../../../../assets/images/Email.png";
+import {
+  Box,
+  Button,
+  Stack,
+  ThemeProvider,
+  Typography,
+  colors,
+  createTheme,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 
 
-const DeleteData = ({ title, item }:any) => {
+type DeleteDataProps ={
+title:string ,
+item : string ,
+closing : ()=> void
+}
 
+
+const DeleteData = ({ title, item, closing }:DeleteDataProps) => {
   return (
     <Box
-      sx={{
-        margin: 'auto',
-        textAlign: 'center',
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        bgcolor: 'background.paper',
-        boxShadow: 24,
-        p: 8,
-        maxWidth: 450
-      }}
-      borderRadius={2}
-    >
-      <Stack>
-        <img src={imgTrash} alt="Trash" style={{ width: '7em', margin: 'auto' }} />
-        <Typography  variant="subtitle1" sx={{ marginTop: '3em' }} fontWeight='700' fontFamily='sans-serif'>
-          Delete This {title}
-        </Typography>
-        <Typography sx={{ mt: 2 }} color='gray'>
-          Are you sure you want to delete this {item}? If you are sure, just click on delete it.
-        </Typography>
-      </Stack>
-    </Box>
+    borderRadius={2}
+  >
+    <Stack>
+      <Button
+        onClick={closing}
+        sx={{
+          position: "relative",
+          padding: 0,
+          minWidth: 0,
+          "&:focus": {
+            backgroundColor: "transparent", 
+          },
+        }}
+      >
+        <CloseIcon
+          fontSize="medium"
+          sx={{
+            position: "absolute",
+            right: "-1em",
+            top: "-1em",
+            color: colors.red[900],
+            borderRadius: "50%",
+            padding: "3px",
+          }}
+        />
+      </Button>
+      <img
+        src={imgTrash}
+        alt="Trash"
+        style={{ width: "5.5em", margin: "auto" }}
+      />
+      <Typography
+        variant="subtitle1"
+        sx={{ marginTop: "3em" }}
+        fontWeight="700"
+        fontFamily="sans-serif"
+        color={colors.grey[800]}
+      >
+        Delete This {title}?
+      </Typography>
+      <Typography sx={{ mt: 1 }} color="gray">
+        Are you sure you want to delete this {item}? If you are sure, just
+        click on delete it.
+      </Typography>
+    </Stack>
+  </Box>
   );
-}
+};
 
 export default DeleteData;

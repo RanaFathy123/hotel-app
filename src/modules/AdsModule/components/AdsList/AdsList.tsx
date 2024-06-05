@@ -6,13 +6,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 // import img from '../../../../assets/images/avatar.png'
 // import { Room } from '../../../interfaces/Auth';
-import { Button, IconButton } from '@mui/material';
+import { Backdrop, Box, Button, IconButton, Modal, Stack } from '@mui/material';
 import { axiosInstanceWithHeaders } from '../../../../axiosConfig/axiosInstance';
 import DeleteIcon from "@mui/icons-material/Delete";
 import { RemoveRedEyeSharp, Upload } from '@mui/icons-material';
+import DeleteData from '../../../SharedModule/components/DeleteData/DeleteData';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -46,11 +47,24 @@ const DeleteIconButton = styled(IconButton)({
   color: "#FF0000",
 });
 
-const AdsList = () => {
+interface SnackBarProps{
+  handleClick : ()=> void ;
+  setMessage : React.Dispatch<React.SetStateAction<string>>;
+  setMessageType : React.Dispatch<React.SetStateAction<string>> ;
+}
+const AdsList:FC<SnackBarProps> = ({handleClick , setMessage , setMessageType}) => {
 
   const [ads, setAds] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [adsID, setAdsID] = useState("");
+  const handleClose = () => setOpen(false);
+  
+  const handleOpen = (id: any) => {
+    setOpen(true);
+    setAdsID(id);
+  };
 
-  async function getFacilites() {
+  async function getAds() {
     try {
       let response = await axiosInstanceWithHeaders.get("admin/ads");
       const ads = response.data.data.ads
@@ -61,16 +75,62 @@ const AdsList = () => {
     }
   }
 
-  const handle = () => {
-    console.log("r");
-  };
+  async function DeleteAds() {
+    try {
+      let response = await axiosInstanceWithHeaders.delete(`admin/ads/${adsID}`);
+     handleClose()
+     handleClick()
+     setMessage('the Ads has been deleted successfulyy')
+     setMessageType('success')
+     getAds()
+    } catch (error: any) {
+      handleClick()
+     setMessage(`there's an error`)
+     setMessageType('error')
+      console.log("error");
+    }
+  }
+
 
   useEffect(() => {
-    getFacilites();
+    getAds();
   }, []);
 
   return (
     <>
+
+<Modal
+        open={open}
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 600,
+          },
+        }}
+      >
+        <Box sx={{
+          margin: "auto",
+          textAlign: "center",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          bgcolor: "background.paper",
+          boxShadow: 3,
+          p: 6,
+          maxWidth: 500,
+        }} >
+          <DeleteData title="Ads" item="Ads" closing={handleClose} />
+         <Stack mt={5}>
+         <Button variant="outlined" color="error" onClick={DeleteAds}>
+            Delete
+          </Button>
+         </Stack>
+        </Box>
+      </Modal>
     <Button  
       sx={{ 
         backgroundColor: '#203FC7',
@@ -103,10 +163,10 @@ const AdsList = () => {
             <StyledTableCell align="right">{item.room.capacity}</StyledTableCell>
             <StyledTableCell align="right">{item.isActive ? "Yes"  : "No"}</StyledTableCell>
             <ActionTableCell align="right" sx={{ display: "flex" }}>
-                <StyledIconButton onClick={handle}>
+                <StyledIconButton >
                   <Upload />
                 </StyledIconButton>
-                <DeleteIconButton>
+                <DeleteIconButton onClick={()=> handleOpen(item._id)}>
                   <DeleteIcon />
                 </DeleteIconButton>
                 <StyledIconButton>
