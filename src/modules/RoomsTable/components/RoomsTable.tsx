@@ -23,11 +23,10 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { RemoveRedEyeSharp, Upload, WidthFull } from "@mui/icons-material";
+import { Height, RemoveRedEyeSharp, Upload, WidthFull } from "@mui/icons-material";
 import DeleteData from "../../SharedModule/components/DeleteData/DeleteData";
 import roomImage from "../../../assets/images/ForgetPass.jpg";
 import CloseIcon from "@mui/icons-material/Close";
-import { log } from "console";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -109,14 +108,14 @@ const RoomsList: React.FC<SnackbarProps> = ({
   async function getRoomdata() {
     try {
       let response = await axiosInstanceWithHeaders.get(
-        "admin/rooms?page=1&size=5"
+        "admin/rooms"
       );
       console.log(response);
 
       const rooms = response.data.data.rooms;
       setRoomTable(rooms);
     } catch (error: any) {
-      console.log("error");
+      
     }
   }
 
@@ -251,7 +250,7 @@ const RoomsList: React.FC<SnackbarProps> = ({
             <img
               src={roomImage}
               alt=""
-              style={{ width: "500px", height: "200px" }}
+              style={{ width: "70em", height: "20em" }}
             />
           )}
           <Stack
@@ -310,7 +309,7 @@ const RoomsList: React.FC<SnackbarProps> = ({
                 </StyledTableCell>
                 <StyledTableCell>
                   {item.images ? (
-                    <img src={item.images[0]} alt={""} width={100} />
+                    <img src={item.images[0]} alt={""} width={100} style={{height:'75px'}} />
                   ) : (
                     <img src={img} alt="no image" />
                   )}

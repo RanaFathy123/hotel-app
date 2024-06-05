@@ -1,17 +1,18 @@
-/* eslint-disable prefer-const */
 import axios from "axios";
 
+const baseUrl = import.meta.env.VITE_REACT_API_URL;
+console.log(baseUrl)
+
 let axiosInstance = axios.create({
-  baseURL: "https://upskilling-egypt.com:3000/api/v0",
+  baseURL: baseUrl,
 });
 let axiosInstanceWithHeaders = axios.create({
-  baseURL: "https://upskilling-egypt.com:3000/api/v0",
+  baseURL: baseUrl,
 });
 
 axiosInstanceWithHeaders.interceptors.request.use((config) => {
-  const token = ` ${localStorage.getItem("token")}`;
+  const token = localStorage.getItem("token");
   config.headers.Authorization = token;
   return config;
 });
-
 export { axiosInstance, axiosInstanceWithHeaders };
