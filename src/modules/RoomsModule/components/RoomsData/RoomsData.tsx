@@ -1,9 +1,7 @@
 import React from 'react'
 
-const RoomsData = () => {
-  return (
-    <div>RoomsData</div>
-  )
+export default function RoomsData() {
+  return <>
+  <h1>RoomData</h1>
+  </>
 }
-
-export default RoomsData

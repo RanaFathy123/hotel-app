@@ -5,7 +5,7 @@ import RoomDetails from "./modules/RoomsModule/components/RoomDetails/RoomDetail
 import RoomsList from "./modules/RoomsModule/components/RoomsList/RoomsList";
 import AuthLayout from "./modules/SharedModule/components/AuthLayout/AuthLayout";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import Register from "./modules/AuthModule/components/Register/Register";
 import Login from "./modules/AuthModule/components/Login/Login";
 import ForgetPass from "./modules/AuthModule/components/ForgetPass/ForgetPass";
@@ -19,7 +19,10 @@ import FacilitesData from "./modules/FacilitesModule/components/FacilitesData/Fa
 import Dashboard from "./modules/DashboardModule/components/Dashboard";
 import Home from "./modules/HomeModule/components/Home";
 import Favorites from "./modules/FavoritesModule/components/Favorites";
-// import VerifyAccount from "./modules/AuthModule/components/VerifyAccount/VerifyAccount";
+import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
+import ChangePass from "./modules/AuthModule/components/ChangePass/ChangePass";
+import LoginTest from "./modules/AuthModule/components/Login/LoginTest";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -39,19 +42,27 @@ const App = () => {
       element: <AuthLayout />,
       children: [
         { path: "login", element: <Login /> },
+        { path: "login-test", element: <LoginTest /> },
+
         { path: "register", element: <Register /> },
         // { path: "verify", element: <VerifyAccount /> },
         { path: "forget-pass", element: <ForgetPass /> },
         { path: "reset-pass", element: <ResetPass /> },
+        { path: "change-pass", element: <ChangePass /> },
       ],
     },
     {
       path: "/dashboard",
-      element: <AdminLayout />,
+      element: (
+        <ProtectedRoute>
+          <AdminLayout  />
+        </ProtectedRoute>
+      ),
       children: [
         { path: "", element: <Dashboard /> },
         { path: "rooms-list", element: <RoomsTable /> },
         { path: "room-data", element: <RoomsData /> },
+        { path: "room-list", element: <RoomsList /> },
         { path: "facilites", element: <FacilitesList /> },
         { path: "facilites-data", element: <FacilitesData /> },
         { path: "ads", element: <AdsList /> },
