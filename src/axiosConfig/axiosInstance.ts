@@ -15,5 +15,4 @@ axiosInstanceWithHeaders.interceptors.request.use((config) => {
   config.headers.Authorization = token;
   return config;
 });
-
-export { axiosInstance, axiosInstanceWithHeaders };
+export {axiosInstance, axiosInstanceWithHeaders };
