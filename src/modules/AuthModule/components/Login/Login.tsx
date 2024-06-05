@@ -14,217 +14,184 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { Field, Form, Formik } from "formik";
 import * as React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import loginImage from "../../../../assets/images/login.png";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
 import { AuthContext } from "../../../../context/AuthContext";
-import { FormValuesLogin } from "../../../../interfaces/Auth";
-import { LoginValidationSchema } from "../../../../validations/validations";
+import { FormDataLogin } from "../../../../interfaces/Auth";
+import {
+  emailValidation,
+  passwordValidation,
+} from "../../../../validations/validations";
 
-const defaultTheme = createTheme();
-
-const initalValues: FormValuesLogin = {
-  email: "",
-  password: "",
+type LoginProps = {
+  handleClick: () => void;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
+  setMessageType: React.Dispatch<React.SetStateAction<string>>;
 };
-const Login = () => {
+const Login: React.FC<LoginProps> = ({
+  handleClick,
+  setMessage,
+  setMessageType,
+}) => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const navigate = useNavigate();
   const { saveLoginData } = React.useContext(AuthContext);
-
+  function handleMouseDownPassword(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+  }
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormDataLogin>();
+  const onSubmit: SubmitHandler<FormDataLogin> = async (data) => {
+    setLoading(true);
+    try {
+      let response = await axiosInstance.post("/admin/users/login", data);
+      const token = response.data.data.token;
+      localStorage.setItem("token", token);
+      saveLoginData();
+      handleClick();
+      setMessageType("success");
+      setMessage(response.data.message || "Login Fail");
+      navigate("/dashboard");
+    } catch (error: any) {
+      console.log(error);
+      handleClick();
+      setMessageType("error");
+      setMessage(error.response.data.message || "Login Fail");
+      setLoading(false);
+    }
   };
 
-  const backgroundStyle = {
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    display: { xs: "none", sm: "flex" },
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  };
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          component={Paper}
-          elevation={6}
-          square
-          container
+    <Grid container component="main" sx={{ height: "100vh" }}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        component={Paper}
+        sx={{ boxShadow: "none" }}
+        elevation={6}
+        square
+      >
+        <Typography component="h1" sx={{ margin: 3, fontWeight: "bold" }}>
+          <Typography component="span" sx={{ color: "blue" }}>
+            Stay
+          </Typography>
+          cation.
+        </Typography>
+        <Box
+          sx={{
+            my: 8,
+            mx: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
         >
-          <h1 className="px-4 py-3 text-xl font-serif font-bold">
-            <span className="text-[#152C5B]">Stay</span>cation.
-          </h1>
+          <Typography
+            component="h1"
+            variant="h5"
+            sx={{ fontWeight: "bold", marginBottom: 3 }}
+          >
+            Sign in
+          </Typography>
+          <Typography component="h1" sx={{ marginBottom: 1 }}>
+            If you don’t have an account register
+          </Typography>
+          <Typography component="h1" sx={{ marginBottom: 2 }}>
+            You can
+            <Link to="/register" style={{ marginLeft: "0.5em", color: "blue" }}>
+              Register here !
+            </Link>
+          </Typography>
           <Box
-            className="w-full"
-            sx={{
-              my: 8,
-              mx: 10,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
+            component="form"
+            noValidate
+            width="100%"
+            sx={{ mt: 1 }}
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <InputLabel htmlFor="outlined-adornment-email" sx={{marginBottom:2}}>
+              Email Address
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-email"
+              fullWidth
+              type="text"
+              label="email"
+              placeholder="Please Type Here"
+              sx={{background:'#F5F6F8',marginBottom:2}}
           
-            }}
-          >
-            <Typography
-              component="h1"
-              variant="h5"
-              sx={{
-                marginBottom: "0.5em",
-                fontWeight: "bold",
-                fontSize: "30px",
-              }}
-            >
-              Sign in
-            </Typography>
-            <h1>If you don’t have an account register</h1>
-            <h1 className="mb-3">
-              You can
-              <Link className="text-blue-800 mx-2" to="/register">
-                Register here !
-              </Link>
-            </h1>
-            <Formik
-              initialValues={initalValues}
-              validationSchema={LoginValidationSchema}
-              onSubmit={async (values, formikHelpers) => {
-                formikHelpers.resetForm();
-                formikHelpers.setSubmitting(true);
-                setLoading(true);
-                try {
-                  let response = await axiosInstance.post(
-                    "/admin/users/login",
-                    values
-                  );
-                  const token = response.data.data.token;
-                  localStorage.setItem("token", token);
-                  saveLoginData();
-                  toast.success(response.data.message || "Login Success");
-                  navigate("/dashboard");
-                } catch (error: any) {
-                  console.log(error);
-                  toast.error(error.response?.data?.message || "Login Fail");
-                  setLoading(false);
-                }
-              }}
-            >
-              {({ errors, isValid, touched, dirty, isSubmitting }) => (
-                <Form>
-                  <InputLabel htmlFor="outlined-adornment-email">
-                    <h1 className="text-[#152C5B] mb-1">Email Address</h1>
-                  </InputLabel>
-                  <Field
-                    name="email"
-                    as={OutlinedInput}
-                    fullWidth
-                    type="text"
-                    label="email"
-                    placeholder="Please Type Here"
-                    className="bg-[#F5F6F8] mb-7 "
-                    error={Boolean(errors.email) && Boolean(touched.email)}
-                  />
-                  {errors.email && touched.email ? (
-                    <Alert severity="error" className="mb-4">
-                      {errors.email}
-                    </Alert>
-                  ) : null}
-                  <InputLabel htmlFor="outlined-adornment-password ">
-                    <h1 className="text-[#152C5B] mb-1">Password</h1>
-                  </InputLabel>
-                  <Field
-                    name="password"
-                    as={OutlinedInput}
-                    placeholder="Please Type Here"
-                    className="bg-[#F5F6F8] mb-10"
-                    variant="outlined"
-                    color="primary"
-                    fullWidth
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Password"
-                    error={
-                      Boolean(errors.password) && Boolean(touched.password)
-                    }
-                  />
-                  {errors.password && touched.password ? (
-                    <Alert severity="error" className="mb-4">
-                      {errors.password}
-                    </Alert>
-                  ) : null}
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    className="mt-[2em]"
-                    size="large"
-                    disabled={isSubmitting || !isValid || !dirty}
+              {...register("email", emailValidation)}
+            />
+            {errors.email && (
+              <Alert sx={{ mb: 2 }} severity="error">
+                {errors.email.message?.toString()}
+              </Alert>
+            )}
+            <InputLabel htmlFor="outlined-adornment-password " sx={{marginBottom:2}}>
+              Password
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              fullWidth
+              placeholder="Please Type Here"
+              sx={{background:'#F5F6F8',marginBottom:2}}
+              {...register("password", passwordValidation)}
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
                   >
-                    {loading ? <CircularProgress disableShrink /> : "Login"}
-                  </Button>
-                  <Grid container>
-                    <Grid item xs className="text-end text-blue-700 py-4">
-                      <Link to="/forget-pass" className="mt-5">
-                        Forgot password?
-                      </Link>
-                    </Grid>
-                  </Grid>
-                </Form>
-              )}
-            </Formik>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+            {errors.password && (
+              <Alert sx={{ mt: 1 }} severity="error">
+                {errors.password.message?.toString()}
+              </Alert>
+            )}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 1 }}
+              disabled={isSubmitting}
+            >
+              {loading ? <CircularProgress disableShrink /> : "Login"}
+            </Button>
+            <Grid container>
+              <Grid item xs sx={{ textAlign: "end", color: "blue" }}>
+                <Link to="/forget-pass">Forgot password?</Link>
+              </Grid>
+            </Grid>
           </Box>
-        </Grid>
-        <Grid
-          container
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          sx={backgroundStyle}
-          className="bg-[url('./assets/images/login.png')] rounded "
-        >
-          <Box
-            sx={{
-              width: "100%",
-              textAlign: "left",
-              padding: 10,
-              color: "white",
-            }}
-          >
-            <h1 className="font-bold line-clamp-6 md:text-2xl lg:text-4xl">
-              Sign in to Roamhome
-            </h1>
-            <h1 className="text-lg my-2 ">Homes as unique as you.</h1>
-          </Box>
-        </Grid>
+        </Box>
       </Grid>
-    </ThemeProvider>
+      <CssBaseline />
+      <Grid container item xs={12} sm={6} md={6} sx={{ minHeight: "100vh" }}>
+        <img
+          src={loginImage}
+          style={{ height: "100vh", width: "100%", padding: 13 }}
+        />
+      </Grid>
+    </Grid>
   );
 };
 

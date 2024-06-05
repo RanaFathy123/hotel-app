@@ -6,6 +6,8 @@ import AuthContextProvider from "./context/AuthContext.tsx";
 import { ThemeProvider } from "styled-components";
 import { createTheme } from "@mui/material";
 const defaultTheme = createTheme();
+
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <ThemeProvider theme={defaultTheme}>
     <AuthContextProvider>

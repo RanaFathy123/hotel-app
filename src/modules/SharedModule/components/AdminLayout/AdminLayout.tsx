@@ -17,13 +17,14 @@ import ListItemText from "@mui/material/ListItemText";
 import Toolbar from "@mui/material/Toolbar";
 import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 import * as React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import profileImage from "../../../../assets/images/avatar.png";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import CampaignIcon from "@mui/icons-material/Campaign";
 import LogoutIcon from "@mui/icons-material/Logout";
-
+import { AuthContext } from "../../../../context/AuthContext";
 const drawerWidth = 240;
+
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create("width", {
@@ -97,6 +98,13 @@ export default function AdminLayout() {
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const [open, setOpen] = React.useState(isLargeScreen);
   const [isShowDrawer, setIsShowDrawer] = React.useState(false);
+  const navigate = useNavigate()
+  const { resetLoginData } = React.useContext(AuthContext);
+  const Logout = () => {
+    localStorage.removeItem("token");
+    resetLoginData();
+    navigate("/login");
+  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -112,7 +120,7 @@ export default function AdminLayout() {
       <AppBar
         position="fixed"
         open={isLargeScreen ? open : false}
-        sx={{ background: "#F8F9FB" }}
+        sx={{ bgcolor: "white" }}
       >
         <Toolbar>
           {isLargeScreen && (
@@ -166,7 +174,7 @@ export default function AdminLayout() {
           <List>
             {[
               { text: "Home", path: "/dashboard", icon: <HomeIcon /> },
-              { text: "Users", path: "/settings", icon: <PeopleIcon /> },
+              { text: "Users", path: "/dashboard/users", icon: <PeopleIcon /> },
               {
                 text: "Rooms",
                 path: "/dashboard/rooms-list",
@@ -227,6 +235,7 @@ export default function AdminLayout() {
                 justifyContent: open ? "initial" : "center",
                 px: 2.5,
               }}
+              onClick={Logout}
             >
               <ListItemIcon
                 sx={{
@@ -248,7 +257,7 @@ export default function AdminLayout() {
           variant="permanent"
           sx={{
             "& .MuiDrawer-paper": {
-              backgroundColor: "#002366", // Custom background color
+              backgroundColor: "#002366",
             },
           }}
         >
@@ -280,7 +289,6 @@ export default function AdminLayout() {
                 path: "/dashboard/facilites",
                 icon: <CampaignIcon />,
               },
-              // Add more items as needed
             ].map((item) => (
               <ListItem
                 key={item.text}
@@ -325,6 +333,7 @@ export default function AdminLayout() {
                 justifyContent: open ? "initial" : "center",
                 px: 2.5,
               }}
+              onClick={Logout}
             >
               <ListItemIcon
                 sx={{

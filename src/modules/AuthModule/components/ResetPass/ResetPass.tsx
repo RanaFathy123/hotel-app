@@ -15,7 +15,7 @@ import Typography from "@mui/material/Typography";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import * as React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {  useNavigate } from "react-router-dom";
+import {  Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
 import { FormDataResetPass } from "../../../../interfaces/Auth";
