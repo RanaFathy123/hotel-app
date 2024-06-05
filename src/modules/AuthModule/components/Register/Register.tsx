@@ -72,37 +72,41 @@ export default function Register() {
     }
   };
 
-  return <>
- 
-       
+  return (
+    <>
       <Grid>
-        <Typography
-          variant="h5"
-          component="h1"
-          sx={{mx:5,mt:4}}
-        >
+        <Typography variant="h5" component="h1" sx={{ mx: 5, mt: 4 }}>
           <Box component="span" color="primary.main">
             Stay
           </Box>
           cation.
         </Typography>
       </Grid>
-      <Grid container spacing={3} >
-        <Grid item xs={12} md={5} sx={{marginLeft:"5%",marginRight:"3%" }}>
-          <Typography sx={{ mt: 5 ,mb:3 }} variant="h4" component="h4">
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={5} sx={{ marginLeft: "5%", marginRight: "3%" }}>
+          <Typography sx={{ mt: 5, mb: 3 }} variant="h4" component="h4">
             Sign up
           </Typography>
           <Typography variant="body1" gutterBottom>
             If you already have an account register <br />
             You can{" "}
-            <Link to="/login" style={{ marginLeft: "0.5em", color: "red",textDecoration:"none" }}>
-                Login here !            
-                </Link>
-
+            <Link
+              to="/login"
+              style={{
+                marginLeft: "0.5em",
+                color: "red",
+                textDecoration: "none",
+              }}
+            >
+              Login here !
+            </Link>
           </Typography>
           <Form onSubmit={handleSubmit(onSubmit)}>
             {/* User Name*/}
-            <FormControl sx={{ width: 1, mt: 2,mb:1, border: "none" }} variant="standard">
+            <FormControl
+              sx={{ width: 1, mt: 2, mb: 1, border: "none" }}
+              variant="standard"
+            >
               <label htmlFor="name">User Name</label>
               <TextField
                 hiddenLabel
@@ -112,7 +116,8 @@ export default function Register() {
                 placeholder="Enter Your Name"
                 {...register("userName", {
                   required: "userName is required",
-                })} />
+                })}
+              />
               {errors.userName && (
                 <Alert sx={{ mt: 1 }} severity="error">
                   {errors.userName.message?.toString()}
@@ -123,11 +128,7 @@ export default function Register() {
             <Grid container spacing={2}>
               {/* Phone Number */}
               <Grid item xs={12} md={6}>
-                <FormControl
-                  fullWidth
-                  sx={{ mt: 1 ,mb:1}}
-                  variant="standard"
-                >
+                <FormControl fullWidth sx={{ mt: 1, mb: 1 }} variant="standard">
                   <label htmlFor="Phone">Phone Number</label>
                   <TextField
                     hiddenLabel
@@ -139,9 +140,11 @@ export default function Register() {
                       required: "phoneNumber is required",
                       pattern: {
                         value: /^01\d{9}$/,
-                        message: "Phone number must start with 01 and be 11 digits in total",
+                        message:
+                          "Phone number must start with 01 and be 11 digits in total",
                       },
-                    })} />
+                    })}
+                  />
                   {errors.phoneNumber && (
                     <Alert sx={{ mt: 1 }} severity="error">
                       {errors.phoneNumber.message?.toString()}
@@ -151,11 +154,7 @@ export default function Register() {
               </Grid>
               {/* Country */}
               <Grid item xs={12} md={6}>
-                <FormControl
-                  fullWidth
-                  sx={{ mt: 1,mb:1 }}
-                  variant="standard"
-                >
+                <FormControl fullWidth sx={{ mt: 1, mb: 1 }} variant="standard">
                   <label htmlFor="country">Country</label>
                   <TextField
                     hiddenLabel
@@ -165,7 +164,8 @@ export default function Register() {
                     type="text"
                     {...register("country", {
                       required: "country is required",
-                    })} />
+                    })}
+                  />
                   {errors.country && (
                     <Alert sx={{ mt: 1 }} severity="error">
                       {errors.country.message?.toString()}
@@ -176,8 +176,7 @@ export default function Register() {
             </Grid>
 
             {/* Email */}
-            <FormControl sx={{ width: 1, mt: 1,mb:1 }} variant="standard">
-
+            <FormControl sx={{ width: 1, mt: 1, mb: 1 }} variant="standard">
               <label htmlFor="Email">Email Address</label>
               <TextField
                 hiddenLabel
@@ -192,6 +191,7 @@ export default function Register() {
                     message: "Email must be a valid email",
                   },
                 })} />
+
               {errors.email && (
                 <Alert sx={{ mt: 1 }} severity="error">
                   {errors.email.message?.toString()}
@@ -237,16 +237,21 @@ export default function Register() {
                   required: "confirmPassword is required",
                   validate: validatePasswordMatch,
                 })}
-                endAdornment={<InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle Confirm visibility"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    onMouseDown={(e) => e.preventDefault()}
-                    edge="end"
-                  >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>} />
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle Confirm visibility"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
               {errors.confirmPassword && (
                 <Alert sx={{ mt: 1 }} severity="error">
                   {errors.confirmPassword.message?.toString()}
@@ -255,21 +260,39 @@ export default function Register() {
             </FormControl>
             {/* Upload Img */}
             <FormControl sx={{ mb: 2 }} fullWidth>
-              <Grid sx={{mt:1,position:"relative",
-              display:"flex",alignItems:"center",
-              WebkitAlignItems:"center",minWidth:"322px",
-              maxWidth:"1300px",height:"90px",
-              borderBlockColor:"rgba(50, 82, 223, 0.8)",
-              borderLeftColor:"rgba(50, 82, 223, 0.8)",
-              borderRightColor:"rgba(50, 82, 223, 0.8)",
-              borderWidth:"2px",borderStyle:"dashed",
-              padding:"8px 16px 8px 8px",borderRadius:"5px",
-              backgroundColor:"rgba(50, 82, 223, 0.1)",
-              WebkitFlex:0,flexGrow:0,
-              paddingLeft:"120px"
-              }}>
-                <label  htmlFor="uploadFile">
-                  <Grid sx={{ display:"flex",width:1,flexDirection:"column",justifyContent:"center" ,alignItems:"center"    }}>
+              <Grid
+                sx={{
+                  mt: 1,
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "center",
+                  WebkitAlignItems: "center",
+                  minWidth: "322px",
+                  maxWidth: "1300px",
+                  height: "90px",
+                  borderBlockColor: "rgba(50, 82, 223, 0.8)",
+                  borderLeftColor: "rgba(50, 82, 223, 0.8)",
+                  borderRightColor: "rgba(50, 82, 223, 0.8)",
+                  borderWidth: "2px",
+                  borderStyle: "dashed",
+                  padding: "8px 16px 8px 8px",
+                  borderRadius: "5px",
+                  backgroundColor: "rgba(50, 82, 223, 0.1)",
+                  WebkitFlex: 0,
+                  flexGrow: 0,
+                  paddingLeft: "120px",
+                }}
+              >
+                <label htmlFor="uploadFile"></label>
+                  <Grid
+                    sx={{
+                      display: "flex",
+                      width: 1,
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
                     <DriveFolderUploadIcon />
                     <Grid sx={{m:2,fontWeight:"bold"}} >{fileInputContent}</Grid>
                   </Grid>
@@ -291,8 +314,7 @@ export default function Register() {
                     onChange={handleInputContent}                    
                     />
                     </Grid>
-                </label>
-              </Grid>
+                  </Grid>
               {errors.profileImage && (
                 <Alert sx={{ mt: 1 }} severity="error">
                   {errors.profileImage.message?.toString()}
@@ -301,11 +323,10 @@ export default function Register() {
             </FormControl>
             {/* Button */}
             <Button
-  sx={{ width: 1,backgroundColor:" rgba(50, 82, 223, 1)" }}
+              sx={{ width: 1, backgroundColor: " rgba(50, 82, 223, 1)" }}
               variant="contained"
               type="submit"
               disabled={loadingBtn}
-              
             >
               {loadingBtn ?
                 <CircularProgress color="inherit" /> : "Sign up"}
@@ -313,9 +334,14 @@ export default function Register() {
           </Form>
         </Grid>
         <Grid item xs={12} md={6}>
-          <img src={imgRegister} alt="" style={{width:"100%",height:"100%"}} />
+          <img
+            src={imgRegister}
+            alt=""
+            style={{ width: "100%", height: "100%" }}
+          />
         </Grid>
       </Grid>
 
 </>
+)
 }
