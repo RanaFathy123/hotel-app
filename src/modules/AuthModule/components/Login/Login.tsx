@@ -14,61 +14,26 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import loginImage from "../../../../assets/images/login.png";
-import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
-import { AuthContext } from "../../../../context/AuthContext";
-import { FormDataLogin } from "../../../../interfaces/Auth";
+import useLogin from "../../../../hooks/useLogin";
 import {
   emailValidation,
   passwordValidation,
 } from "../../../../validations/validations";
 
-type LoginProps = {
-  handleClick: () => void;
-  setMessage: React.Dispatch<React.SetStateAction<string>>;
-  setMessageType: React.Dispatch<React.SetStateAction<string>>;
-};
-const Login: React.FC<LoginProps> = ({
-  handleClick,
-  setMessage,
-  setMessageType,
-}) => {
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
-  const navigate = useNavigate();
-  const { saveLoginData } = React.useContext(AuthContext);
-  function handleMouseDownPassword(event: React.MouseEvent<HTMLButtonElement>) {
-    event.preventDefault();
-  }
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
+const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<FormDataLogin>();
-  const onSubmit: SubmitHandler<FormDataLogin> = async (data) => {
-    setLoading(true);
-    try {
-      let response = await axiosInstance.post("/admin/users/login", data);
-      const token = response.data.data.token;
-      localStorage.setItem("token", token);
-      saveLoginData();
-      handleClick();
-      setMessageType("success");
-      setMessage(response.data.message || "Login Fail");
-      navigate("/dashboard");
-    } catch (error: any) {
-      console.log(error);
-      handleClick();
-      setMessageType("error");
-      setMessage(error.response.data.message || "Login Fail");
-      setLoading(false);
-    }
-  };
+    errors,
+    isSubmitting,
+    onSubmit,
+    loading,
+    showPassword,
+    handleMouseDownPassword,
+    handleClickShowPassword,
+  } = useLogin();
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
@@ -109,7 +74,14 @@ const Login: React.FC<LoginProps> = ({
           </Typography>
           <Typography component="h1" sx={{ marginBottom: 2 }}>
             You can
-            <Link to="/register" style={{ marginLeft: "0.5em", color: "blue" }}>
+            <Link
+              to="/register"
+              style={{
+                marginLeft: "0.5em",
+                color: "blue",
+                textDecoration: "none",
+              }}
+            >
               Register here !
             </Link>
           </Typography>
@@ -120,7 +92,10 @@ const Login: React.FC<LoginProps> = ({
             sx={{ mt: 1 }}
             onSubmit={handleSubmit(onSubmit)}
           >
-            <InputLabel htmlFor="outlined-adornment-email" sx={{marginBottom:2}}>
+            <InputLabel
+              htmlFor="outlined-adornment-email"
+              sx={{ marginBottom: 2 }}
+            >
               Email Address
             </InputLabel>
             <OutlinedInput
@@ -129,8 +104,7 @@ const Login: React.FC<LoginProps> = ({
               type="text"
               label="email"
               placeholder="Please Type Here"
-              sx={{background:'#F5F6F8',marginBottom:2}}
-          
+              sx={{ background: "#F5F6F8", marginBottom: 2 }}
               {...register("email", emailValidation)}
             />
             {errors.email && (
@@ -138,14 +112,17 @@ const Login: React.FC<LoginProps> = ({
                 {errors.email.message?.toString()}
               </Alert>
             )}
-            <InputLabel htmlFor="outlined-adornment-password " sx={{marginBottom:2}}>
+            <InputLabel
+              htmlFor="outlined-adornment-password"
+              sx={{ marginBottom: 2 }}
+            >
               Password
             </InputLabel>
             <OutlinedInput
               id="outlined-adornment-password"
               fullWidth
               placeholder="Please Type Here"
-              sx={{background:'#F5F6F8',marginBottom:2}}
+              sx={{ background: "#F5F6F8", marginBottom: 2 }}
               {...register("password", passwordValidation)}
               type={showPassword ? "text" : "password"}
               endAdornment={
@@ -178,7 +155,9 @@ const Login: React.FC<LoginProps> = ({
             </Button>
             <Grid container>
               <Grid item xs sx={{ textAlign: "end", color: "blue" }}>
-                <Link to="/forget-pass">Forgot password?</Link>
+                <Link to="/forget-password" style={{ textDecoration: "none" }}>
+                  Forgot password?
+                </Link>
               </Grid>
             </Grid>
           </Box>

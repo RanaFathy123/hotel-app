@@ -1,5 +1,3 @@
-import { Alert, Snackbar } from "@mui/material";
-import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,29 +20,11 @@ import AdminLayout from "./modules/SharedModule/components/AdminLayout/AdminLayo
 import AuthLayout from "./modules/SharedModule/components/AuthLayout/AuthLayout";
 import MasterLayout from "./modules/SharedModule/components/MasterLayout/MasterLayout";
 import NotFound from "./modules/SharedModule/components/NotFound/NotFound";
+import PrivateRoute from "./modules/SharedModule/components/PrivateRoute/PrivateRoute";
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import UsersList from "./modules/UsersModules/components/UsersList";
-import PrivateRoute from "./modules/SharedModule/components/PrivateRoute/PrivateRoute";
 
-const App: React.FC = () => {
-  const [open, setOpen] = React.useState(false);
-  const [message, setMessage] = React.useState("");
-  const [messageType, setMessageType] = React.useState("");
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-    console.log(event);
-  };
+const App = () => {
   const routes = createBrowserRouter([
     {
       path: "/",
@@ -67,13 +47,7 @@ const App: React.FC = () => {
       children: [
         {
           path: "login",
-          element: (
-            <Login
-              handleClick={handleClick}
-              setMessage={setMessage}
-              setMessageType={setMessageType}
-            />
-          ),
+          element: <Login />,
         },
 
         { path: "register", element: <Register /> },
@@ -92,36 +66,28 @@ const App: React.FC = () => {
       ),
       children: [
         { path: "", element: <Dashboard /> },
-        { path: "rooms-list", element: <RoomsTable /> },
+        {
+          path: "rooms-list",
+          element: <RoomsTable />,
+        },
         { path: "room-data", element: <RoomsData /> },
+        { path: "edit-room-data/:id", element: <RoomsData /> },
         { path: "room-list", element: <RoomsList /> },
-        { path: "facilites", element: <FacilitesList /> },
+        {
+          path: "facilites",
+          element: <FacilitesList />,
+        },
         { path: "facilites-data", element: <FacilitesData /> },
-        { path: "ads", element: <AdsList /> },
+        {
+          path: "ads",
+          element: <AdsList />,
+        },
         { path: "users", element: <UsersList /> },
       ],
     },
   ]);
   return (
     <div>
-      <Snackbar
-        open={open}
-        autoHideDuration={2000}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-      >
-        <Alert
-          onClose={handleClose}
-          severity={messageType == "success" ? "success" : "error"}
-          variant="filled"
-          sx={{ width: "100%" }}
-        >
-          {message}
-        </Alert>
-      </Snackbar>
       <ToastContainer />
       <RouterProvider router={routes} />
     </div>

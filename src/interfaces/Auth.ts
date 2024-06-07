@@ -49,3 +49,7 @@ export interface Room {
   price: number
   images: File
 }
+export interface Facilities{
+  name:string,
+  _id:string
+}

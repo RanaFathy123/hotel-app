@@ -1,6 +1,10 @@
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PeopleIcon from "@mui/icons-material/People";
@@ -19,9 +23,6 @@ import { CSSObject, Theme, styled, useTheme } from "@mui/material/styles";
 import * as React from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import profileImage from "../../../../assets/images/avatar.png";
-import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
-import CampaignIcon from "@mui/icons-material/Campaign";
-import LogoutIcon from "@mui/icons-material/Logout";
 import { AuthContext } from "../../../../context/AuthContext";
 const drawerWidth = 240;
 
@@ -183,12 +184,12 @@ export default function AdminLayout() {
               {
                 text: "Ads",
                 path: "/dashboard/ads",
-                icon: <CampaignIcon />,
+                icon: <CalendarMonthIcon />,
               },
               {
                 text: "Facilites",
                 path: "/dashboard/facilites",
-                icon: <CampaignIcon />,
+                icon: <ManageAccountsIcon />,
               },
               // Add more items as needed
             ].map((item) => (
@@ -282,12 +283,12 @@ export default function AdminLayout() {
               {
                 text: "Ads",
                 path: "/dashboard/ads",
-                icon: <CampaignIcon />,
+                icon: <CalendarMonthIcon />,
               },
               {
                 text: "Facilites",
                 path: "/dashboard/facilites",
-                icon: <CampaignIcon />,
+                icon: <ManageAccountsIcon />,
               },
             ].map((item) => (
               <ListItem

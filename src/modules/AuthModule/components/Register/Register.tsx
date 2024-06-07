@@ -191,13 +191,7 @@ export default function Register() {
                 placeholder="Enter Your Email Address"
                 variant="filled"
                 type="email"
-                {...register("email", {
-                  required: "email is required",
-                  pattern: {
-                    value: /^[A-Za-z0-9._%+-]+@(gmail|yahoo|email)\.com$/,
-                    message: "Email must be a valid email",
-                  },
-                })}
+                {...register("email", emailValidation)}
               />
               {errors.email && (
                 <Alert sx={{ mt: 1 }} severity="error">
@@ -213,9 +207,7 @@ export default function Register() {
                 id="Password"
                 type={showPassword ? "text" : "password"}
                 placeholder="Enter Your Password "
-                {...register("password", {
-                  required: "password is required",
-                })}
+                {...register("password", passwordValidation)}
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
