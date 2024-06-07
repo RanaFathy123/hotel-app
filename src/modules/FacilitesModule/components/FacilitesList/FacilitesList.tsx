@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable prefer-const */
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
@@ -50,13 +53,14 @@ const FacilitesList = () => {
 
   const [roomFacilites, setRoomFacilites] = useState([]);
 
+
   async function getFacilites() {
     try {
       let response = await axiosInstanceWithHeaders.get("admin/room-facilities");
       const facilities = response.data.data.facilities
-      // console.log(response.data.data.facilities);
+  // console.log(response.data.data.ads);
       setRoomFacilites(facilities);
-    } catch (error: any) {
+} catch (error: any) {
       console.log("error");
     }
   }
@@ -118,3 +122,5 @@ const FacilitesList = () => {
 }
 
 export default FacilitesList
+
+

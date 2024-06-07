@@ -48,4 +48,6 @@ export interface Room {
   discount: number
   price: number
   images: File
+  code: string,
+ facilities:string[]
 }

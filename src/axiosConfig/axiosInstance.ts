@@ -2,7 +2,6 @@
 import axios from "axios";
 
 const baseUrl = import.meta.env.VITE_REACT_API_URL;
-
 let axiosInstance = axios.create({
   baseURL: baseUrl,
 });

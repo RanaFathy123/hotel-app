@@ -1,22 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-const */
-import {  Typography,Grid } from '@mui/material';
-import {  useNavigate } from "react-router-dom";
-import { RemoveRedEyeSharp, Upload } from "@mui/icons-material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, IconButton } from "@mui/material";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// import {  IconButton } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
+// import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { Link, useNavigate } from 'react-router-dom';
+import { axiosInstanceWithHeaders } from '../../../axiosConfig/axiosInstance';
+import { Room } from '../../../interfaces/Auth';
+import { Button, IconButton, TableBody, Typography } from '@mui/material';
+import { RemoveRedEyeSharp, Upload } from '@mui/icons-material';
+import {  Grid} from '@mui/material';
 import img from "../../../assets/images/avatar.png";
-import { axiosInstanceWithHeaders } from "../../../axiosConfig/axiosInstance";
-import { Room } from "../../../interfaces/Auth";
+import DeleteIcon from "@mui/icons-material/Delete";
+import TablePagination from '@mui/material/TablePagination';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -50,7 +53,12 @@ const DeleteIconButton = styled(IconButton)({
   color: "#FF0000",
 });
 
-const RoomsList = () => {
+
+
+
+
+
+export default function RoomTable() {
   const [roomTable, setRoomTable] = useState<Room[]>([]);
 
   async function getRomedata() {
@@ -58,7 +66,7 @@ const RoomsList = () => {
       let response = await axiosInstanceWithHeaders.get("admin/rooms");
       // console.log(response.data.data.rooms);
       const rooms = response.data.data.rooms;
-      console.log(response);
+      console.log(response.data.data.rooms);
 
       setRoomTable(rooms);
     } catch (error: any) {
@@ -79,10 +87,21 @@ const RoomsList = () => {
     getRomedata();
   }, []);
 
-  return (
-    <>
-    
-     <Grid sx={{px:5, mt:2 ,mb:3, display:"flex", justifyContent:"space-between"}} alignItems="center">
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  return <>
+    <Grid sx={{px:5, mt:2 ,mb:3, display:"flex", justifyContent:"space-between"}} alignItems="center">
           <Grid item xs={12} md={6}>
             <Typography variant="h6" component="h2">
               Rooms Table Details
@@ -95,39 +114,57 @@ const RoomsList = () => {
               Add New Room
             </Button>
         </Grid>
-    <TableContainer component={Paper}>
-    <Table sx={{ minWidth: 700 }} aria-label="customized table">
-      <TableHead>
-        <TableRow  sx={{ background : "#F5F5F5" }} >
-          <StyledTableCell>room Number</StyledTableCell>
+
+    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer sx={{ maxHeight: 440 }}>
+        <Table stickyHeader aria-label="sticky table"  >
+          <TableHead>
+            <TableRow>
+            <StyledTableCell>room Number</StyledTableCell>
           <StyledTableCell>Image</StyledTableCell>
           <StyledTableCell align="right">Price</StyledTableCell>
           <StyledTableCell align="right">Discount</StyledTableCell>
           <StyledTableCell align="right">Capacity</StyledTableCell>
+          <StyledTableCell align="right">Facilities</StyledTableCell>
           <StyledTableCell align="right">Actions</StyledTableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {roomTable.map((item : any) => (
-          <StyledTableRow key={item._id}>
+
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {roomTable.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((item:any) => (
+          <StyledTableRow key={item._id}  hover role="checkbox" tabIndex={-1} >
             <StyledTableCell component="th" scope="row">
               {item.roomNumber}
             </StyledTableCell>
-            <StyledTableCell>{item.images ? 
+            <StyledTableCell sx={{width: "10%"}}>{item.images ? 
                   <img
-                    src={"https://upskilling-egypt.com:3000/" + item.images}
-                    srcSet={"https://upskilling-egypt.com:3000/" + item.images} 
-                    alt={''}/>
+                    src={ item.images}
+                    srcSet={ item.images} 
+                    alt={''}
+                    className='imgrec'
+                    />
+                  
                 : 
-                  <img src={img} alt='no image'/>
+                  <img src={img} className='imgreca' alt='no image'/>
               }</StyledTableCell>
             <StyledTableCell align="right">{item.price}</StyledTableCell>
             <StyledTableCell align="right">{item.discount}</StyledTableCell>
             <StyledTableCell align="right">{item.capacity}</StyledTableCell>
+            <StyledTableCell align="right">{item.facilities[0]?.name}</StyledTableCell>
             <ActionTableCell align="right" sx={{ display: "flex" }}>
-                <StyledIconButton onClick={handle}>
+            <StyledIconButton onClick={handle}>
+            <Link to={`/dashboard/roomsEdit/${item.id}`}
+          state={{RoomData:item,type:'edit'}}
+          className=' text-decoration-none'
+
+>
                   <Upload />
-                </StyledIconButton>
+
+</Link>
+</StyledIconButton>
+
+              
                 <DeleteIconButton>
                   <DeleteIcon />
                 </DeleteIconButton>
@@ -137,67 +174,19 @@ const RoomsList = () => {
               </ActionTableCell>
           </StyledTableRow>
         ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-  </>
-);
-}
-      // <Button
-      //   sx={{
-      //     backgroundColor: "#203FC7",
-      //     color: "#fff",
-      //     margin: 2,
-      //     display: "flex",
-      //     justifyContent: "end",
-      //     alignItems: "flex-end",
-      //   }}
-      // >
-      //   Add New Room
-      // </Button>
-      // <TableContainer component={Paper}>
-      //   <Table sx={{ minWidth: 700 }} aria-label="customized table">
-      //     {/* <TableHead>
-      //       <TableRow sx={{ background: "#F5F5F5" }}>
-      //         <StyledTableCell>room Number</StyledTableCell>
-      //         <StyledTableCell>Image</StyledTableCell>
-      //         <StyledTableCell align="right">Price</StyledTableCell>
-      //         <StyledTableCell align="right">Discount</StyledTableCell>
-      //         <StyledTableCell align="right">Capacity</StyledTableCell>
-      //         <StyledTableCell align="right">Actions</StyledTableCell>
-      //       </TableRow>
-      //     </TableHead> */}
-      //     <TableBody>
-      //       {roomTable.map((item: any) => (
-      //         <StyledTableRow key={item._id}>
-      //           <StyledTableCell component="th" scope="row">
-      //             {item.roomNumber}
-      //           </StyledTableCell>
-      //           <StyledTableCell>
-      //             {item.images[0] ? (
-      //               <img width="50px" height='50px' src={`${item.images[0]}`} alt={""} />
-      //             ) : (
-      //               <img src={img} alt="no image" />
-      //             )}
-      //           </StyledTableCell>
-      //           <StyledTableCell align="right">{item.price}</StyledTableCell>
-      //           <StyledTableCell align="right">{item.discount}</StyledTableCell>
-      //           <StyledTableCell align="right">{item.capacity}</StyledTableCell>
-      //           <ActionTableCell align="right" sx={{ display: "flex" }}>
-      //             <StyledIconButton onClick={handle}>
-      //               <Upload />
-      //             </StyledIconButton>
-      //             <DeleteIconButton>
-      //               <DeleteIcon />
-      //             </DeleteIconButton>
-      //             <StyledIconButton>
-      //               <RemoveRedEyeSharp />
-      //             </StyledIconButton>
-      //           </ActionTableCell>
-      //         </StyledTableRow>
-      //       ))}
-      //     </TableBody>
-      //   </Table>
-      // </TableContainer>
 
-export default RoomsList;
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[1,10 ,20]}
+        component="div"
+        count={roomTable.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
+  </>
+}

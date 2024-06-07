@@ -94,6 +94,7 @@ const App: React.FC = () => {
         { path: "", element: <Dashboard /> },
         { path: "rooms-list", element: <RoomsTable /> },
         { path: "room-data", element: <RoomsData /> },
+        {path:'roomsEdit/:id',element:<RoomsData/>},
         { path: "room-list", element: <RoomsList /> },
         { path: "facilites", element: <FacilitesList /> },
         { path: "facilites-data", element: <FacilitesData /> },
@@ -104,6 +105,7 @@ const App: React.FC = () => {
   ]);
   return (
     <div>
+
       <Snackbar
         open={open}
         autoHideDuration={2000}

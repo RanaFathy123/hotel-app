@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
@@ -189,6 +190,7 @@ const Login: React.FC<LoginProps> = ({
         <img
           src={loginImage}
           style={{ height: "100vh", width: "100%", padding: 13 }}
+          alt=""
         />
       </Grid>
     </Grid>
