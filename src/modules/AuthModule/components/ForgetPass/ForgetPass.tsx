@@ -15,7 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import ForgetImage from "../../../../assets/images/ForgetPass.png";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
-import { FormValuesForgetPass } from "../../../../interfaces/Auth";
+import { FormValuesForgetPass } from "../../../../interfaces/interface";
 import { emailValidation } from "./../../../../validations/validations";
 import { useState } from "react";
 
@@ -121,7 +121,7 @@ const ForgetPass = () => {
         <Grid container item xs={12} sm={6} md={6} sx={{ minHeight: "100vh" }}>
           <img
             src={ForgetImage}
-            style={{height: "100vh", width: "100%", padding: 13 }}
+            style={{ height: "100vh", width: "100%", padding: 13 }}
           />
         </Grid>
       </Grid>

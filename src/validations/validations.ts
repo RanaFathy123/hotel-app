@@ -85,4 +85,20 @@ export const OTPValidation = {
     message: "OTP must be exactly 4 characters long",
   },
 };
+export const oldpasswordValidation = {
+  required: "Old password is required",
+  pattern: {
+    value:
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+    message:  "Password must include at least one lowercase letter, one uppercase letter, one number, and one special character",
+  },
+}
+export const newpasswordValidation = {
+  required: "New password is required",
+  pattern: {
+    value:
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+    message:   "Password must include at least one lowercase letter, one uppercase letter, one number, and one special character",
+  },
+};
 

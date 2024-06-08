@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Form, useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import imgRegister from "../../../../assets/images/Register.png";
-import { FormDataRegister } from "../../../../interfaces/Auth";
+import { FormDataRegister } from "../../../../interfaces/interface";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";

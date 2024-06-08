@@ -1,14 +1,14 @@
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import PeopleIcon from "@mui/icons-material/People";
-import { Avatar, useMediaQuery } from "@mui/material";
+import { Avatar, Modal, useMediaQuery } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
@@ -24,6 +24,9 @@ import * as React from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import profileImage from "../../../../assets/images/avatar.png";
 import { AuthContext } from "../../../../context/AuthContext";
+import BookIcon from "@mui/icons-material/Book";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import ChangePass from "../../../AuthModule/components/ChangePass/ChangePass";
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -99,7 +102,9 @@ export default function AdminLayout() {
   const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const [open, setOpen] = React.useState(isLargeScreen);
   const [isShowDrawer, setIsShowDrawer] = React.useState(false);
-  const navigate = useNavigate()
+  const [openModal, setOpenModal] = React.useState(false);
+
+  const navigate = useNavigate();
   const { resetLoginData } = React.useContext(AuthContext);
   const Logout = () => {
     localStorage.removeItem("token");
@@ -116,245 +121,334 @@ export default function AdminLayout() {
   const handleShowDrawer = () => {
     setIsShowDrawer(!isShowDrawer);
   };
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar
-        position="fixed"
-        open={isLargeScreen ? open : false}
-        sx={{ bgcolor: "white" }}
+    <>
+      <Modal
+        open={openModal}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        <Toolbar>
-          {isLargeScreen && (
-            <IconButton
-              color="primary"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          {!isLargeScreen && (
-            <IconButton
-              color="primary"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleShowDrawer}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
+        <ChangePass />
+      </Modal>
+      <Box sx={{ display: "flex" }}>
+        <AppBar
+          position="fixed"
+          open={isLargeScreen ? open : false}
+          sx={{ bgcolor: "white" }}
+        >
+          <Toolbar>
+            {isLargeScreen && (
+              <IconButton
+                color="primary"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+            {!isLargeScreen && (
+              <IconButton
+                color="primary"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleShowDrawer}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
 
-          {/* Profile Image */}
-          <Avatar alt="Profile" src={profileImage} sx={{ ml: "auto", mr: 1 }} />
-          {/* Notifications Icon */}
-          <IconButton color="primary" aria-label="notifications">
-            <NotificationsIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      {isLargeScreen && (
-        <Drawer
-          variant="permanent"
-          open={open}
-          sx={{
-            "& .MuiDrawer-paper": {
-              backgroundColor: "#002366", // Custom background color
-            },
-          }}
-        >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? (
-                <ChevronRightIcon sx={{ color: "white" }} />
-              ) : (
-                <ChevronLeftIcon sx={{ color: "white" }} />
-              )}
+            {/* Profile Image */}
+            <Avatar
+              alt="Profile"
+              src={profileImage}
+              sx={{ ml: "auto", mr: 1 }}
+            />
+            {/* Notifications Icon */}
+            <IconButton color="primary" aria-label="notifications">
+              <NotificationsIcon />
             </IconButton>
-          </DrawerHeader>
-          <List>
-            {[
-              { text: "Home", path: "/dashboard", icon: <HomeIcon /> },
-              { text: "Users", path: "/dashboard/users", icon: <PeopleIcon /> },
-              {
-                text: "Rooms",
-                path: "/dashboard/rooms-list",
-                icon: <MeetingRoomIcon />,
+          </Toolbar>
+        </AppBar>
+        {isLargeScreen && (
+          <Drawer
+            variant="permanent"
+            open={open}
+            sx={{
+              "& .MuiDrawer-paper": {
+                backgroundColor: "#002366", // Custom background color
               },
-              {
-                text: "Ads",
-                path: "/dashboard/ads",
-                icon: <CalendarMonthIcon />,
-              },
-              {
-                text: "Facilites",
-                path: "/dashboard/facilites",
-                icon: <ManageAccountsIcon />,
-              },
-              // Add more items as needed
-            ].map((item) => (
-              <ListItem
-                key={item.text}
-                disablePadding
-                sx={{ display: "block", color: "white" }}
-              >
-                <ListItemButton
-                  component={Link}
-                  to={item.path}
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
-                  }}
+            }}
+          >
+            <DrawerHeader>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "rtl" ? (
+                  <ChevronRightIcon sx={{ color: "white" }} />
+                ) : (
+                  <ChevronLeftIcon sx={{ color: "white" }} />
+                )}
+              </IconButton>
+            </DrawerHeader>
+            <List>
+              {[
+                { text: "Home", path: "/dashboard", icon: <HomeIcon /> },
+                {
+                  text: "Users",
+                  path: "/dashboard/users",
+                  icon: <PeopleIcon />,
+                },
+                {
+                  text: "Rooms",
+                  path: "/dashboard/rooms-list",
+                  icon: <MeetingRoomIcon />,
+                },
+                {
+                  text: "Ads",
+                  path: "/dashboard/ads",
+                  icon: <CalendarMonthIcon />,
+                },
+                {
+                  text: "Facilites",
+                  path: "/dashboard/facilites",
+                  icon: <ManageAccountsIcon />,
+                },
+                {
+                  text: "Booking",
+                  path: "/dashboard/booking",
+                  icon: <BookIcon />,
+                },
+                // Add more items as needed
+              ].map((item) => (
+                <ListItem
+                  key={item.text}
+                  disablePadding
+                  sx={{ display: "block", color: "white" }}
                 >
-                  <ListItemIcon
+                  <ListItemButton
+                    component={Link}
+                    to={item.path}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "white", // Icon color
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.text}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <ListItem
-            key="Logout"
-            disablePadding
-            sx={{ display: "block", color: "white" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-              onClick={Logout}
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "white", // Icon color
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <ListItem
+              key="Logout"
+              disablePadding
+              sx={{ display: "block", color: "white" }}
             >
-              <ListItemIcon
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: "white", // Icon color
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
                 }}
+                onClick={handleOpen}
               >
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-        </Drawer>
-      )}
-      {!isLargeScreen && isShowDrawer && (
-        <Drawer
-          variant="permanent"
-          sx={{
-            "& .MuiDrawer-paper": {
-              backgroundColor: "#002366",
-            },
-          }}
-        >
-          <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === "rtl" ? (
-                <ChevronRightIcon sx={{ color: "white" }} />
-              ) : (
-                <ChevronLeftIcon sx={{ color: "white" }} />
-              )}
-            </IconButton>
-          </DrawerHeader>
-          <List>
-            {[
-              { text: "Home", path: "/dashboard", icon: <HomeIcon /> },
-              { text: "Users", path: "/settings", icon: <PeopleIcon /> },
-              {
-                text: "Rooms",
-                path: "/dashboard/rooms-list",
-                icon: <MeetingRoomIcon />,
-              },
-              {
-                text: "Ads",
-                path: "/dashboard/ads",
-                icon: <CalendarMonthIcon />,
-              },
-              {
-                text: "Facilites",
-                path: "/dashboard/facilites",
-                icon: <ManageAccountsIcon />,
-              },
-            ].map((item) => (
-              <ListItem
-                key={item.text}
-                disablePadding
-                sx={{ display: "block", color: "white" }}
-              >
-                <ListItemButton
-                  component={Link}
-                  to={item.path}
+                <ListItemIcon
                   sx={{
-                    minHeight: 48,
-                    justifyContent: open ? "initial" : "center",
-                    px: 2.5,
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                    color: "white", // Icon color
                   }}
                 >
-                  <ListItemIcon
+                  <LockOpenIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Change Password"
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+            <ListItem
+              key="Logout"
+              disablePadding
+              sx={{ display: "block", color: "white" }}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+                onClick={Logout}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                    color: "white", // Icon color
+                  }}
+                >
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          </Drawer>
+        )}
+        {!isLargeScreen && isShowDrawer && (
+          <Drawer
+            variant="permanent"
+            sx={{
+              "& .MuiDrawer-paper": {
+                backgroundColor: "#002366",
+              },
+            }}
+          >
+            <DrawerHeader>
+              <IconButton onClick={handleDrawerClose}>
+                {theme.direction === "rtl" ? (
+                  <ChevronRightIcon sx={{ color: "white" }} />
+                ) : (
+                  <ChevronLeftIcon sx={{ color: "white" }} />
+                )}
+              </IconButton>
+            </DrawerHeader>
+            <List>
+              {[
+                { text: "Home", path: "/dashboard", icon: <HomeIcon /> },
+                { text: "Users", path: "/settings", icon: <PeopleIcon /> },
+                {
+                  text: "Rooms",
+                  path: "/dashboard/rooms-list",
+                  icon: <MeetingRoomIcon />,
+                },
+                {
+                  text: "Ads",
+                  path: "/dashboard/ads",
+                  icon: <CalendarMonthIcon />,
+                },
+
+                {
+                  text: "Facilites",
+                  path: "/dashboard/facilites",
+                  icon: <ManageAccountsIcon />,
+                },
+                {
+                  text: "Booking",
+                  path: "/dashboard/booking",
+                  icon: <BookIcon />,
+                },
+              ].map((item) => (
+                <ListItem
+                  key={item.text}
+                  disablePadding
+                  sx={{ display: "block", color: "white" }}
+                >
+                  <ListItemButton
+                    component={Link}
+                    to={item.path}
                     sx={{
-                      minWidth: 0,
-                      mr: open ? 3 : "auto",
-                      justifyContent: "center",
-                      color: "white", // Icon color
+                      minHeight: 48,
+                      justifyContent: open ? "initial" : "center",
+                      px: 2.5,
                     }}
                   >
-                    {item.icon}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={item.text}
-                    sx={{ opacity: open ? 1 : 0 }}
-                  />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-          <ListItem
-            key="Logout"
-            disablePadding
-            sx={{ display: "block", color: "white" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-              onClick={Logout}
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: open ? 3 : "auto",
+                        justifyContent: "center",
+                        color: "white", // Icon color
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={item.text}
+                      sx={{ opacity: open ? 1 : 0 }}
+                    />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+            <ListItem
+              key="Logout"
+              disablePadding
+              sx={{ display: "block", color: "white" }}
             >
-              <ListItemIcon
+              <ListItemButton
                 sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: "white", // Icon color
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
                 }}
+                onClick={handleOpen}
               >
-                <LogoutIcon />
-              </ListItemIcon>
-              <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-        </Drawer>
-      )}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Outlet />
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                    color: "white", // Icon color
+                  }}
+                >
+                  <LockOpenIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Change Password"
+                  sx={{ opacity: open ? 1 : 0 }}
+                />
+              </ListItemButton>
+            </ListItem>
+            <ListItem
+              key="Logout"
+              disablePadding
+              sx={{ display: "block", color: "white" }}
+            >
+              <ListItemButton
+                sx={{
+                  minHeight: 48,
+                  justifyContent: open ? "initial" : "center",
+                  px: 2.5,
+                }}
+                onClick={Logout}
+              >
+                <ListItemIcon
+                  sx={{
+                    minWidth: 0,
+                    mr: open ? 3 : "auto",
+                    justifyContent: "center",
+                    color: "white", // Icon color
+                  }}
+                >
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" sx={{ opacity: open ? 1 : 0 }} />
+              </ListItemButton>
+            </ListItem>
+          </Drawer>
+        )}
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          <DrawerHeader />
+          <Outlet />
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }

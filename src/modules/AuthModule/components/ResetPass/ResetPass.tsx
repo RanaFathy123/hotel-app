@@ -6,7 +6,6 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
-  TextField,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -20,12 +19,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import resetpassimg from "../../../../assets/images/ResetPass.png";
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
-import { FormDataResetPass } from "../../../../interfaces/Auth";
+import { FormDataResetPass } from "../../../../interfaces/interface";
 import {
   emailValidation,
   passwordValidation,
 } from "./../../../../validations/validations";
-
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -42,7 +40,7 @@ const ResetPass = () => {
   const {
     register,
     handleSubmit,
-    watch,
+
     formState: { errors, isSubmitting },
   } = useForm<FormDataResetPass>();
 
@@ -126,7 +124,7 @@ const ResetPass = () => {
                 type="text"
                 label="email"
                 placeholder="Please Type Here"
-                sx={{background:'#F5F6F8',mb:1}}
+                sx={{ background: "#F5F6F8", mb: 1 }}
                 {...register("email", emailValidation)}
               />
               {errors.email && (
@@ -144,7 +142,7 @@ const ResetPass = () => {
                 type="text"
                 label="OTP"
                 placeholder="Please Type Here"
-                sx={{background:'#F5F6F8',mb:1}}
+                sx={{ background: "#F5F6F8", mb: 1 }}
                 {...register("seed", {
                   required: "Invalid OTP",
                 })}
@@ -162,7 +160,7 @@ const ResetPass = () => {
                 id="outlined-adornment-password"
                 fullWidth
                 placeholder="Please Type Here"
-                sx={{background:'#F5F6F8',mb:1}}
+                sx={{ background: "#F5F6F8", mb: 1 }}
                 {...register("password", passwordValidation)}
                 type={showPassword ? "text" : "password"}
                 endAdornment={
@@ -194,11 +192,10 @@ const ResetPass = () => {
                 id="outlined-adornment-confirm-password "
                 fullWidth
                 placeholder="Please Type Here"
-                sx={{background:'#F5F6F8',mb:1}}
+                sx={{ background: "#F5F6F8", mb: 1 }}
                 type={showConfirmPassword ? "text" : "password"}
                 {...register("confirmPassword", {
                   required: "confirmPassword is required",
-              
                 })}
                 endAdornment={
                   <InputAdornment position="end">
@@ -235,7 +232,7 @@ const ResetPass = () => {
         <Grid container item xs={12} sm={6} md={6} sx={{ minHeight: "100vh" }}>
           <img
             src={resetpassimg}
-            style={{ height: "100vh" , width: "100%", padding: 13 }}
+            style={{ height: "100vh", width: "100%", padding: 13 }}
           />
         </Grid>
       </Grid>

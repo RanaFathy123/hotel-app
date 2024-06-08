@@ -48,8 +48,25 @@ export interface Room {
   discount: number
   price: number
   images: File
+  _id:string,
+  roomNumber:string
 }
 export interface Facilities{
   name:string,
   _id:string
 }
+export interface Users {
+  country: string
+  email: string
+  phoneNumber: number
+  role: string
+  userName: string
+  profileImage: File
+}
+export interface Ads{
+  isActive:boolean,
+  _id:string,
+  room:Room,
+  discount:number,
+  
+  }

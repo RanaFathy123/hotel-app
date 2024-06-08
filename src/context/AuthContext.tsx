@@ -1,7 +1,6 @@
 import { jwtDecode } from "jwt-decode";
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
-import { AuthContextType } from "../interfaces/Auth";
-
+import { AuthContextType } from "../interfaces/interface";
 
 export const AuthContext = createContext<AuthContextType>({
   loginData: {
@@ -11,7 +10,7 @@ export const AuthContext = createContext<AuthContextType>({
     userGroup: "",
   },
   saveLoginData: () => {},
-  resetLoginData:()=>{}
+  resetLoginData: () => {},
 });
 //  Context function
 export default function AuthContextProvider(props: PropsWithChildren) {
@@ -21,16 +20,16 @@ export default function AuthContextProvider(props: PropsWithChildren) {
     let decocodedData: any = jwtDecode(encodedData);
     setLoginData(decocodedData);
   };
-  const resetLoginData =()=>{
-    setLoginData(null)
-  }
+  const resetLoginData = () => {
+    setLoginData(null);
+  };
   // call saveLogin data
   useEffect(() => {
     if (localStorage.getItem("token")) {
       saveLoginData();
     }
   }, []);
-  const value = { saveLoginData, loginData,resetLoginData };
+  const value = { saveLoginData, loginData, resetLoginData };
   return (
     <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
   );

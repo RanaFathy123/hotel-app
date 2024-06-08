@@ -23,6 +23,7 @@ import NotFound from "./modules/SharedModule/components/NotFound/NotFound";
 import PrivateRoute from "./modules/SharedModule/components/PrivateRoute/PrivateRoute";
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import UsersList from "./modules/UsersModules/components/UsersList";
+import BookingList from "./modules/BookingModule/components/BookingList";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -51,7 +52,6 @@ const App = () => {
         },
 
         { path: "register", element: <Register /> },
-        // { path: "verify", element: <VerifyAccount /> },
         { path: "forget-password", element: <ForgetPass /> },
         { path: "reset-password", element: <ResetPass /> },
         { path: "change-password", element: <ChangePass /> },
@@ -72,7 +72,7 @@ const App = () => {
         },
         { path: "room-data", element: <RoomsData /> },
         { path: "edit-room-data/:id", element: <RoomsData /> },
-        { path: "room-list", element: <RoomsList /> },
+
         {
           path: "facilites",
           element: <FacilitesList />,
@@ -81,6 +81,10 @@ const App = () => {
         {
           path: "ads",
           element: <AdsList />,
+        },
+        {
+          path: "booking",
+          element: <BookingList />,
         },
         { path: "users", element: <UsersList /> },
       ],

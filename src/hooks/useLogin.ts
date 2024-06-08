@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { axiosInstance } from "../axiosConfig/axiosInstance";
 import { AuthContext } from "../context/AuthContext";
-import { FormDataLogin } from "../interfaces/Auth";
+import { FormDataLogin } from "../interfaces/interface";
 import { toast } from "react-toastify";
 
 const useLogin = () => {

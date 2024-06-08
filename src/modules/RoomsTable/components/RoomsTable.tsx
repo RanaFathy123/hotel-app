@@ -26,14 +26,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import roomImage from "../../../assets/images/ForgetPass.png";
 import img from "../../../assets/images/avatar.png";
 import { axiosInstanceWithHeaders } from "../../../axiosConfig/axiosInstance";
-import { Room } from "../../../interfaces/Auth";
+import { Room } from "../../../interfaces/interface";
 import DeleteData from "../../SharedModule/components/DeleteData/DeleteData";
 import Loading from "../../SharedModule/components/Loading/Loading";
-import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -59,13 +60,13 @@ const ActionTableCell = styled(TableCell)({
   p: 3,
 });
 
-const StyledSpan = styled("span")(({ theme }) => ({
+const StyledSpan = styled("span")(() => ({
   fontWeight: "500",
   fontSize: 18,
   padding: 5,
 }));
 
-const StyledSpan2 = styled("span")(({ theme }) => ({
+const StyledSpan2 = styled("span")(() => ({
   textDecorationLine: "line-through",
   textDecorationColor: colors.red[700],
 }));
@@ -121,6 +122,7 @@ const RoomsList = () => {
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    console.log(event);
   };
 
   const handleChangeRowsPerPage = (
@@ -148,9 +150,12 @@ const RoomsList = () => {
       );
       handleCloseDelete();
       getRoomdata();
+      toast.success(response.data.message || 'Room Deleted')
       console.log(response);
     } catch (error: any) {
       console.error("error");
+      toast.error(error.response.data.message || 'error')
+
     }
   }
   const goNewRoom = () => {
@@ -376,23 +381,24 @@ const RoomsList = () => {
                           View
                         </Typography>
                       </MenuItem>
-                      <MenuItem>
-                        <Link
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            textDecoration: "none",
-                            color: "black",
-                          }}
-                          to={`/dashboard/edit-room-data/${item._id}`}
-                          state={{ item, type: "edit" }}
-                        >
+                      <Link
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          textDecoration: "none",
+                          color: "black",
+                        }}
+                        to={`/dashboard/edit-room-data/${item._id}`}
+                        state={{ item, type: "edit" }}
+                      >
+                        <MenuItem>
                           <Edit />
                           <Typography variant="body2" sx={{ ml: 1 }}>
                             Edit
                           </Typography>
-                        </Link>
-                      </MenuItem>
+                        </MenuItem>
+                      </Link>
+
                       <MenuItem onClick={() => handleOpen(item._id)}>
                         <DeleteIcon />
                         <Typography variant="body2" sx={{ ml: 1 }}>

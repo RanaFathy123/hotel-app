@@ -1,12 +1,7 @@
-/* eslint-disable no-unused-labels */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import {
   Alert,
   Button,
-  // Checkbox,
   CircularProgress,
   Container,
   FormControl,
@@ -18,7 +13,6 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form, useLocation, useNavigate } from "react-router-dom";
@@ -38,15 +32,15 @@ export default function RoomsData() {
   const [ListFacility, setListFacility] = useState([]);
   const [facilityvalue, setFacilityValue] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [fileInputContent, setFileInputContent] = useState(
+    "Drag & Drop or Choose a Item Image to Upload"
+  );
   const navigate = useNavigate();
   const location = useLocation();
   const item = location?.state?.item;
   const type = location?.state?.type;
   console.log(facilityvalue);
 
-  const [fileInputContent, setFileInputContent] = useState(
-    "Drag & Drop or Choose a Item Image to Upload"
-  );
   const handleInputContent = () => {
     setFileInputContent("Files Uploaded Successfully");
   };
@@ -82,6 +76,7 @@ export default function RoomsData() {
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
+    toast.warning("Please Wait It Will Takes Time");
     if (
       data.discount &&
       data.price &&
@@ -104,17 +99,15 @@ export default function RoomsData() {
     }
     const RoomFormData = appendToFormData(data);
     try {
-      const response = await axios({
+      const response = await axiosInstanceWithHeaders({
         method: type === "edit" ? "put" : "post",
-        url:
-          type === "edit"
-            ? `https://upskilling-egypt.com:3000/api/v0/admin/rooms/${item._id}`
-            : `https://upskilling-egypt.com:3000/api/v0/admin/rooms`,
+        url: type === "edit" ? `/admin/rooms/${item._id}` : `/admin/rooms`,
         data: RoomFormData,
-        headers: { Authorization: `${localStorage.getItem("token")}` },
       });
       console.log(response);
-      toast.success(`You Added a New Room`);
+      type === "edit"
+        ? toast.success(response.data.message || `You Updated a Room`)
+        : toast.success(response.data.message || `You Added a New Room`);
       navigate("/dashboard/rooms-list");
     } catch (error: any) {
       if (error.response) {
