@@ -5,6 +5,7 @@ import { axiosInstance } from "../axiosConfig/axiosInstance";
 import { AuthContext } from "../context/AuthContext";
 import { FormDataLogin } from "../interfaces/Auth";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const useLogin = () => {
   const [loading, setLoading] = React.useState(false);
@@ -19,7 +20,7 @@ const useLogin = () => {
   const onSubmit: SubmitHandler<FormDataLogin> = async (data) => {
     setLoading(true);
     try {
-      let response = await axiosInstance.post("/admin/users/login", data);
+      let response = await axios.post("https://upskilling-egypt.com:3000/api/v0/admin/users/login", data);
       const token = response.data.data.token;
       localStorage.setItem("token", token);
       saveLoginData();

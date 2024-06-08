@@ -7,7 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { axiosInstanceWithHeaders } from "../../../axiosConfig/axiosInstance";
-import { PieChart } from "@mui/x-charts/PieChart";
+// import { PieChart } from "@mui/x-charts/PieChart";
 import { Stack } from "@mui/material";
 import { Palette } from "@mui/icons-material";
 
@@ -162,43 +162,39 @@ const Dashboard = () => {
         </Card>
       </Box>
       <Stack
-      direction="row"
-      width="100%"
-      textAlign="center"
-      spacing={5}
-      sx={{ marginTop: 5 }}
-    >
-      <Box flexGrow={1}>
-        <Typography variant="h6" gutterBottom>
-          Tasks Status
-        </Typography>
-        <PieChart
-          series={[
-            { data: [{ value: pending }, { value: completed }] }
-          ]}
-          {...pieParams}
-        />
-        <Box mt={2}>
-          <Typography variant="body1">Pending: {pending}</Typography>
-          <Typography variant="body1">Completed: {completed}</Typography>
+        direction="row"
+        width="100%"
+        textAlign="center"
+        spacing={5}
+        sx={{ marginTop: 5 }}
+      >
+        <Box flexGrow={1}>
+          <Typography variant="h6" gutterBottom>
+            Tasks Status
+          </Typography>
+          {/* <PieChart
+            series={[{ data: [{ value: pending }, { value: completed }] }]}
+            {...pieParams}
+          /> */}
+          <Box mt={2}>
+            <Typography variant="body1">Pending: {pending}</Typography>
+            <Typography variant="body1">Completed: {completed}</Typography>
+          </Box>
         </Box>
-      </Box>
-      <Box flexGrow={1}>
-        <Typography variant="h6" gutterBottom>
-          User Roles
-        </Typography>
-        <PieChart
-          series={[
-            { data: [{ value: users}, { value: admin }] }
-          ]}
-          {...pieParams}
-        />
-        <Box mt={2}>
-          <Typography variant="body1">Users: {users}</Typography>
-          <Typography variant="body1">Admins: {admin}</Typography>
+        <Box flexGrow={1}>
+          <Typography variant="h6" gutterBottom>
+            User Roles
+          </Typography>
+          {/* <PieChart
+            series={[{ data: [{ value: users }, { value: admin }] }]}
+            {...pieParams}
+          /> */}
+          <Box mt={2}>
+            <Typography variant="body1">Users: {users}</Typography>
+            <Typography variant="body1">Admins: {admin}</Typography>
+          </Box>
         </Box>
-      </Box>
-    </Stack>
+      </Stack>
     </>
   );
 };

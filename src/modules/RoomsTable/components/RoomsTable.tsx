@@ -406,7 +406,7 @@ const RoomsList = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {roomTable.length === 0 && <Loading />}
+      {roomTable?.length === 0 && <Loading />}
       <TablePagination
         component="div"
         count={roomTable.length}

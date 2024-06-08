@@ -23,6 +23,7 @@ import NotFound from "./modules/SharedModule/components/NotFound/NotFound";
 import PrivateRoute from "./modules/SharedModule/components/PrivateRoute/PrivateRoute";
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import UsersList from "./modules/UsersModules/components/UsersList";
+import BookingList from "./modules/BookingModule/BookingList";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -83,6 +84,7 @@ const App = () => {
           element: <AdsList />,
         },
         { path: "users", element: <UsersList /> },
+        { path: "booking", element: <BookingList/> },
       ],
     },
   ]);
