@@ -5,22 +5,37 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
-import { axiosInstanceWithHeaders } from "../../../axiosConfig/axiosInstance";
 import { PieChart } from "@mui/x-charts/PieChart";
-import { Stack } from "@mui/material";
-import { Palette } from "@mui/icons-material";
+import { useDrawingArea } from "@mui/x-charts/hooks";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import { axiosInstanceWithHeaders } from "../../../axiosConfig/axiosInstance";
+
+const StyledText = styled("text")(({ theme }) => ({
+  fill: theme.palette.text.primary,
+  textAnchor: "middle",
+  dominantBaseline: "central",
+  fontSize: 20,
+}));
+function PieCenterLabel({ children }: { children: React.ReactNode }) {
+  const { width, height, left, top } = useDrawingArea();
+  return (
+    <StyledText x={left + width / 2} y={top + height / 2}>
+      {children}
+    </StyledText>
+  );
+}
 
 const Dashboard = () => {
-  const [roomsCount, setRoomsCount] = useState(0);
-  const [facilitesCount, setFacilitesCount] = useState(0);
-  const [adsCount, setAddsCount] = useState(0);
-  const [pending, setPendind] = useState(0);
-  const [completed, setCompleted] = useState(0);
-  const [users, setUsers] = useState(0);
-  const [admin, setAdmin] = useState(0);
-
-  const pieParams = { height: 200, margin: { right: 5 } };
+  const [dashboardData, setDashboardData] = useState({
+    adsCount: 0,
+    roomsCount: 0,
+    facilitesCount: 0,
+    users: 0,
+    admin: 0,
+    completed: 0,
+    pending: 0,
+  });
 
   const getDashboardData = async () => {
     try {
@@ -28,22 +43,34 @@ const Dashboard = () => {
       const roomsCount = response.data.data.rooms;
       const facilitesCount = response.data.data.facilities;
       const adsCount = response.data.data.ads;
-      console.log(response.data.data.users.user);
-      console.log(response.data.data.users.admin);
       const users = response.data.data.users.user;
-      setUsers(users);
       const admin = response.data.data.users.admin;
-      setAdmin(admin);
       const pendingBookings = response.data.data.bookings.pending;
       const completedBookings = response.data.data.bookings.completed;
-      setPendind(pendingBookings);
-      setCompleted(completedBookings);
-      setRoomsCount(roomsCount);
-      setFacilitesCount(facilitesCount);
-      setAddsCount(adsCount);
+      setDashboardData({
+        roomsCount: roomsCount,
+        adsCount: adsCount,
+        facilitesCount: facilitesCount,
+        users: users,
+        admin: admin,
+        completed: completedBookings,
+        pending: pendingBookings,
+      });
     } catch (error) {
       console.log(error);
     }
+  };
+  const data1 = [
+    { value: dashboardData.users, label: "Users" },
+    { value: dashboardData.admin, label: "Admin" },
+  ];
+  const data2 = [
+    { value: dashboardData.completed, label: "Completed" },
+    { value: dashboardData.pending, label: "Pending" },
+  ];
+  const size = {
+    width: 400,
+    height: 200,
   };
 
   useEffect(() => {
@@ -81,7 +108,7 @@ const Dashboard = () => {
           >
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Typography sx={{ fontSize: 23, fontWeight: "bold" }}>
-                {roomsCount}
+                {dashboardData.roomsCount}
               </Typography>
               <Typography
                 sx={{ fontSize: 22, fontWeight: "bold", color: "#FFFFFF" }}
@@ -114,7 +141,7 @@ const Dashboard = () => {
           >
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Typography sx={{ fontSize: 23, fontWeight: "bold" }}>
-                {facilitesCount}
+                {dashboardData.facilitesCount}
               </Typography>
               <Typography
                 sx={{ fontSize: 22, fontWeight: "bold", color: "#FFFFFF" }}
@@ -147,7 +174,7 @@ const Dashboard = () => {
           >
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
               <Typography sx={{ fontSize: 23, fontWeight: "bold" }}>
-                {roomsCount}
+                {dashboardData.roomsCount}
               </Typography>
               <Typography
                 sx={{ fontSize: 22, fontWeight: "bold", color: "#FFFFFF" }}
@@ -161,44 +188,27 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </Box>
-      <Stack
-      direction="row"
-      width="100%"
-      textAlign="center"
-      spacing={5}
-      sx={{ marginTop: 5 }}
-    >
-      <Box flexGrow={1}>
-        <Typography variant="h6" gutterBottom>
-          Tasks Status
-        </Typography>
-        <PieChart
-          series={[
-            { data: [{ value: pending }, { value: completed }] }
-          ]}
-          {...pieParams}
-        />
-        <Box mt={2}>
-          <Typography variant="body1">Pending: {pending}</Typography>
-          <Typography variant="body1">Completed: {completed}</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-evenly",
+          flexWrap: "wrap",
+          gap: 3,
+          alignItems: "center",
+        }}
+      >
+        <Box>
+          <PieChart
+            series={[{ data: data2, innerRadius: 50 }]}
+            {...size}
+          ></PieChart>
+        </Box>
+        <Box>
+          <PieChart series={[{ data: data1, innerRadius: 80 }]} {...size}>
+            <PieCenterLabel>Users</PieCenterLabel>
+          </PieChart>
         </Box>
       </Box>
-      <Box flexGrow={1}>
-        <Typography variant="h6" gutterBottom>
-          User Roles
-        </Typography>
-        <PieChart
-          series={[
-            { data: [{ value: users}, { value: admin }] }
-          ]}
-          {...pieParams}
-        />
-        <Box mt={2}>
-          <Typography variant="body1">Users: {users}</Typography>
-          <Typography variant="body1">Admins: {admin}</Typography>
-        </Box>
-      </Box>
-    </Stack>
     </>
   );
 };

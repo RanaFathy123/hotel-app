@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import {
   Alert,
   Button,
@@ -18,11 +19,10 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import DriveFolderUploadIcon from "@mui/icons-material/DriveFolderUpload";
 import { axiosInstanceWithHeaders } from "../../../../axiosConfig/axiosInstance";
 
 interface FormData {
@@ -42,6 +42,7 @@ export default function RoomsData() {
   const location = useLocation();
   const item = location?.state?.item;
   const type = location?.state?.type;
+  console.log(facilityvalue);
 
   const [fileInputContent, setFileInputContent] = useState(
     "Drag & Drop or Choose a Item Image to Upload"
@@ -107,7 +108,7 @@ export default function RoomsData() {
         method: type === "edit" ? "put" : "post",
         url:
           type === "edit"
-            ? `https://upskilling-egypt.com:3000/api/v0/admin/rooms/${item.id}`
+            ? `https://upskilling-egypt.com:3000/api/v0/admin/rooms/${item._id}`
             : `https://upskilling-egypt.com:3000/api/v0/admin/rooms`,
         data: RoomFormData,
         headers: { Authorization: `${localStorage.getItem("token")}` },
@@ -149,6 +150,7 @@ export default function RoomsData() {
       const facilityId = item.facilities.map((facility: any) => {
         return facility._id;
       });
+
       setFacilityValue(facilityId);
     }
   }, []);
@@ -242,14 +244,9 @@ export default function RoomsData() {
                     multiple
                     id="facilities"
                     label="facilities"
-                    {...register("facilities", {
-                      required: "facilities is required",
-                    })}
-               
-                    onChange={(e: any) => {
-                      setFacilityValue(e.target.value);
-                    }}
+                    {...register("facilities")}
                     sx={{ width: "100%" }}
+                    onChange={(e: any) => setFacilityValue(e.target.value)}
                   >
                     {ListFacility.map((facility: any) => (
                       <MenuItem key={facility._id} value={facility._id}>
