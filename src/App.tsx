@@ -2,7 +2,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import MasterLayout from "./modules/SharedModule/components/MasterLayout/MasterLayout";
 import NotFound from "./modules/SharedModule/components/NotFound/NotFound";
 import RoomDetails from "./modules/RoomsModule/components/RoomDetails/RoomDetails";
-import RoomsList from "./modules/RoomsModule/components/RoomsList/RoomsList";
 import AuthLayout from "./modules/SharedModule/components/AuthLayout/AuthLayout";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,6 +22,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import ChangePass from "./modules/AuthModule/components/ChangePass/ChangePass";
 import LoginTest from "./modules/AuthModule/components/Login/LoginTest";
+import RoomsList from "./modules/RoomsTable/components/RoomsTable";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -62,7 +62,6 @@ const App = () => {
         { path: "", element: <Dashboard /> },
         { path: "rooms-list", element: <RoomsTable /> },
         { path: "room-data", element: <RoomsData /> },
-        { path: "room-list", element: <RoomsList /> },
         { path: "facilites", element: <FacilitesList /> },
         { path: "facilites-data", element: <FacilitesData /> },
         { path: "ads", element: <AdsList /> },

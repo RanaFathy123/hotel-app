@@ -8,12 +8,13 @@ import Paper from '@mui/material/Paper';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { axiosInstanceWithHeaders } from '../../../axiosConfig/axiosInstance';
-import img from '../../../assets/images/avatar.png'
 import { Room } from '../../../interfaces/Auth';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import DeleteIcon from "@mui/icons-material/Delete";
+import { RemoveRedEyeSharp } from '@mui/icons-material';
 import EditIcon from "@mui/icons-material/Edit";
-import { RemoveRedEyeSharp, Upload } from '@mui/icons-material';
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -72,18 +73,30 @@ const RoomsList = () => {
 
   return (
     <>
-    <Button  
+    <Grid sx={{ display: "flex", justifyContent: "space-between", marginBottom: 2 , marginTop: 2 }}>
+    <Grid>
+      <Typography component="h4" variant="h5" sx={{ fontWeight: "bold" }}>
+        Rooms Table Details
+      </Typography>
+      <Typography>
+        You can check all details
+      </Typography>
+    </Grid>
+    <Button 
+    variant="contained" 
       sx={{ 
         backgroundColor: '#203FC7',
         color: '#fff',
-        margin: 2 ,
-        display: 'flex',
-        justifyContent: 'end',
-        alignItems: 'flex-end'
       }}
     >
       Add New Room
     </Button>
+    </Grid>
+    <Grid sx={{ marginBottom: 2, }}>
+      <TextField id="outlined-basic" placeholder='search' sx={{ width:'50%', marginRight: 1 }} />
+      <TextField id="outlined-basic" placeholder='tag' sx={{ marginRight: 1 }} variant="outlined" />
+      <TextField id="outlined-basic" placeholder='Category' sx={{ marginRight: 1 }} variant="outlined" />
+    </Grid>
     <TableContainer component={Paper}>
     <Table sx={{ minWidth: 700 }} aria-label="customized table">
       <TableHead>
@@ -102,20 +115,17 @@ const RoomsList = () => {
             <StyledTableCell component="th" scope="row">
               {item.roomNumber}
             </StyledTableCell>
-            <StyledTableCell>{item.images ? 
-                  <img
-                    src={"https://upskilling-egypt.com:3000/" + item.images}
-                    srcSet={"https://upskilling-egypt.com:3000/" + item.images} 
-                    alt={''}/>
-                : 
-                  <img src={img} alt='no image'/>
-              }</StyledTableCell>
+            <StyledTableCell align="right">
+              <Grid  sx={{ width: '10%' }}>
+                <img src={item.images} alt="" />
+              </Grid>
+            </StyledTableCell>
             <StyledTableCell align="right">{item.price}</StyledTableCell>
             <StyledTableCell align="right">{item.discount}</StyledTableCell>
             <StyledTableCell align="right">{item.capacity}</StyledTableCell>
             <ActionTableCell align="right" sx={{ display: "flex" }}>
                 <StyledIconButton onClick={handle}>
-                  <Upload />
+                  <EditIcon />
                 </StyledIconButton>
                 <DeleteIconButton>
                   <DeleteIcon />

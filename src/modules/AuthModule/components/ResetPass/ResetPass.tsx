@@ -3,8 +3,7 @@ import {
   Alert,
   IconButton,
   InputAdornment,
-  InputLabel,
-  OutlinedInput,
+  TextField,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -12,11 +11,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
 import * as React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {  useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import image from '../../../../assets/images/ForgetPass.jpg';
 import { axiosInstance } from "../../../../axiosConfig/axiosInstance";
 import { FormDataResetPass } from "../../../../interfaces/Auth";
 import {
@@ -24,8 +23,8 @@ import {
   passwordValidation,
 } from "./../../../../validations/validations";
 
+
 // TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
 
 const ResetPass = () => {
   const navigate = useNavigate();
@@ -40,14 +39,8 @@ const ResetPass = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<FormDataResetPass>();
-
-  const validatePasswordMatch = (value: unknown) => {
-    const password = watch("password");
-    return value === password || "Confirm Password doesn't match Password";
-  };
 
   function handleMouseDownPassword(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
@@ -55,16 +48,6 @@ const ResetPass = () => {
   function handleMouseDownConfirmPassword(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
   }
-
-  const backgroundStyle = {
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    display: { xs: "none", sm: "flex" },
-    flexDirection: "column",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  };
 
   const onSubmit: SubmitHandler<FormDataResetPass> = async (data) => {
     // setLoadingBtn(true);
@@ -81,88 +64,95 @@ const ResetPass = () => {
 
   return (
     <>
-    <ThemeProvider theme={defaultTheme}>
       <Grid container component="main" sx={{ height: "100vh" }}>
-        <CssBaseline />
-        <Grid item xs={12} sm={6} md={6} component={Paper} elevation={6} square>
-          <h1 className="p-5 text-xl font-serif font-bold">
-            <span className="text-[blue]">Stay</span>cation.
-          </h1>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        component={Paper}
+        sx={{ boxShadow: "none" }}
+        elevation={6}
+        square
+      >
+        <Typography component="h1" sx={{margin:3 ,fontWeight:'bold'}}>
+          <Typography component="span"sx={{color:'blue'}}>
+            Stay
+          </Typography>
+          cation.
+        </Typography>
+        <Box
+          sx={{
+            my: 8,
+            mx: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+          }}
+        >
+          <Typography component="h1" variant="h5" sx={{ fontWeight: "bold",marginBottom:3 }}>
+            Reset Password
+          </Typography>
+          <Typography component='h1' sx={{marginBottom:1}}>If you don’t have an account register</Typography>
+          <Typography component="h1" sx={{marginBottom:2}}>
+            You can
+            <Link to="/register" style={{ marginLeft: "0.5em", color: "blue" }}>
+              Login here !
+            </Link>
+          </Typography>
           <Box
-            className="px-[0.5em] md:px-[0.5em] lg:px-[5em]"
-            sx={{
-              my: 3,
-              mx: 8,
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
+            component="form"
+            noValidate
+            sx={{ mt: 1 }}
+            onSubmit={handleSubmit(onSubmit)}
           >
-            <Typography component="h1" variant="h5">
-              Reset Password
-            </Typography>
-            <p className="mt-4">If you already have an account register <br /> You can <span className="text-[red]">Login here !</span></p>
-            <Box
-              component="form"
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <label htmlFor="email">Email</label>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              placeholder="Please type here ..."
+              sx={{ marginBottom: 2, background: "#F5F6F8" }}
+              {...register("email", emailValidation)}
+            />
+            {errors.email && (
+              <Alert sx={{ mb: 2 }} severity="error">
+                {errors.email.message?.toString()}
+              </Alert>
+            )}
 
-            <InputLabel htmlFor="outlined-adornment-email" className="my-1">
-                email
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email"
-                fullWidth
-                type="text"
-                label="email"
-                placeholder="Please Type Here"
-                className="bg-[#F5F6F8] mb-3"
-                {...register(
-                  "email",emailValidation
-                )}
-              />
-              {errors.email && (
-                <Alert sx={{ mt: 1 }} severity="error">
-                  {errors.email.message?.toString()}
-                </Alert>
-              )}
-            
-              <InputLabel htmlFor="outlined-adornment-email" className="my-1">
-                OTP
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-email"
-                fullWidth
-                type="text"
-                label="OTP"
-                placeholder="Please Type Here"
-                className="bg-[#F5F6F8] mb-3"
-                {...register("seed", {
-                  required: "Invalid OTP",
-                })}
-              />
-              {errors.seed && (
-                <Alert sx={{ mt: 1 }} severity="error">
-                  {errors.seed.message?.toString()}
-                </Alert>
-              )}
+            <label htmlFor="OTP">OTP</label>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="OTP"
+              placeholder="Please type here ..."
+              sx={{ marginBottom: 2, background: "#F5F6F8" }}
+              {...register("seed", {
+                required: "Invalid OTP",
+              })}
+            />
+            {errors.seed && (
+              <Alert sx={{ mb: 2 , widows: '100%'}} severity="error">
+                {errors.seed.message?.toString()}
+              </Alert>
+            )}
 
-              <InputLabel
-                htmlFor="outlined-adornment-password "
-                className="my-1"
-              >
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                fullWidth
-                placeholder="Please Type Here"
-                className="bg-[#F5F6F8] mb-3"
-                {...register("password",passwordValidation)}
-                type={showPassword ? "text" : "password"}
-                endAdornment={
+            <label htmlFor="Password">Password</label>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              placeholder="Please type here ..."
+              sx={{ background: "#F5F6F8" }}
+              autoComplete="current-password"
+              type={showPassword ? "text" : "password"}
+              {...register("password", passwordValidation)}
+              InputProps={{
+                endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
@@ -173,32 +163,27 @@ const ResetPass = () => {
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                }
-                label="Password"
-              />
-              {errors.password && (
-                <Alert sx={{ mt: 1 }} severity="error">
-                  {errors.password.message?.toString()}
-                </Alert>
-              )}
-
-              <InputLabel
-                htmlFor="outlined-adornment-password "
-                className="my-1"
-              >
-                Confirm Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                fullWidth
-                placeholder="Please Type Here"
-                className="bg-[#F5F6F8]"
-                type={showConfirmPassword ? "text" : "password"}
-                {...register("confirmPassword", {
-                  required: "confirmPassword is required",
-                  validate: validatePasswordMatch,
-                })}
-                endAdornment={
+                ),
+              }}
+            />
+            {errors.password && (
+              <Alert sx={{ mt: 1 }} severity="error">
+                {errors.password.message?.toString()}
+              </Alert>
+            )}
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="confirmPassword"
+              placeholder="Please type here ..."
+              sx={{ background: "#F5F6F8" }}
+              autoComplete="current-password"
+              type={showConfirmPassword ? "text" : "password"}
+              {...register("password", passwordValidation)}
+              InputProps={{
+                endAdornment: (
                   <InputAdornment position="end">
                     <IconButton
                       aria-label="toggle password visibility"
@@ -209,50 +194,40 @@ const ResetPass = () => {
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                }
-                label="Confirm Password"
-              />
-              {errors.confirmPassword && (
-                <Alert sx={{ mt: 1 }} severity="error">
-                  {errors.confirmPassword.message?.toString()}
-                </Alert>
-              )}
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 5, mb: 2 }}
-              >
-               Reset
-              </Button>
-            </Box>
+                ),
+              }}
+            />
+            {errors.password && (
+              <Alert sx={{ mt: 1 }} severity="error">
+                {errors.password.message?.toString()}
+              </Alert>
+            )}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 1 }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs sx={{textAlign:'end',color:'blue'}}>
+                <Link to="/forget-pass">
+                  Forgot password?
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={6}
-          md={6}
-          sx={backgroundStyle}
-          className="bg-[url('./assets/images/ForgetPass.jpg')] rounded"
-        >
-          <Box
-            sx={{
-              width: "100%",
-              textAlign: "left",
-              padding: 10,
-              color: "white",
-            }}
-          >
-            <h1 className="font-bold line-clamp-6 md:text-2xl lg:text-4xl">
-              Reset Password
-            </h1>
-            <h1 className="text-lg my-2">Homes as unique as you.</h1>
-          </Box>
-        </Grid>
+        </Box>
       </Grid>
-    </ThemeProvider>
+      <CssBaseline />
+      <Grid container item xs={12} sm={6} md={6} sx={{ minHeight: "100vh" }}>
+        <img
+          src={image}
+          style={{ height: "100vh", width: "100%", padding: 13 }}
+        />
+      </Grid>
+    </Grid>
     </>
   )
 }

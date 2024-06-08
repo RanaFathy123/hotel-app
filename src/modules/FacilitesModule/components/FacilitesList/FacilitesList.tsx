@@ -7,12 +7,14 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
+import EditIcon from "@mui/icons-material/Edit";
 // import img from '../../../../assets/images/avatar.png'
 // import { Room } from '../../../interfaces/Auth';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, Typography } from '@mui/material';
 import { axiosInstanceWithHeaders } from '../../../../axiosConfig/axiosInstance';
-import { RemoveRedEyeSharp, Upload } from '@mui/icons-material';
+import { RemoveRedEyeSharp } from '@mui/icons-material';
 import DeleteIcon from "@mui/icons-material/Delete";
+import Grid from "@mui/material/Grid";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -72,15 +74,25 @@ const FacilitesList = () => {
 
   return (
     <>
-    <Button  
-      sx={{ 
-        backgroundColor: '#203FC7',
-        color: '#fff',
-        margin: 2 
-      }}
-    >
-      Add New Facilites
-    </Button>
+    <Grid sx={{ display: "flex", justifyContent: "space-between", marginBottom: 2 , marginTop: 2 }}>
+      <Grid>
+        <Typography component="h4" variant="h5" sx={{ fontWeight: "bold" }}>
+        Facilites Table Details
+        </Typography>
+        <Typography>
+          You can check all details
+        </Typography>
+      </Grid>
+      <Button 
+      variant="contained" 
+        sx={{ 
+          backgroundColor: '#203FC7',
+          color: '#fff',
+        }}
+      >
+       Add New Facilites
+      </Button>
+    </Grid>
     <TableContainer component={Paper}>
     <Table sx={{ minWidth: 700 }} aria-label="customized table">
       <TableHead>
@@ -99,7 +111,7 @@ const FacilitesList = () => {
             <StyledTableCell>{item.createdAt}</StyledTableCell>
             <ActionTableCell align="right" sx={{ display: "flex" }}>
                 <StyledIconButton onClick={handle}>
-                  <Upload />
+                  <EditIcon />
                 </StyledIconButton>
                 <DeleteIconButton>
                   <DeleteIcon />
