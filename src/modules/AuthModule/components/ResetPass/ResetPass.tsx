@@ -6,6 +6,7 @@ import {
   InputAdornment,
   InputLabel,
   OutlinedInput,
+  TextField,
 } from "@mui/material";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -25,8 +26,8 @@ import {
   passwordValidation,
 } from "./../../../../validations/validations";
 
-// TODO remove, this demo shouldn't need to reset the theme.
 
+// TODO remove, this demo shouldn't need to reset the theme.
 
 const ResetPass = () => {
   const [loadingBtn, setLoadingBtn] = React.useState(false);
@@ -44,11 +45,6 @@ const ResetPass = () => {
     watch,
     formState: { errors, isSubmitting },
   } = useForm<FormDataResetPass>();
-
-  const validatePasswordMatch = (value: unknown) => {
-    const password = watch("password");
-    return value === password || "Confirm Password doesn't match Password";
-  };
 
   function handleMouseDownPassword(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
@@ -202,7 +198,7 @@ const ResetPass = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 {...register("confirmPassword", {
                   required: "confirmPassword is required",
-                  validate: validatePasswordMatch,
+              
                 })}
                 endAdornment={
                   <InputAdornment position="end">
