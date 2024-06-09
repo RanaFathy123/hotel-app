@@ -24,8 +24,6 @@ import {
 } from "../../../../validations/validations";
 import { toast } from "react-toastify";
 
-const defaultTheme = createTheme();
-
 
 const ChangePass = () => {
   const [showOldPassword, setShowOldPassword] = React.useState(false);
@@ -61,7 +59,7 @@ const ChangePass = () => {
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Box
@@ -235,7 +233,7 @@ const ChangePass = () => {
         </Grid>
       </Grid>
      
-    </ThemeProvider>
+
   );
 };
 

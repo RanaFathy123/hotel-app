@@ -197,7 +197,7 @@ const BookingList = () => {
               <StyledTableCell>status</StyledTableCell>
               <StyledTableCell>Total price</StyledTableCell>
               <StyledTableCell>User</StyledTableCell>
-              <StyledTableCell align="left">Action</StyledTableCell>
+              <StyledTableCell >Action</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>

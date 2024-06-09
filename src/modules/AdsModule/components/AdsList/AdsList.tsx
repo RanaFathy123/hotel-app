@@ -91,6 +91,9 @@ const AdsList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRow, setSelectedRow] = useState<null | string>(null);
+  const [roomValue, setRoomValue] = useState("");
+ 
+
 
   let {
     register,
@@ -115,7 +118,6 @@ const AdsList = () => {
     setActiveValue(item.isActive);
     setValue("isActive", item.isActive);
     setValue("discount", item.room.discount);
-
     setOpen(true);
   };
   async function onSubmit(data: Ads) {
@@ -202,6 +204,8 @@ const AdsList = () => {
   };
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    console.log(event);
+    
   };
 
   const handleChangeRowsPerPage = (
@@ -267,7 +271,7 @@ const AdsList = () => {
           sx={{ m: 0, p: 2, fontWeight: "bold" }}
           id="customized-dialog-title"
         >
-          {modalState === "update" ? "Updata" : "Add"} Facilites
+          {modalState === "update" ? "Update" : "Add"} Facilites
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -286,12 +290,14 @@ const AdsList = () => {
             <TextField
               id="outlined-select-currency"
               select
-              label="Room "
+              label="Room"
               fullWidth
+              value={roomValue}
               sx={{ background: "#F5F6F8" }}
               margin="normal"
               required
               {...register("room")}
+              onChange={(e) => setRoomValue(e.target.value)}
             >
               {room.map((item: Room, index) => (
                 <MenuItem key={index} value={item._id}>

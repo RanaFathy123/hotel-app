@@ -135,7 +135,6 @@ export default function UsersList() {
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-          
     </>
   );
 }

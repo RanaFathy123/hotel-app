@@ -77,26 +77,6 @@ export default function RoomsData() {
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     toast.warning("Please Wait It Will Takes Time");
-    if (
-      data.discount &&
-      data.price &&
-      parseInt(data.discount) > parseInt(data.price)
-    ) {
-      setValue("discount", "", { shouldValidate: true });
-      setValue("discount", data.discount, { shouldValidate: true });
-      toast.error("Discount cannot be greater than the price.");
-      setIsLoading(false);
-      return;
-    }
-
-    if (
-      data.discount !== undefined &&
-      (parseInt(data.discount) < 0 || parseInt(data.discount) > 100)
-    ) {
-      toast.error("Discount must be between 0 and 100.");
-      setIsLoading(false);
-      return;
-    }
     const RoomFormData = appendToFormData(data);
     try {
       const response = await axiosInstanceWithHeaders({

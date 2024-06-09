@@ -10,6 +10,7 @@ import { useDrawingArea } from "@mui/x-charts/hooks";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { axiosInstanceWithHeaders } from "../../../axiosConfig/axiosInstance";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const StyledText = styled("text")(({ theme }) => ({
   fill: theme.palette.text.primary,
@@ -17,6 +18,7 @@ const StyledText = styled("text")(({ theme }) => ({
   dominantBaseline: "central",
   fontSize: 20,
 }));
+
 function PieCenterLabel({ children }: { children: React.ReactNode }) {
   const { width, height, left, top } = useDrawingArea();
   return (
@@ -36,179 +38,202 @@ const Dashboard = () => {
     completed: 0,
     pending: 0,
   });
+  const [loading, setLoading] = useState(true);
 
   const getDashboardData = async () => {
     try {
       const response = await axiosInstanceWithHeaders.get("/admin/dashboard");
-      const roomsCount = response.data.data.rooms;
-      const facilitesCount = response.data.data.facilities;
-      const adsCount = response.data.data.ads;
-      const users = response.data.data.users.user;
-      const admin = response.data.data.users.admin;
-      const pendingBookings = response.data.data.bookings.pending;
-      const completedBookings = response.data.data.bookings.completed;
+      const data = response.data.data;
       setDashboardData({
-        roomsCount: roomsCount,
-        adsCount: adsCount,
-        facilitesCount: facilitesCount,
-        users: users,
-        admin: admin,
-        completed: completedBookings,
-        pending: pendingBookings,
+        roomsCount: data.rooms,
+        adsCount: data.ads,
+        facilitesCount: data.facilities,
+        users: data.users.user,
+        admin: data.users.admin,
+        completed: data.bookings.completed,
+        pending: data.bookings.pending,
       });
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
-  };
-  const data1 = [
-    { value: dashboardData.users, label: "Users" },
-    { value: dashboardData.admin, label: "Admin" },
-  ];
-  const data2 = [
-    { value: dashboardData.completed, label: "Completed" },
-    { value: dashboardData.pending, label: "Pending" },
-  ];
-  const size = {
-    width: 400,
-    height: 200,
   };
 
   useEffect(() => {
     getDashboardData();
   }, []);
+
+  const data1 = [
+    { value: dashboardData.users, label: "Users" },
+    { value: dashboardData.admin, label: "Admin" },
+  ];
+
+  const data2 = [
+    { value: dashboardData.completed, label: "Completed" },
+    { value: dashboardData.pending, label: "Pending" },
+  ];
+
+  const size = {
+    width: 400,
+    height: 200,
+  };
+
   return (
     <>
-      <Box
-        component="div"
-        sx={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          flexWrap: "wrap",
-          gap: 3,
-          marginBottom: 20,
-        }}
-      >
-        <Card
-          sx={{
-            minWidth: 275,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            background: "#1A1B1E",
-            borderRadius: "10px",
-          }}
-        >
-          <CardContent
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              color: "white",
-            }}
-          >
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography sx={{ fontSize: 23, fontWeight: "bold" }}>
-                {dashboardData.roomsCount}
-              </Typography>
-              <Typography
-                sx={{ fontSize: 22, fontWeight: "bold", color: "#FFFFFF" }}
-              >
-                Rooms
-              </Typography>
-            </Box>
-            <Typography sx={{ color: "blue" }}>
-              <MeetingRoomIcon />
-            </Typography>
-          </CardContent>
-        </Card>
-        <Card
-          sx={{
-            minWidth: 275,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            background: "#1A1B1E",
-            borderRadius: "10px",
-          }}
-        >
-          <CardContent
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              color: "white",
-            }}
-          >
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography sx={{ fontSize: 23, fontWeight: "bold" }}>
-                {dashboardData.facilitesCount}
-              </Typography>
-              <Typography
-                sx={{ fontSize: 22, fontWeight: "bold", color: "#FFFFFF" }}
-              >
-                Facilities
-              </Typography>
-            </Box>
-            <Typography sx={{ color: "blue" }}>
-              <ManageAccountsIcon />
-            </Typography>
-          </CardContent>
-        </Card>
-        <Card
-          sx={{
-            minWidth: 275,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            background: "#1A1B1E",
-            borderRadius: "10px",
-          }}
-        >
-          <CardContent
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              color: "white",
-            }}
-          >
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-              <Typography sx={{ fontSize: 23, fontWeight: "bold" }}>
-                {dashboardData.roomsCount}
-              </Typography>
-              <Typography
-                sx={{ fontSize: 22, fontWeight: "bold", color: "#FFFFFF" }}
-              >
-                Ads
-              </Typography>
-            </Box>
-            <Typography sx={{ color: "blue" }}>
-              <CalendarMonthIcon />
-            </Typography>
-          </CardContent>
-        </Card>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-evenly",
-          flexWrap: "wrap",
-          gap: 3,
-          alignItems: "center",
-        }}
-      >
-        <Box>
-          <PieChart
-            series={[{ data: data2, innerRadius: 50 }]}
-            {...size}
-          ></PieChart>
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <CircularProgress />
         </Box>
-        <Box>
-          <PieChart series={[{ data: data1, innerRadius: 80 }]} {...size}>
-            <PieCenterLabel>Users</PieCenterLabel>
-          </PieChart>
-        </Box>
-      </Box>
+      ) : (
+        <>
+       
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              flexWrap: "wrap",
+              gap: 3,
+              marginBottom: 20,
+              marginTop:7
+            }}
+          >
+            <Card
+              sx={{
+                minWidth: 275,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                background: "#1A1B1E",
+                borderRadius: "10px",
+                boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                '&:hover': {
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+                }
+              }}
+            >
+              <CardContent
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  color: "white",
+                }}
+              >
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                  <Typography sx={{ fontSize: 23, fontWeight: "bold" }}>
+                    {dashboardData.roomsCount}
+                  </Typography>
+                  <Typography
+                    sx={{ fontSize: 22, fontWeight: "bold", color: "#FFFFFF" }}
+                  >
+                    Rooms
+                  </Typography>
+                </Box>
+                <Typography sx={{ color: "blue" }}>
+                  <MeetingRoomIcon />
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              sx={{
+                minWidth: 275,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                background: "#1A1B1E",
+                borderRadius: "10px",
+                boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                '&:hover': {
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+                }
+              }}
+            >
+              <CardContent
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  color: "white",
+                }}
+              >
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                  <Typography sx={{ fontSize: 23, fontWeight: "bold" }}>
+                    {dashboardData.facilitesCount}
+                  </Typography>
+                  <Typography
+                    sx={{ fontSize: 22, fontWeight: "bold", color: "#FFFFFF" }}
+                  >
+                    Facilities
+                  </Typography>
+                </Box>
+                <Typography sx={{ color: "blue" }}>
+                  <ManageAccountsIcon />
+                </Typography>
+              </CardContent>
+            </Card>
+            <Card
+              sx={{
+                minWidth: 275,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                background: "#1A1B1E",
+                borderRadius: "10px",
+                boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                '&:hover': {
+                  boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+                }
+              }}
+            >
+              <CardContent
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  color: "white",
+                }}
+              >
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                  <Typography sx={{ fontSize: 23, fontWeight: "bold" }}>
+                    {dashboardData.adsCount}
+                  </Typography>
+                  <Typography
+                    sx={{ fontSize: 22, fontWeight: "bold", color: "#FFFFFF" }}
+                  >
+                    Ads
+                  </Typography>
+                </Box>
+                <Typography sx={{ color: "blue" }}>
+                  <CalendarMonthIcon />
+                </Typography>
+              </CardContent>
+            </Card>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              flexWrap: "wrap",
+              gap: 3,
+              alignItems: "center",
+            }}
+          >
+            <Box>
+              <PieChart
+                series={[{ data: data2, innerRadius: 50 }]}
+                {...size}
+                sx={{ '& text': { fill: 'white' } }}
+              />
+            </Box>
+            <Box>
+              <PieChart series={[{ data: data1, innerRadius: 80 }]} {...size}>
+                <PieCenterLabel>{dashboardData.users + dashboardData.admin}</PieCenterLabel>
+              </PieChart>
+            </Box>
+          </Box>
+        </>
+      )}
     </>
   );
 };
