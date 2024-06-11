@@ -39,7 +39,6 @@ export default function RoomsData() {
   const location = useLocation();
   const item = location?.state?.item;
   const type = location?.state?.type;
-  console.log(facilityvalue);
 
   const handleInputContent = () => {
     setFileInputContent("Files Uploaded Successfully");
@@ -84,7 +83,6 @@ export default function RoomsData() {
         url: type === "edit" ? `/admin/rooms/${item._id}` : `/admin/rooms`,
         data: RoomFormData,
       });
-      console.log(response);
       type === "edit"
         ? toast.success(response.data.message || `You Updated a Room`)
         : toast.success(response.data.message || `You Added a New Room`);
@@ -123,7 +121,6 @@ export default function RoomsData() {
       const facilityId = item.facilities.map((facility: any) => {
         return facility._id;
       });
-
       setFacilityValue(facilityId);
     }
   }, []);
@@ -149,7 +146,6 @@ export default function RoomsData() {
                 {errors.roomNumber.message}
               </Alert>
             )}
-
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <TextField
@@ -169,7 +165,6 @@ export default function RoomsData() {
                   </Alert>
                 )}
               </Grid>
-
               <Grid item xs={12} md={6}>
                 <TextField
                   sx={{ width: 1, mb: 4 }}

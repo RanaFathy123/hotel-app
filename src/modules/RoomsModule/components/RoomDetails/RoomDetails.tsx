@@ -1,9 +1,12 @@
-import React from 'react'
+import { Link, useParams } from "react-router-dom";
 
 const RoomDetails = () => {
-  return (
-    <div>RoomDetails</div>
-  )
-}
+  const { roomId } = useParams();
+  console.log(roomId);
 
-export default RoomDetails
+  return <div>
+    <Link to='/pay-booking' state={roomId}>Explore</Link>
+  </div>;
+};
+
+export default RoomDetails;

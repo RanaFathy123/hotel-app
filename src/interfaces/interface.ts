@@ -39,34 +39,33 @@ export interface FormChangePass {
 }
 
 export interface FormDataLogin {
-  email:string
-  password:string
+  email: string;
+  password: string;
 }
 
 export interface Room {
-  capacity: number
-  discount: number
-  price: number
-  images: File
-  _id:string,
-  roomNumber:string
+  capacity: number;
+  discount: number;
+  price: number;
+  images: File;
+  _id: string;
+  roomNumber: string;
 }
-export interface Facilities{
-  name:string,
-  _id:string
+export interface Facilities {
+  name: string;
+  _id: string;
 }
 export interface Users {
-  country: string
-  email: string
-  phoneNumber: number
-  role: string
-  userName: string
-  profileImage: File
+  country: string;
+  email: string;
+  phoneNumber: number;
+  role: string;
+  userName: string;
+  profileImage: File;
 }
-export interface Ads{
-  isActive:boolean,
-  _id:string,
-  room:Room,
-  discount:number,
-  
-  }
+export interface Ads {
+  isActive: boolean;
+  _id: string;
+  room: Room;
+  discount: number;
+}

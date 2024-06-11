@@ -92,8 +92,7 @@ const AdsList = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRow, setSelectedRow] = useState<null | string>(null);
   const [roomValue, setRoomValue] = useState("");
- 
-
+  const [total, setTotal] = useState(0);
 
   let {
     register,
@@ -105,6 +104,7 @@ const AdsList = () => {
   //Model
   const handleAddModel = () => {
     // setValue("isActive", activeValue)
+    setModalState("add");
     setOpen(true);
     setValue("discount", 0);
   };
@@ -151,7 +151,7 @@ const AdsList = () => {
   async function getRoom() {
     try {
       let response = await axiosInstanceWithHeaders.get(
-        "/admin/rooms?page=1&size=10"
+        `/admin/rooms?page=1&size=10`
       );
 
       let room = response.data.data.rooms;
@@ -180,11 +180,15 @@ const AdsList = () => {
       console.log("error");
     }
   }
-  async function getAds() {
+  async function getAds( ) {
     try {
-      let response = await axiosInstanceWithHeaders.get("admin/ads");
+      let response = await axiosInstanceWithHeaders.get(
+        `admin/ads?page`
+      );
       const ads = response.data.data.ads;
-      console.log(response.data.data.ads);
+      console.log(response.data.data.totalCount);
+      const totalCount = response.data.data.totalCount
+      setTotal(totalCount)
       setAds(ads);
     } catch (error: any) {
       console.log("error");
@@ -205,7 +209,6 @@ const AdsList = () => {
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
     console.log(event);
-    
   };
 
   const handleChangeRowsPerPage = (
@@ -218,7 +221,7 @@ const AdsList = () => {
   useEffect(() => {
     getAds();
     getRoom();
-  }, [setActiveValue]);
+  }, []);
 
   return (
     <>
@@ -308,7 +311,6 @@ const AdsList = () => {
           ) : (
             ""
           )}
-
           <TextField
             margin="normal"
             required
@@ -401,7 +403,6 @@ const AdsList = () => {
           <TableHead sx={{ background: "#F5F5F5", p: 5 }}>
             <TableRow sx={{ background: "#F5F5F5" }}>
               <StyledTableCell>Room Number</StyledTableCell>
-
               <StyledTableCell align="right">Price</StyledTableCell>
               <StyledTableCell align="right">Discount</StyledTableCell>
               <StyledTableCell align="right">Capacity</StyledTableCell>
@@ -479,7 +480,7 @@ const AdsList = () => {
       {ads.length === 0 && <Loading />}
       <TablePagination
         component="div"
-        count={ads.length}
+        count={total}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}

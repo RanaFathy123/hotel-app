@@ -24,6 +24,7 @@ import PrivateRoute from "./modules/SharedModule/components/PrivateRoute/Private
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import UsersList from "./modules/UsersModules/components/UsersList";
 import BookingList from "./modules/BookingModule/components/BookingList";
+import PayBooking from "./modules/PayBookingModule/PayBooking";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -33,8 +34,13 @@ const App = () => {
       errorElement: <NotFound />,
       children: [
         { path: "", element: <Home /> },
-        { path: "room-details/:id", element: <RoomDetails /> },
+        { path: "room-details/:roomId", element: <RoomDetails /> },
+
         { path: "rooms", element: <RoomsList /> },
+        {
+          path: "pay-booking",
+          element: <PayBooking />,
+        },
         { path: "favorites", element: <Favorites /> },
       ],
     },
@@ -86,6 +92,7 @@ const App = () => {
           path: "booking",
           element: <BookingList />,
         },
+
         { path: "users", element: <UsersList /> },
       ],
     },
