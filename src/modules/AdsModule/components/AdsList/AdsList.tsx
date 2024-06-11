@@ -218,7 +218,7 @@ const AdsList = () => {
   useEffect(() => {
     getAds();
     getRoom();
-  }, [setActiveValue]);
+  }, []);
 
   return (
     <>
