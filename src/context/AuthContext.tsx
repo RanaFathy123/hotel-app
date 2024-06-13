@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { jwtDecode } from "jwt-decode";
 import { PropsWithChildren, createContext, useEffect, useState } from "react";
 import { AuthContextType } from "../interfaces/interface";
@@ -20,16 +22,22 @@ export default function AuthContextProvider(props: PropsWithChildren) {
     let decocodedData: any = jwtDecode(encodedData);
     setLoginData(decocodedData);
   };
+  const requestHeaders =
+  {
+   Authorization: ` ${localStorage.getItem("token")}`,
+   
+ };
   const resetLoginData = () => {
     setLoginData(null);
   };
+
   // call saveLogin data
   useEffect(() => {
     if (localStorage.getItem("token")) {
       saveLoginData();
     }
   }, []);
-  const value = { saveLoginData, loginData, resetLoginData };
+  const value = {requestHeaders, saveLoginData, loginData, resetLoginData};
   return (
     <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
   );

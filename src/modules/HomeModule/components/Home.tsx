@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react'
 
-const Home = () => {
+export default function Home() {
   return (
-    <div>Home</div>
+    <div>
+      Home
+    </div>
   )
 }
-
-export default Home

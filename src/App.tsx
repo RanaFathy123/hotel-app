@@ -10,9 +10,9 @@ import ResetPass from "./modules/AuthModule/components/ResetPass/ResetPass";
 import Dashboard from "./modules/DashboardModule/components/Dashboard";
 import FacilitesData from "./modules/FacilitesModule/components/FacilitesData/FacilitesData";
 import FacilitesList from "./modules/FacilitesModule/components/FacilitesList/FacilitesList";
-import Favorites from "./modules/FavoritesModule/components/Favorites";
+// import Favorites from "./modules/FavoritesModule/components/Favorites";
 import Home from "./modules/HomeModule/components/Home";
-import RoomDetails from "./modules/RoomsModule/components/RoomDetails/RoomDetails";
+// import RoomDetails from "./modules/RoomsModule/components/RoomDetails/RoomDetails";
 import RoomsData from "./modules/RoomsModule/components/RoomsData/RoomsData";
 import RoomsList from "./modules/RoomsModule/components/RoomsList/RoomsList";
 import RoomsTable from "./modules/RoomsTable/components/RoomsTable";
@@ -24,18 +24,41 @@ import PrivateRoute from "./modules/SharedModule/components/PrivateRoute/Private
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import UsersList from "./modules/UsersModules/components/UsersList";
 import BookingList from "./modules/BookingModule/components/BookingList";
+import HomeTest from "./Component/HomeTest";
+import UserLayout from "./userLayout/UserLayout";
+import Landing from "./userLayout/Landing";
+import ExplorePage from "./userLayout/ExplorePage/ExplorePage";
+import RoomDetails from "./userLayout/RoomDetails/RoomDetails";
+import Favorites from "./userLayout/Favorites/Favorites";
+import Checkout from "./userLayout/Checkout";
 
 const App = () => {
   const routes = createBrowserRouter([
+    {
+      path: "/",
+      element: <UserLayout />,
+      errorElement: <NotFound />,
+      children: [
+        { index: true, element: <Landing /> },
+        { path: "landing", element: <Landing /> },
+        { path: "explor/:state", element: <Landing /> },
+        { path: "explore", element: <ExplorePage /> },
+        { path: "favorites", element: <Favorites /> },
+        { path: "RoomDetails/:id", element: <RoomDetails /> },
+        { path: "checkout", element: <Checkout/> },
+
+
+      ],
+    },
     {
       path: "/",
       element: <MasterLayout />,
       errorElement: <NotFound />,
       children: [
         { path: "", element: <Home /> },
+        { path: "home-test", element: <HomeTest/> },
         { path: "room-details/:id", element: <RoomDetails /> },
         { path: "rooms", element: <RoomsList /> },
-        { path: "favorites", element: <Favorites /> },
       ],
     },
     {
