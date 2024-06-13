@@ -123,7 +123,7 @@ const Login = () => {
               fullWidth
               placeholder="Please Type Here"
               sx={{ background: "#F5F6F8", marginBottom: 2 }}
-              {...register("password", passwordValidation)}
+              {...register("password")}
               type={showPassword ? "text" : "password"}
               endAdornment={
                 <InputAdornment position="end">

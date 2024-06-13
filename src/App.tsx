@@ -11,33 +11,39 @@ import Dashboard from "./modules/DashboardModule/components/Dashboard";
 import FacilitesData from "./modules/FacilitesModule/components/FacilitesData/FacilitesData";
 import FacilitesList from "./modules/FacilitesModule/components/FacilitesList/FacilitesList";
 import Favorites from "./modules/FavoritesModule/components/Favorites";
-import Home from "./modules/HomeModule/components/Home";
-import RoomDetails from "./modules/RoomsModule/components/RoomDetails/RoomDetails";
+
+import BookingList from "./modules/BookingModule/components/BookingList";
+
 import RoomsData from "./modules/RoomsModule/components/RoomsData/RoomsData";
-import RoomsList from "./modules/RoomsModule/components/RoomsList/RoomsList";
 import RoomsTable from "./modules/RoomsTable/components/RoomsTable";
 import AdminLayout from "./modules/SharedModule/components/AdminLayout/AdminLayout";
 import AuthLayout from "./modules/SharedModule/components/AuthLayout/AuthLayout";
-import MasterLayout from "./modules/SharedModule/components/MasterLayout/MasterLayout";
 import NotFound from "./modules/SharedModule/components/NotFound/NotFound";
 import PrivateRoute from "./modules/SharedModule/components/PrivateRoute/PrivateRoute";
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import UsersList from "./modules/UsersModules/components/UsersList";
-import BookingList from "./modules/BookingModule/components/BookingList";
+import Checkout from "./userLayout/Checkout";
+import ExplorePage from "./userLayout/ExplorePage/ExplorePage";
+import Landing from "./userLayout/Landing";
+import UserLayout from "./userLayout/UserLayout";
+import RoomDetails from "./userLayout/RoomDetails/RoomDetails";
 
 const App = () => {
   const routes = createBrowserRouter([
     {
       path: "/",
-      element: <MasterLayout />,
+      element: <UserLayout />,
       errorElement: <NotFound />,
       children: [
-        { path: "", element: <Home /> },
-        { path: "room-details/:id", element: <RoomDetails /> },
-        { path: "rooms", element: <RoomsList /> },
+        { index: true, element: <Landing /> },
+        { path: "landing", element: <Landing /> },
+        { path: "explor/:state", element: <Landing /> },
+        { path: "explore", element: <ExplorePage /> },
         { path: "favorites", element: <Favorites /> },
-      ],
-    },
+        { path: "RoomDetails/:id", element: <RoomDetails /> },
+        { path: "checkout", element: <Checkout/> },
+      ],
+    },
     {
       path: "/",
       element: (

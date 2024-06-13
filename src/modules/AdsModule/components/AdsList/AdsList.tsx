@@ -92,8 +92,6 @@ const AdsList = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedRow, setSelectedRow] = useState<null | string>(null);
   const [roomValue, setRoomValue] = useState("");
- 
-
 
   let {
     register,
@@ -104,9 +102,12 @@ const AdsList = () => {
   } = useForm<Ads>();
   //Model
   const handleAddModel = () => {
+    setModalState("add");
     // setValue("isActive", activeValue)
     setOpen(true);
     setValue("discount", 0);
+    setActiveValueAdd("");
+    setRoomValue("");
   };
   const handleClose = () => {
     setOpen(false);
@@ -205,7 +206,6 @@ const AdsList = () => {
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
     console.log(event);
-    
   };
 
   const handleChangeRowsPerPage = (

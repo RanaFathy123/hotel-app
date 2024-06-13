@@ -43,7 +43,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const ActionTableCell = styled(TableCell)({
-  textAlign: "right",
+  textAlign: "left",
   p: 3,
 });
 
@@ -184,7 +184,7 @@ const BookingList = () => {
           </Box>
         </Box>
       </Modal>
-      <TableContainer component={Paper} sx={{ overflowY: "auto" }}>
+      <TableContainer component={Paper} sx={{ overflowY: "auto",overflowX:'auto' }}>
         <Table
           sx={{ minWidth: 700, overflowY: "auto", textAlign: "center" }}
           aria-label="customized table"

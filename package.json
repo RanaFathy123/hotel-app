@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.11.4",
+  "@emotion/react": "^11.11.4",
     "@emotion/style": "^0.8.0",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "^5.0.13",
@@ -22,19 +22,23 @@
     "@mui/x-data-grid": "^7.6.1",
     "@mui/x-data-grid-generator": "^7.6.1",
     "@mui/x-data-grid-pro": "^7.6.1",
+    "@mui/x-date-pickers-pro": "^7.6.2",
     "@stripe/react-stripe-js": "^2.7.1",
     "@types/axios": "^0.14.0",
+    "@types/react-slick": "^0.23.13",
     "axios": "^1.7.2",
     "formik": "^2.4.6",
     "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
+    "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.5",
+    "react-i18next": "^14.1.2",
     "react-loader-spinner": "^6.1.6",
     "react-router-dom": "^6.23.1",
+    "react-slick": "^0.30.2",
     "react-toastify": "^10.0.5",
     "styled-components": "^6.1.11",
-    "yup": "^1.4.0"
+     "yup":"^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20.13.0",
