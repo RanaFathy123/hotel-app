@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   build: {
     rollupOptions: {
-      external: ["@stripe/stripe-js"],
+      external: ['@stripe/stripe-js'], // Ensure this module is not treated as external
     },
   },
   resolve: {
