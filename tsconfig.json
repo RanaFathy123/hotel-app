@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "./",
+    "paths": {
+      "@stripe/stripe-js": ["node_modules/@stripe/stripe-js"]
+    },
     "module": "esnext",
     "moduleResolution": "node",
-    "paths": {
-      "@stripe/*": ["node_modules/@stripe/*"]
-    },
+   
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],

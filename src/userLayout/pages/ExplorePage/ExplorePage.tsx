@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -55,7 +55,7 @@ interface State {
 // Function
 export default function ExplorePage() {
   const [roomsList, setRoomsList] = useState<IRoom[]>([]);
-  const [page, setPage] = React.useState(1);
+  const [page, setPage] = useState(1);
   const handleChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -69,7 +69,7 @@ console.log(startDate,endDate);
 
   //modal
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
   };

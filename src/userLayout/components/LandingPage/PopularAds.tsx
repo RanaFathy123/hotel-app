@@ -9,7 +9,7 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
-import React, { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import defaultImage from "../../../assets/images/defaultImage.jpg";
@@ -47,8 +47,8 @@ interface ADS {
 }
 
 // Function
-const PopularAds: React.FC<MostPopularAdsProps> = ({ adsList }) => {
-  const [open, setOpen] = React.useState(false);
+const PopularAds: React.FC<MostPopularAdsProps> = ({ adsList }:any) => {
+  const [open, setOpen] = useState(false);
 
   const [searchPramas, _setSearchParams] = useSearchParams();
   const startDate = searchPramas.get("startDate");
@@ -227,7 +227,7 @@ const PopularAds: React.FC<MostPopularAdsProps> = ({ adsList }) => {
             </Grid>
           </Box>
         </Box>
-        {adsList.slice(1).map((ad, index) => (
+        {adsList.slice(1).map((ad:any, index:any) => (
           <Box
             key={index}
             className="card"
