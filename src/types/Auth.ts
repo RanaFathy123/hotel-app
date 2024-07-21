@@ -3,5 +3,6 @@ export type LoginData = {
     userName:string,
     userEmail:string,
     userGroup:string,
+    role?:string
 
 }

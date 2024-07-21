@@ -123,7 +123,7 @@ const Login = () => {
               fullWidth
               placeholder="Please Type Here"
               sx={{ background: "#F5F6F8", marginBottom: 2 }}
-              {...register("password")}
+              {...register("password",passwordValidation)}
               type={showPassword ? "text" : "password"}
               endAdornment={
                 <InputAdornment position="end">
@@ -154,7 +154,10 @@ const Login = () => {
               {loading ? <CircularProgress disableShrink /> : "Login"}
             </Button>
             <Grid container>
-              <Grid item xs sx={{ textAlign: "end", color: "blue" }}>
+              <Grid item xs sx={{display:'flex' ,justifyContent:'space-between',color: "blue" }}>
+                <Link to='/' style={{ textDecoration: "none" }}>
+                Landing ?
+                </Link>
                 <Link to="/forget-password" style={{ textDecoration: "none" }}>
                   Forgot password?
                 </Link>

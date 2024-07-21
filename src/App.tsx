@@ -10,10 +10,7 @@ import ResetPass from "./modules/AuthModule/components/ResetPass/ResetPass";
 import Dashboard from "./modules/DashboardModule/components/Dashboard";
 import FacilitesData from "./modules/FacilitesModule/components/FacilitesData/FacilitesData";
 import FacilitesList from "./modules/FacilitesModule/components/FacilitesList/FacilitesList";
-import Favorites from "./modules/FavoritesModule/components/Favorites";
-
 import BookingList from "./modules/BookingModule/components/BookingList";
-
 import RoomsData from "./modules/RoomsModule/components/RoomsData/RoomsData";
 import RoomsTable from "./modules/RoomsTable/components/RoomsTable";
 import AdminLayout from "./modules/SharedModule/components/AdminLayout/AdminLayout";
@@ -22,11 +19,14 @@ import NotFound from "./modules/SharedModule/components/NotFound/NotFound";
 import PrivateRoute from "./modules/SharedModule/components/PrivateRoute/PrivateRoute";
 import ProtectedRoute from "./modules/SharedModule/components/ProtectedRoute/ProtectedRoute";
 import UsersList from "./modules/UsersModules/components/UsersList";
-import Checkout from "./userLayout/Checkout";
-import ExplorePage from "./userLayout/ExplorePage/ExplorePage";
-import Landing from "./userLayout/Landing";
-import UserLayout from "./userLayout/UserLayout";
-import RoomDetails from "./userLayout/RoomDetails/RoomDetails";
+import Checkout from "./userLayout/pages/Checkout/Checkout";
+import ExplorePage from "./userLayout/pages/ExplorePage/ExplorePage";
+import Landing from "./userLayout/pages/Landing/Landing";
+import UserLayout from "./userLayout/Layout/UserLayout";
+import RoomDetails from "./userLayout/pages/RoomDetails/RoomDetails";
+import "./App.css";
+
+import Favorites from "./userLayout/pages/Favorites/Favorites";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -41,9 +41,9 @@ const App = () => {
         { path: "explore", element: <ExplorePage /> },
         { path: "favorites", element: <Favorites /> },
         { path: "RoomDetails/:id", element: <RoomDetails /> },
-        { path: "checkout", element: <Checkout/> },
-      ],
-    },
+        { path: "checkout", element: <Checkout /> },
+      ],
+    },
     {
       path: "/",
       element: (

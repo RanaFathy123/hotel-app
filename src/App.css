@@ -1,3 +1,21 @@
 #Field-addressLine1Input {
-    margin-bottom: 20px !important;
-  }
+  margin-bottom: 20px !important;
+}
+.css-u5h54c {
+  width: 90% !important;
+  margin-left: 2.2em;
+}
+.css-1sgp51k {
+  width: 90%;
+}
+#Field-addressLine1Input{
+  margin-bottom: 10px !important;
+}
+.MuiFormControl-root {
+  background-color: #F5F6F8;
+width: 90%;
+  border-radius: 5px; 
+}
+.MuiContainer-root  {
+  max-width: 1444px !important;
+}

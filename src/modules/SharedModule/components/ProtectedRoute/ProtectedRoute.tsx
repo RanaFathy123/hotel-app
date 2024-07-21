@@ -11,10 +11,12 @@ interface ProtectedRouteProps {
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { loginData } = useContext(AuthContext);
 
-  if (localStorage.getItem("token") || loginData) {
-    return <>{children}</>;
+  if (localStorage.getItem("token") && loginData?.role == "admin") {
+    return children;
+  } else if (localStorage.getItem("token") && loginData?.role == "user") {
+    return <Navigate to="/" />;
   } else {
-    return <Navigate to="/login" />;
+    <Navigate to="/login" />;
   }
 };
 

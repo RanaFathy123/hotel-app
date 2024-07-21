@@ -1,49 +1,50 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Button, TextField } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { Container } from "@mui/system";
-import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material";
-import styleRoomDetails from "./RoomDetails.module.css";
-import BedIcon from "@mui/icons-material/Bed";
-import WeekendIcon from "@mui/icons-material/Weekend";
-import BathtubIcon from "@mui/icons-material/Bathtub";
-import FlatwareIcon from "@mui/icons-material/Flatware";
-import NetworkWifiIcon from "@mui/icons-material/NetworkWifi";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
-import TvIcon from "@mui/icons-material/Tv";
+import BathtubIcon from "@mui/icons-material/Bathtub";
+import BedIcon from "@mui/icons-material/Bed";
 import BluetoothIcon from "@mui/icons-material/Bluetooth";
 import CommentIcon from "@mui/icons-material/Comment";
+import FlatwareIcon from "@mui/icons-material/Flatware";
+import NetworkWifiIcon from "@mui/icons-material/NetworkWifi";
 import StarsIcon from "@mui/icons-material/Stars";
-import dayjs, { Dayjs } from "dayjs";
-import Calendar from "../calendar";
-import { toast } from "react-toastify";
+import TvIcon from "@mui/icons-material/Tv";
+import WeekendIcon from "@mui/icons-material/Weekend";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import imgRooms from "../../assets/images/joshua-michaels-5SteU6iJIIE-unsplash.jpg";
-import { axiosInstanceWithHeaders } from "../../axiosConfig/axiosInstance";
+import Grid from "@mui/material/Grid";
+import { Container } from "@mui/system";
+import dayjs, { Dayjs } from "dayjs";
+import { useContext, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import imgRooms from "../../../assets/images/joshua-michaels-5SteU6iJIIE-unsplash.jpg";
+import { axiosInstanceWithHeaders } from "../../../axiosConfig/axiosInstance";
+import { AuthContext } from "../../../context/AuthContext";
+import Calendar from "../../components/Calender/calendar";
+import styleRoomDetails from "./RoomDetails.module.css";
+import Breadcrumb from "../../components/BreadCrumbs/BreadCrumb";
 
 const RoomDetails = () => {
   const [bookingId, setBookingId] = useState("");
-
-  const navigate = useNavigate();
-  const { id } = useParams();
   const [roomDetails, setRoomDetails] = useState<any>({});
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const today = dayjs();
-  const nextDate = dayjs().add(1, "day");
+  const location = useLocation();
+  const startDate = location?.state?.startDate;
+  const endDate = location?.state?.endDate;
+  const today = dayjs(startDate);
+  const nextDate = dayjs(endDate);
+
   const [selectedDateRange, setSelectedDateRange] = useState<[Dayjs, Dayjs]>([
     today,
     nextDate,
   ]);
   const roomDateStart = selectedDateRange[0];
   const roomDateEnd = selectedDateRange[1];
-  const startDate = dayjs(roomDateStart).format("YYYY-MM-DD");
-  const endDate = dayjs(roomDateEnd).format("YYYY-MM-DD");
 
+  const { id } = useParams();
+  const navigate = useNavigate();
   // Function getRoomDetails
   const getRoomDetails = async () => {
     try {
@@ -51,6 +52,8 @@ const RoomDetails = () => {
         `/portal/rooms/${id}`
       );
       setRoomDetails(response.data.data.room);
+      console.log(response);
+
       setPrice(response?.data.data.room?.price);
       setLoading(false);
     } catch (error) {
@@ -90,7 +93,6 @@ const RoomDetails = () => {
     }
   };
 
-
   useEffect(() => {
     if (id) {
       getRoomDetails();
@@ -106,6 +108,7 @@ const RoomDetails = () => {
 
   return (
     <Box>
+      <Breadcrumb />
       <Box
         sx={{
           marginLeft: "45%",
@@ -124,7 +127,7 @@ const RoomDetails = () => {
         </Typography>
         <Typography
           sx={{
-            color: " rgba(176, 176, 176, 1)",
+            color: "rgba(176, 176, 176, 1)",
             fontSize: 18,
             marginLeft: "5%",
           }}
@@ -134,7 +137,7 @@ const RoomDetails = () => {
       </Box>
 
       {loading ? (
-        <Typography variant="body1">
+        <Typography variant="body1" component="div">
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <CircularProgress />
           </Box>
@@ -152,9 +155,10 @@ const RoomDetails = () => {
                   }
                   alt="Large Image"
                   style={{
-                    width: "95%",
+                    width: "100%",
                     height: "500px",
                     objectFit: "cover",
+                    borderRadius: "2em",
                   }}
                 />
               </Grid>
@@ -162,30 +166,44 @@ const RoomDetails = () => {
                 {roomDetails.images && roomDetails.images.length > 1 ? (
                   <>
                     {roomDetails.images
-                      .slice(1, 4)
+                      .slice(1, 3)
                       .map((img: any, index: any) => (
                         <img
                           key={index}
                           src={img}
                           alt={`Small Image ${index + 1}`}
                           style={{
-                            width: "80%",
-                            height: "500px",
+                            width: "100%",
+                            height: "250px",
                             objectFit: "cover",
+                            borderRadius: "2em",
                           }}
                         />
                       ))}
                   </>
                 ) : (
-                  <img
-                    src={imgRooms}
-                    alt="No additional images available"
-                    style={{
-                      width: "80%",
-                      height: "500px",
-                      objectFit: "cover",
-                    }}
-                  />
+                  <>
+                    <img
+                      src={imgRooms}
+                      alt="No additional images available"
+                      style={{
+                        width: "100%",
+                        height: "250px",
+                        objectFit: "cover",
+                        borderRadius: "2em",
+                      }}
+                    />
+                    <img
+                      src={imgRooms}
+                      alt="No additional images available"
+                      style={{
+                        width: "100%",
+                        height: "250px",
+                        objectFit: "cover",
+                        borderRadius: "2em",
+                      }}
+                    />
+                  </>
                 )}
               </Grid>
             </Grid>
@@ -195,6 +213,7 @@ const RoomDetails = () => {
             <Grid container spacing={2} style={{ marginTop: "3rem" }}>
               <Grid item xs={12} md={12} lg={8}>
                 <Typography
+                  component="div"
                   style={{
                     color: "#B0B0B0",
                     fontSize: "16px",
@@ -210,6 +229,7 @@ const RoomDetails = () => {
                 </Typography>
 
                 <Typography
+                  component="div"
                   style={{
                     color: "#B0B0B0",
                     fontSize: "16px",
@@ -224,6 +244,7 @@ const RoomDetails = () => {
                 </Typography>
 
                 <Typography
+                  component="div"
                   style={{
                     color: "#B0B0B0",
                     fontSize: "16px",
@@ -335,7 +356,6 @@ const RoomDetails = () => {
                       style={{
                         color: "#152C5B",
                         fontSize: "38px",
-                        height: "38px",
                       }}
                     />
                     <Box style={{ color: "#B0B0B0" }}> television</Box>
@@ -348,7 +368,8 @@ const RoomDetails = () => {
                 <Box
                   sx={{
                     border: "1px solid #E5E5E5",
-                    padding: "5rem",
+                    padding: "2rem",
+                    paddingBlock: 7,
                     borderRadius: "1rem",
                   }}
                 >
@@ -370,12 +391,15 @@ const RoomDetails = () => {
                     }}
                   >
                     {price}
-                    <span style={{ color: "#B0B0B0", marginLeft: "0.5rem" }}>
+                    <span style={{ color: "#B0B0B0", marginLeft: "2rem" }}>
                       per night
                     </span>
                   </Typography>
-                  <Calendar {...{ selectedDateRange, setSelectedDateRange }} />
-
+                  <Box component="div" sx={{ width: "100%" }}>
+                    <Calendar
+                      {...{ selectedDateRange, setSelectedDateRange }}
+                    />
+                  </Box>
                   {/* btn */}
 
                   <Box
@@ -429,6 +453,7 @@ const RoomDetails = () => {
                   </Typography>
 
                   <Typography
+                    component="div"
                     variant="h5"
                     color="secondary"
                     sx={{ color: "#1a237e", marginBottom: "1rem" }}

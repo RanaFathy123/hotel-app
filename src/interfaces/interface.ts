@@ -67,6 +67,5 @@ export interface Ads{
   isActive:boolean,
   _id:string,
   room:Room,
-  discount:number,
-  
+  discount:number
   }

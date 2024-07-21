@@ -105,7 +105,9 @@ export default function AdminLayout() {
   const [openModal, setOpenModal] = React.useState(false);
 
   const navigate = useNavigate();
-  const { resetLoginData } = React.useContext(AuthContext);
+  const { resetLoginData, loginData } = React.useContext(AuthContext);
+  console.log(loginData);
+
   const Logout = () => {
     localStorage.removeItem("token");
     resetLoginData();
@@ -123,13 +125,13 @@ export default function AdminLayout() {
   };
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
+
+  React.useEffect(()=>{
+
+  },[])
   return (
     <>
-      <Modal
-        open={openModal}
-        onClose={handleClose}
-       
-      >
+      <Modal open={openModal} onClose={handleClose}>
         <ChangePass />
       </Modal>
       <>
@@ -335,7 +337,7 @@ export default function AdminLayout() {
               <List>
                 {[
                   { text: "Home", path: "/dashboard", icon: <HomeIcon /> },
-                  { text: "Users", path: "/settings", icon: <PeopleIcon /> },
+                  { text: "Users", path: "/dashboard/users", icon: <PeopleIcon /> },
                   {
                     text: "Rooms",
                     path: "/dashboard/rooms-list",

@@ -34,3 +34,11 @@ export default function AuthContextProvider(props: PropsWithChildren) {
     <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
   );
 }
+// // create a custom hook
+// export const useRefetchContext = () => {
+//   const context = useContext(AuthContext)
+//   if (!context) {
+//     throw new Error('useRefetch must be used within a RefetchProvider')
+//   }
+//   return context
+// }

@@ -9,6 +9,7 @@ import {
   Button,
   CardContent,
   CircularProgress,
+  Container,
   IconButton,
   Pagination,
   Stack,
@@ -21,10 +22,11 @@ import dayjs from "dayjs";
 import {
   axiosInstance,
   axiosInstanceWithHeaders,
-} from "../../axiosConfig/axiosInstance";
-import { AuthContext } from "../../context/AuthContext";
+} from "../../../axiosConfig/axiosInstance";
+import { AuthContext } from "../../../context/AuthContext";
 import { toast } from "react-toastify";
-import imgLogin from "../../assets/images/login PopUp.jpg";
+import imgLogin from "../../../assets/images/login PopUp.jpg";
+import Breadcrumb from "../../components/BreadCrumbs/BreadCrumb";
 
 // Style
 const style = {
@@ -52,19 +54,21 @@ interface State {
 
 // Function
 export default function ExplorePage() {
-  const navigate = useNavigate();
   const [roomsList, setRoomsList] = useState<IRoom[]>([]);
   const [page, setPage] = React.useState(1);
   const handleChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
   const location = useLocation();
-  const state = (location.state as State) || {};
+  const state = (location?.state as State) || {};
   const roomDateStart = state.range?.[0]?.$d;
   const roomDateEnd = state.range?.[1].$d;
   const startDate = dayjs(roomDateStart).format("YYYY-MM-DD");
   const endDate = dayjs(roomDateEnd).format("YYYY-MM-DD");
+console.log(startDate,endDate);
+
   //modal
+
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -77,7 +81,7 @@ export default function ExplorePage() {
     return null;
   }
   const { loginData } = authContext;
-
+  const navigate = useNavigate();
   // goToLogin
   const goToLogin = () => {
     localStorage.removeItem("token");
@@ -90,7 +94,7 @@ export default function ExplorePage() {
     startDate?: string,
     endDate?: string
   ) => {
-    if (!location.state) {
+    if (!state) {
       try {
         const response = await axiosInstance.get(`/portal/rooms/available`, {
           params: {
@@ -98,8 +102,8 @@ export default function ExplorePage() {
             page: page,
           },
         });
-
-        setRoomsList(response.data.data.rooms);
+        const roomsData = response.data.data.rooms;
+        setRoomsList(roomsData);
       } catch (error) {
         console.log(error);
       }
@@ -113,8 +117,9 @@ export default function ExplorePage() {
           endDate: endDate,
         },
       });
-
-      setRoomsList(response.data.data.rooms);
+      const roomData = response.data.data.rooms;
+      console.log(roomData);
+      setRoomsList(roomData);
     } catch (error) {
       console.log(error);
     }
@@ -140,16 +145,18 @@ export default function ExplorePage() {
   };
 
   // UseEffect
-  if (location?.state) {
-    useEffect(() => {
-      getAllRooms(page, startDate, endDate);
-    }, [page, startDate, endDate]);
-  } else {
-    useEffect(() => {
-      getAllRooms(page);
-    }, [page]);
-  }
 
+  useEffect(() => {
+    if (state) {
+      getAllRooms(page, startDate, endDate);
+    }
+  }, [page, startDate, endDate]);
+
+  useEffect(() => {
+    if (!state) {
+      getAllRooms(page);
+    }
+  }, [page]);
   return (
     <>
       {/* Modal for user Not Login (Button Fav) */}
@@ -197,6 +204,7 @@ export default function ExplorePage() {
       {/*Code  */}
       {roomsList?.length > 0 ? (
         <Box sx={{ mx: 5, mt: 1 }}>
+          <Breadcrumb />
           <Box
             sx={{
               position: "relative",
@@ -206,83 +214,90 @@ export default function ExplorePage() {
               margin: "auto",
             }}
           >
-            <h2 className="animatText" style={{marginTop:'2.5em'}}>Explore ALL Rooms </h2>
+            <h2 className="animatText" style={{ marginTop: "2.5em" }}>
+              Explore ALL Rooms{" "}
+            </h2>
           </Box>
 
-          <Typography
-            sx={{
-              color: "rgba(21, 44, 91, 1)",
-              fontSize: 24,
-              marginLeft: "5%",
-              marginBottom: "0%",
-            }}
-          >
-            All Rooms
-          </Typography>
-
-          <Grid sx={{ mx: 1, mt: 0 }} container spacing={2}>
-            {roomsList?.map((room, index) => (
-              <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
-                <CardContent>
-                  <div className="imgoverlay">
-                    <img
-                      src={room.images[0]}
-                      alt=""
-                      style={{
-                        width: "100%",
-                        height: "300px",
-                        borderRadius: "30px",
-                        overflow: "hidden",
-                      }}
-                    />
-                    <Typography
-                      sx={{
-                        padding: "5px",
-                        color: "white",
-                        position: "absolute",
-                        bottom: "15px",
-                        zIndex: 2,
-                      }}
-                    >
-                      {room?.roomNumber}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        padding: "5px",
-                        bgcolor: "rgb(255,20,147)",
-                        color: "white",
-                        position: "absolute",
-                        right: 0,
-                        top: 0,
-                        borderBottomLeftRadius: "15px",
-                        borderTopRightRadius: "15px",
-                        zIndex: 2,
-                      }}
-                    >
-                      ${room?.price} per night
-                    </Typography>
-                    <Box className="overlay">
-                      <Grid
-                        container
-                        justifyContent="center"
-                        alignItems="center"
+          <Container>
+            <Typography
+              sx={{
+                color: "rgba(21, 44, 91, 1)",
+                fontSize: 24,
+                marginLeft: "5%",
+                marginBottom: "0%",
+              }}
+            >
+              All Rooms
+            </Typography>
+            <Grid container>
+              {roomsList?.map((room, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={4} key={index}>
+                  <CardContent>
+                    <div className="imgoverlay">
+                      <img
+                        src={room.images[0]}
+                        alt=""
+                        style={{
+                          width: "100%",
+                          height: "300px",
+                          borderRadius: "30px",
+                          overflow: "hidden",
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          padding: "5px",
+                          color: "white",
+                          position: "absolute",
+                          bottom: "15px",
+                          zIndex: 2,
+                        }}
                       >
-                        <IconButton onClick={() => addToFav(room._id)}>
-                          <FavoriteIcon style={{ color: "white" }} />
-                        </IconButton>
-
-                        <IconButton
-                          onClick={() => navigate(`/RoomDetails/${room?._id}`)}
+                        {room?.roomNumber}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          padding: "5px",
+                          bgcolor: "rgb(255,20,147)",
+                          color: "white",
+                          position: "absolute",
+                          right: 0,
+                          top: 0,
+                          borderBottomLeftRadius: "15px",
+                          borderTopRightRadius: "15px",
+                          zIndex: 2,
+                        }}
+                      >
+                        ${room?.price} per night
+                      </Typography>
+                      <Box className="overlay">
+                        <Grid
+                          container
+                          justifyContent="center"
+                          alignItems="center"
                         >
-                          <VisibilityIcon style={{ color: "white" }} />
-                        </IconButton>
-                      </Grid>
-                    </Box>
-                  </div>
-                </CardContent>
-              </Grid>
-            ))}
-          </Grid>
+                          <IconButton onClick={() => addToFav(room._id)}>
+                            <FavoriteIcon style={{ color: "white" }} />
+                          </IconButton>
+
+                          <IconButton
+                            onClick={() =>
+                              navigate(`/RoomDetails/${room?._id}`, {
+                                state: { startDate, endDate },
+                              })
+                            }
+                          >
+                            <VisibilityIcon style={{ color: "white" }} />
+                          </IconButton>
+                        </Grid>
+                      </Box>
+                    </div>
+                  </CardContent>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
         </Box>
       ) : (
         <Box className="imageWrapperr" sx={{ mx: 5, mt: 1 }}>
@@ -306,8 +321,6 @@ export default function ExplorePage() {
           page={page}
         />
       </Stack>
-
-      <div></div>
     </>
   );
 }

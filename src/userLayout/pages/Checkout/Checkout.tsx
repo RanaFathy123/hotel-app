@@ -7,7 +7,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { FormEvent } from "react";
-import { axiosInstanceWithHeaders } from "../axiosConfig/axiosInstance";
+import { axiosInstanceWithHeaders } from "../../../axiosConfig/axiosInstance";
 import { useLocation } from "react-router-dom";
 import { Button } from "@mui/material";
 import { toast } from "react-toastify";
@@ -43,10 +43,10 @@ const CheckOut = () => {
           }
         );
         console.log(response);
-        toast.success('You Payed Successfully')
-      } catch (error:any) {
+        toast.success(response.data.message || "You Payed Successfully");
+      } catch (error: any) {
         console.log(error);
-        toast.error(error?.response.data.message || 'error')
+        toast.error(error?.response.data.message || "error");
       }
     };
     return (
@@ -63,7 +63,7 @@ const CheckOut = () => {
         <form
           onSubmit={handleSubmit}
           style={{
-            width: "40rem",
+            width: "45rem",
             background: "#bbf7d0",
             padding: "3rem",
             border: "none",
@@ -73,7 +73,11 @@ const CheckOut = () => {
         >
           <AddressElement options={{ mode: "billing" }} />
           <CardElement />
-          <Button sx={{ width: "100%" }} type="submit" variant="contained">
+          <Button
+            sx={{ width: "100%", marginTop: 5 }}
+            type="submit"
+            variant="contained"
+          >
             Submit
           </Button>
         </form>

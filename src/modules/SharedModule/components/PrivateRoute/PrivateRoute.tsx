@@ -4,7 +4,13 @@ import { AuthContext } from "../../../../context/AuthContext";
 
 export default function PrivateRoute({ children }: any) {
   const { loginData } = useContext(AuthContext);
-  if (localStorage.getItem("token") || loginData)
+  console.log(loginData);
+
+  if (localStorage.getItem("token") && loginData?.role == "admin") {
     return <Navigate to="/dashboard" />;
-  else return children;
+  } else if (localStorage.getItem("token") && loginData?.role == "user") {
+    return <Navigate to="/" />;
+  } else {
+    return children;
+  }
 }
