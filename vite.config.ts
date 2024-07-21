@@ -9,4 +9,9 @@ export default defineConfig({
       external: ["@stripe/stripe-js"],
     },
   },
+  resolve: {
+    alias: {
+      'prop-types': 'prop-types/index.js',
+    },
+  },
 });
