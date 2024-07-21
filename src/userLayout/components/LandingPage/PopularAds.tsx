@@ -76,7 +76,7 @@ const PopularAds: React.FC<MostPopularAdsProps> = ({ adsList }) => {
 
   //Function  Add To favorite
   const addToFav = async (id: string) => {
-    if (!loginData) {
+    if (loginData == null) {
       handleOpen();
     } else {
       try {

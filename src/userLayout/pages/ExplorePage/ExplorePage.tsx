@@ -127,7 +127,7 @@ console.log(startDate,endDate);
 
   // Function addfav
   const addToFav = async (id: string) => {
-    if (!loginData) {
+    if (loginData == null) {
       handleOpen();
     } else {
       try {
