@@ -5,7 +5,7 @@
     // other options
     "baseUrl": ".",
     "paths": {
-      "@stripe/stripe-js": ["@stripe/stripe-js"]
+      "@stripe/stripe-js": ["./node_modules/@stripe/stripe-js"]
     },
     "module": "esnext",
     "moduleResolution": "node",
