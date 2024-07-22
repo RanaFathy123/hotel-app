@@ -52,37 +52,58 @@ const CheckOut = () => {
     };
     return (
       <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100vh",
+        padding: "1rem",
+ 
+      }}
+    >
+      <h2 style={{ marginTop: "4rem", fontSize: "2rem", textAlign: "center" }}>Payment</h2>
+      <form
+        onSubmit={handleSubmit}
         style={{
+          width: "90%", // Responsive width
+          maxWidth: "40rem",
+          background: "#ffffff",
+          padding: "2rem",
+          border: "1px solid #e0e0e0",
+          borderRadius: "8px",
+          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          marginTop: "1em",
           display: "flex",
-          gap: "10px",
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
+          flexDirection: "column",
+          gap: "1.5rem",
         }}
       >
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            width: "45rem",
-            background: "#bbf7d0",
-            padding: "3rem",
-            border: "none",
-            borderRadius: "2rem",
-            marginTop: "5em",
-          }}
-        >
-          <AddressElement options={{ mode: "billing" }} />
+        <div style={{ marginBottom: "1.5rem" }}>
+          <AddressElement options={{ mode: "billing" }}  />
+        </div>
+        <div style={{ marginBottom: "1.5rem" }}>
           <CardElement />
-          <Button
-            sx={{ width: "100%", marginTop: 5 }}
-            type="submit"
-            variant="contained"
-          >
-            Submit
-          </Button>
-        </form>
-      </div>
+        </div>
+        <Button
+          sx={{
+            width: "100%",
+            padding: "0.75rem",
+            borderRadius: "4px",
+            backgroundColor: "#007bff",
+            color: "#fff",
+            fontSize: "1rem",
+            fontWeight: "bold",
+            "&:hover": {
+              backgroundColor: "#0056b3",
+            },
+          }}
+          type="submit"
+          variant="contained"
+        >
+          Submit
+        </Button>
+      </form>
+    </div>
     );
   };
   return (
