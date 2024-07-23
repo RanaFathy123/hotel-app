@@ -4,8 +4,6 @@
   "installCommand": "npm install --legacy-peer-deps",
   "routes": [
     { 
-      "src": "/api/stripe-webhook", 
-
       "dest": "/api/stripe-webhook.js" 
     }
   ]
