@@ -14,4 +14,7 @@ export default defineConfig({
       'prop-types': 'prop-types/index.js',
     },
   },
+  optimizeDeps: {
+    include: ['@stripe/stripe-js']
+  }
 });
