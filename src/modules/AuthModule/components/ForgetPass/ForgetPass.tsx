@@ -37,7 +37,7 @@ const ForgetPass = () => {
         data
       );
       toast.success(response.data.message || "check your email");
-      navigate("/reset-pass");
+      navigate("/reset-password");
     } catch (error: any) {
       toast.error(error.response.data.message);
     }

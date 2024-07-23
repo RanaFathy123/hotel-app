@@ -1,5 +1,22 @@
 {
   "rewrites": [{ "source": "/(.*)", "destination": "/" }],
 
-  "installCommand": "npm install --legacy-peer-deps"
+  "installCommand": "npm install --legacy-peer-deps",
+  "routes": [
+    { 
+      "src": "/[^.]+", 
+      "dest": "/", 
+      "status": 200 
+    },
+    { 
+      "src": "/api/stripe-webhook", 
+      "methods": ["POST", "OPTIONS"], 
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST",
+        "Access-Control-Allow-Headers": "Content-Type"
+      }, 
+      "dest": "/api/stripe-webhook.js" 
+    }
+  ]
 }
