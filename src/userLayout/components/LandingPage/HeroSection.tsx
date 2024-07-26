@@ -49,6 +49,9 @@ const HeroSection = () => {
       const startDate = selectedDateRange[0].format("YYYY-MM-DD");
       const endDate = selectedDateRange[1].format("YYYY-MM-DD");
       setSearchParams({ startDate, endDate });
+      localStorage.setItem('startDate',startDate)
+      localStorage.setItem('endDate',endDate)
+
     }
   }, [selectedDateRange, setSearchParams]);
 
@@ -197,12 +200,7 @@ const HeroSection = () => {
         {/* Button Explore */}
         <Button
           onClick={() => {
-            navigate("/explore", {
-              state: {
-                range: selectedDateRange,
-                persons: bookingGuestCount,
-              },
-            });
+            navigate("/explore");
           }}
           sx={{
             mt: 6,

@@ -5,6 +5,8 @@ import defaultImage from "../../../assets/images/defaultImage.jpg";
 import useFetchApi from "../../../hooks/useFetchApi";
 import HeroSection from "../../components/LandingPage/HeroSection";
 import PopularAds from "../../components/LandingPage/PopularAds";
+import  Reviews  from "../../components/LandingPage/Reviews/Reviews";
+
 
 
 // interface
@@ -94,6 +96,7 @@ export default function Landing() {
             </Grid>
           </Box>
         </Box>
+        <Reviews/>
       </Container>
     </>
   );

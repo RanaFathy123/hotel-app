@@ -16,23 +16,24 @@ import Grid from "@mui/material/Grid";
 import { Container } from "@mui/system";
 import dayjs, { Dayjs } from "dayjs";
 import { useContext, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import imgRooms from "../../../assets/images/joshua-michaels-5SteU6iJIIE-unsplash.jpg";
 import { axiosInstanceWithHeaders } from "../../../axiosConfig/axiosInstance";
 import { AuthContext } from "../../../context/AuthContext";
+import Breadcrumb from "../../components/BreadCrumbs/BreadCrumb";
 import Calendar from "../../components/Calender/calendar";
 import styleRoomDetails from "./RoomDetails.module.css";
-import Breadcrumb from "../../components/BreadCrumbs/BreadCrumb";
+import { useForm } from "react-hook-form";
 
 const RoomDetails = () => {
   const [bookingId, setBookingId] = useState("");
   const [roomDetails, setRoomDetails] = useState<any>({});
   const [price, setPrice] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const location = useLocation();
-  const startDate = location?.state?.startDate;
-  const endDate = location?.state?.endDate;
+
+  const startDate = localStorage.getItem("startDate");
+  const endDate = localStorage.getItem("endDate");
   const today = dayjs(startDate);
   const nextDate = dayjs(endDate);
 
@@ -40,11 +41,13 @@ const RoomDetails = () => {
     today,
     nextDate,
   ]);
+
   const roomDateStart = selectedDateRange[0];
   const roomDateEnd = selectedDateRange[1];
-
+  const { loginData } = useContext(AuthContext);
   const { id } = useParams();
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
   // Function getRoomDetails
   const getRoomDetails = async () => {
     try {
@@ -92,19 +95,40 @@ const RoomDetails = () => {
       toast.error("Booking creation failed ");
     }
   };
-
+  const onSubmitMessage = async (data: any) => {
+    try {
+      const response = await axiosInstanceWithHeaders.post(
+        "/portal/room-reviews",
+        {
+          review: data.review,
+          roomId: id,
+          rating: 3,
+        }
+      );
+      toast.success(response.data.message);
+    } catch (err: any) {
+      toast.error(err.response.data.message);
+    }
+  };
+  const onSubmitComment = async (data: any) => {
+    try {
+      const response = await axiosInstanceWithHeaders.post(
+        "/portal/room-comments",
+        {
+          roomId: id,
+          comment: data.comment,
+        }
+      );
+      toast.success(response.data.message);
+    } catch (err: any) {
+      toast.error(err.respone.data.message);
+    }
+  };
   useEffect(() => {
     if (id) {
       getRoomDetails();
     }
   }, [id]);
-
-  // AuthContext
-  const authContext = useContext(AuthContext);
-  if (!authContext) {
-    // Handle the case where AuthContext is null
-    return null;
-  }
 
   return (
     <Box>
@@ -210,7 +234,11 @@ const RoomDetails = () => {
           </Container>
 
           <Container maxWidth="xl">
-            <Grid container spacing={2} style={{ marginTop: "3rem" }}>
+            <Grid
+              container
+              spacing={2}
+              style={{ marginTop: "3rem", marginBottom: "5rem" }}
+            >
               <Grid item xs={12} md={12} lg={8}>
                 <Typography
                   component="div"
@@ -266,7 +294,9 @@ const RoomDetails = () => {
                   sx={{
                     marginTop: "2rem",
                     display: "flex",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
+                    paddingRight: 2,
+                    flexWrap: "wrap",
                   }}
                 >
                   <Box>
@@ -279,7 +309,7 @@ const RoomDetails = () => {
                     />
                     <Box style={{ color: "#B0B0B0" }}> Bedroom</Box>
                   </Box>
-                  <Box sx={{ marginLeft: "2rem" }}>
+                  <Box>
                     <WeekendIcon
                       style={{
                         color: "#152C5B",
@@ -290,7 +320,7 @@ const RoomDetails = () => {
                     <Box style={{ color: "#B0B0B0" }}> Living room</Box>
                   </Box>
 
-                  <Box sx={{ marginLeft: "2rem" }}>
+                  <Box>
                     <BathtubIcon
                       style={{
                         color: "#152C5B",
@@ -300,8 +330,7 @@ const RoomDetails = () => {
                     />
                     <Box style={{ color: "#B0B0B0" }}> Bathroom</Box>
                   </Box>
-
-                  <Box sx={{ marginLeft: "2rem" }}>
+                  <Box>
                     <FlatwareIcon
                       style={{
                         color: "#152C5B",
@@ -316,7 +345,9 @@ const RoomDetails = () => {
                   sx={{
                     marginTop: "2rem",
                     display: "flex",
-                    justifyContent: "center",
+                    justifyContent: "space-between",
+                    flexWrap: "wrap",
+                    paddingRight: 2,
                   }}
                 >
                   <Box>
@@ -329,7 +360,7 @@ const RoomDetails = () => {
                     />
                     <Box style={{ color: "#B0B0B0" }}> Mbp/s</Box>
                   </Box>
-                  <Box sx={{ marginLeft: "2rem" }}>
+                  <Box>
                     <AcUnitIcon
                       style={{
                         color: "#152C5B",
@@ -340,7 +371,7 @@ const RoomDetails = () => {
                     <Box style={{ color: "#B0B0B0" }}>Unit Ready</Box>
                   </Box>
 
-                  <Box sx={{ marginLeft: "2rem" }}>
+                  <Box>
                     <BluetoothIcon
                       style={{
                         color: "#152C5B",
@@ -351,7 +382,7 @@ const RoomDetails = () => {
                     <Box style={{ color: "#B0B0B0" }}> Bluetooth</Box>
                   </Box>
 
-                  <Box sx={{ marginLeft: "2rem" }}>
+                  <Box>
                     <TvIcon
                       style={{
                         color: "#152C5B",
@@ -425,98 +456,111 @@ const RoomDetails = () => {
             </Grid>
           </Container>
 
-          <Container maxWidth="xl" sx={{ marginTop: "2rem" }}>
-            <Box
-              sx={{
-                border: "1px solid #E5E5E5",
-                padding: "5rem",
-                borderRadius: "1rem",
-              }}
-            >
-              <Grid
+          {loginData && (
+            <Container maxWidth="xl" sx={{ marginTop: "2rem" }}>
+              <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  border: "1px solid #E5E5E5",
+                  padding: "5rem",
+                  borderRadius: "1rem",
                 }}
-                container
-                spacing={2}
               >
-                <Grid item xs={12} md={6} lg={6}>
-                  <Typography
-                    variant="h5"
-                    color="secondary"
-                    sx={{ color: "#1a237e", marginBottom: "2rem" }}
-                  >
-                    <StarsIcon sx={{ marginRight: "1rem", color: "#DFCB1D" }} />
-                    Rate
-                  </Typography>
-
-                  <Typography
-                    component="div"
-                    variant="h5"
-                    color="secondary"
-                    sx={{ color: "#1a237e", marginBottom: "1rem" }}
-                  >
-                    Message
-                  </Typography>
-
-                  <TextField
-                    fullWidth
-                    id="outlined-multiline-static"
-                    multiline
-                    rows={5}
-                  />
-
-                  <Button sx={{ marginTop: "2rem" }} variant="contained">
-                    Rate{" "}
-                  </Button>
-                </Grid>
                 <Grid
-                  className={`${styleRoomDetails.spaceInputs}`}
-                  item
-                  xs={12}
-                  md={6}
-                  lg={6}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  container
+                  spacing={2}
                 >
-                  <Typography
-                    variant="h5"
-                    color="secondary"
-                    sx={{ color: "#1a237e", marginBottom: "2rem" }}
-                  >
-                    <CommentIcon
-                      sx={{ marginRight: "0.5rem", color: "#c62828" }}
-                    />
-                    Add Your Comment
-                  </Typography>
+                  <Grid item xs={12} md={6} lg={6}>
+                    <Typography
+                      variant="h5"
+                      color="secondary"
+                      sx={{ color: "#1a237e", marginBottom: "2rem" }}
+                    >
+                      <StarsIcon
+                        sx={{ marginRight: "1rem", color: "#DFCB1D" }}
+                      />
+                      Rate
+                    </Typography>
 
-                  <Typography
-                    variant="h5"
-                    color="secondary"
-                    sx={{ color: "#1a237e", marginBottom: "1rem" }}
+                    <Typography
+                      component="div"
+                      variant="h5"
+                      color="secondary"
+                      sx={{ color: "#1a237e", marginBottom: "1rem" }}
+                    >
+                      Message
+                    </Typography>
+                    <form onSubmit={handleSubmit(onSubmitMessage)}>
+                      <TextField
+                        fullWidth
+                        id="outlined-multiline-static"
+                        multiline
+                        rows={5}
+                        {...register("review")}
+                      />
+                      <Button
+                        sx={{ marginTop: "2rem" }}
+                        type="submit"
+                        variant="contained"
+                      >
+                        Rate
+                      </Button>
+                    </form>
+                  </Grid>
+                  <Grid
+                    className={`${styleRoomDetails.spaceInputs}`}
+                    item
+                    xs={12}
+                    md={6}
+                    lg={6}
                   >
-                    Comment
-                  </Typography>
+                    <Typography
+                      variant="h5"
+                      color="secondary"
+                      sx={{ color: "#1a237e", marginBottom: "2rem" }}
+                    >
+                      <CommentIcon
+                        sx={{ marginRight: "0.5rem", color: "#c62828" }}
+                      />
+                      Add Your Comment
+                    </Typography>
 
-                  <TextField
-                    fullWidth
-                    id="outlined-multiline-static"
-                    multiline
-                    rows={5}
-                  />
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      marginTop: "2rem",
-                    }}
-                  >
-                    <Button variant="contained">Send</Button>
-                  </Box>
+                    <Typography
+                      variant="h5"
+                      color="secondary"
+                      sx={{ color: "#1a237e", marginBottom: "1rem" }}
+                    >
+                      Comment
+                    </Typography>
+                    <form onSubmit={handleSubmit(onSubmitComment)}>
+                      <TextField
+                        fullWidth
+                        id="outlined-multiline-static"
+                        multiline
+                        rows={5}
+                        {...register("comment")}
+                      />
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          marginTop: "2rem",
+                        }}
+                      >
+                        <Button variant="contained" type="submit">
+                          Send
+                        </Button>
+                      </Box>
+                    </form>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </Box>
-          </Container>
+              </Box>
+            </Container>
+          )}
         </>
       )}
     </Box>

@@ -1,8 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
@@ -18,14 +16,15 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
-import dayjs from "dayjs";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import imgLogin from "../../../assets/images/login PopUp.jpg";
 import {
   axiosInstance,
   axiosInstanceWithHeaders,
 } from "../../../axiosConfig/axiosInstance";
 import { AuthContext } from "../../../context/AuthContext";
-import { toast } from "react-toastify";
-import imgLogin from "../../../assets/images/login PopUp.jpg";
 import Breadcrumb from "../../components/BreadCrumbs/BreadCrumb";
 
 // Style
@@ -47,10 +46,7 @@ interface IRoom {
   price: string;
   images: string;
 }
-interface State {
-  range?: any;
-  // range?: [Date, Date];
-}
+
 
 // Function
 export default function ExplorePage() {
@@ -59,13 +55,9 @@ export default function ExplorePage() {
   const handleChange = (_e: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-  const location = useLocation();
-  const state = (location?.state as State) || {};
-  const roomDateStart = state.range?.[0]?.$d;
-  const roomDateEnd = state.range?.[1].$d;
-  const startDate = dayjs(roomDateStart).format("YYYY-MM-DD");
-  const endDate = dayjs(roomDateEnd).format("YYYY-MM-DD");
-console.log(startDate,endDate);
+
+  const startDate: any = localStorage.getItem("startDate");
+  const endDate: any = localStorage.getItem("endDate");
 
   //modal
 
@@ -94,7 +86,7 @@ console.log(startDate,endDate);
     startDate?: string,
     endDate?: string
   ) => {
-    if (!state) {
+    if (!localStorage.getItem("startDate") && !localStorage.getItem("endDate")) {
       try {
         const response = await axiosInstance.get(`/portal/rooms/available`, {
           params: {
@@ -147,13 +139,13 @@ console.log(startDate,endDate);
   // UseEffect
 
   useEffect(() => {
-    if (state) {
+    if (localStorage.getItem("startDate") && localStorage.getItem("endDate")) {
       getAllRooms(page, startDate, endDate);
     }
   }, [page, startDate, endDate]);
 
   useEffect(() => {
-    if (!state) {
+    if (!localStorage.getItem("startDate") && !localStorage.getItem("endDate")) {
       getAllRooms(page);
     }
   }, [page]);

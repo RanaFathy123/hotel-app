@@ -49,7 +49,6 @@ interface ADS {
 // Function
 const PopularAds: React.FC<MostPopularAdsProps> = ({ adsList }:any) => {
   const [open, setOpen] = useState(false);
-
   const [searchPramas, _setSearchParams] = useSearchParams();
   const startDate = searchPramas.get("startDate");
   const endDate = searchPramas.get("endDate");

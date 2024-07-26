@@ -27,6 +27,7 @@ import RoomDetails from "./userLayout/pages/RoomDetails/RoomDetails";
 import "./App.css";
 
 import Favorites from "./userLayout/pages/Favorites/Favorites";
+import SuccessPayment from "./userLayout/pages/SuccessPayment/SuccessPayment";
 
 const App = () => {
   const routes = createBrowserRouter([
@@ -42,6 +43,8 @@ const App = () => {
         { path: "favorites", element: <Favorites /> },
         { path: "RoomDetails/:id", element: <RoomDetails /> },
         { path: "checkout", element: <Checkout /> },
+        { path: "success-checkout", element: <SuccessPayment /> },
+
       ],
     },
     {
