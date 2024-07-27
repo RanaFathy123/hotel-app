@@ -35,7 +35,6 @@ const CheckOut = () => {
         console.log(error);
         return;
       }
-      console.log(token);
 
       try {
         const response = await axiosInstanceWithHeaders.post(

@@ -49,9 +49,8 @@ const HeroSection = () => {
       const startDate = selectedDateRange[0].format("YYYY-MM-DD");
       const endDate = selectedDateRange[1].format("YYYY-MM-DD");
       setSearchParams({ startDate, endDate });
-      localStorage.setItem('startDate',startDate)
-      localStorage.setItem('endDate',endDate)
-
+      localStorage.setItem('startDate', startDate);
+      localStorage.setItem('endDate', endDate);
     }
   }, [selectedDateRange, setSearchParams]);
 
@@ -60,22 +59,23 @@ const HeroSection = () => {
       component="main"
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", sm: "column", md: "row" },
+        flexDirection: { xs: "column", md: "row" },
         alignItems: "center",
-        py: { xs: 4, sm: 6, md: 8 },
+        py: { xs: 4, md: 8 },
         justifyContent: "space-between",
       }}
     >
-      {/* Text */}
-      <Grid item xs={12} sm={6} md={6}>
+      {/* Text Section */}
+      <Grid item xs={12} md={6}>
         {/* Heading */}
         <Typography
           component="h1"
           sx={{
-            marginTop: { xs: "10%", sm: "15%", md: "20%" },
+            mt: { xs: "10%", md: "20%" },
             fontWeight: "bold",
             color: "rgba(21, 44, 91, 1)",
-            fontSize: { xs: "32px", sm: "36px", md: "42px" },
+            fontSize: { xs: "32px", md: "42px" },
+            textAlign: { xs: "center", md: "left" },
           }}
         >
           Forget Busy Work,
@@ -87,8 +87,9 @@ const HeroSection = () => {
           component="p"
           sx={{
             color: "rgba(176, 176, 176, 1)",
-            fontSize: { xs: "16px", sm: "17px", md: "18px" },
-            marginTop: 1,
+            fontSize: { xs: "16px", md: "18px" },
+            mt: 1,
+            textAlign: { xs: "center", md: "left" },
           }}
         >
           We provide what you need to enjoy your holiday with family.
@@ -98,8 +99,9 @@ const HeroSection = () => {
         <Typography
           variant="h2"
           sx={{
-            fontSize: { xs: "18px", sm: "19px", md: "20px" },
-            marginBlock: "20px",
+            fontSize: { xs: "18px", md: "20px" },
+            my: 2,
+            textAlign: { xs: "center", md: "left" },
           }}
           color="rgba(21, 44, 91, 1)"
         >
@@ -108,30 +110,39 @@ const HeroSection = () => {
         {/* Pick a Date */}
         <Typography
           variant="h5"
-          sx={{ fontSize: { xs: "14px", sm: "15px" }, marginTop: "5px" }}
+          sx={{ fontSize: { xs: "14px", md: "15px" }, mt: 1, textAlign: { xs: "center", md: "left" } }}
           color="rgba(21, 44, 91, 1)"
         >
           Pick a Date
         </Typography>
         {/* Calendar */}
-        <Calendar {...{ selectedDateRange, setSelectedDateRange }} />
+        <Box sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' } }}>
+          <Calendar {...{ selectedDateRange, setSelectedDateRange }} />
+        </Box>
         {/* Capacity */}
         <Typography
           variant="h5"
-          sx={{ fontSize: { xs: "14px", sm: "15px" }, marginTop: "20px" }}
+          sx={{ fontSize: { xs: "14px", md: "15px" }, mt: 2, textAlign: { xs: "center", md: "left" } }}
           color="rgba(21, 44, 91, 1)"
         >
           Capacity
         </Typography>
         {/* Increase and Decrease Person */}
-        <Box sx={{ display: "flex", width: "95%" }}>
-          {/* Button Decrease */}
+        <Box
+          sx={{
+            display: "flex",
+            width:'100%',
+            justifyContent: { xs: "center", md: "flex-start" },
+            alignItems: "center",
+            mt: 2,
+          }}
+        >
           <IconButton
             onClick={handleDecrease}
             sx={{
-              fontSize: { xs: "1px", sm: "1px", md: "1px" },
               color: "white",
-              backgroundColor: red[600],
+              backgroundColor: red[500],
+              fontSize: { xs: "1px", sm: "1px", md: "1px" },
               padding: {
                 xs: "5px 10px",
                 sm: "8px 15px",
@@ -139,40 +150,23 @@ const HeroSection = () => {
               },
 
               borderRadius: "5px",
-              p: "8px",
-              ml: "5px",
-              mt: "16px",
-              "&:hover": {
-                backgroundColor: red[700],
-              },
+           
             }}
           >
             <Remove />
           </IconButton>
           <TextField
             sx={{
-              backgroundColor: "#F5F6F8",
-              border: "none !important",
-              width: {
-                xs: "100%",
-                sm: "95%",
-                md: "100%",
-                lg: "100%",
-                xl: "100%",
-              },
-              mt: 2,
-              justifyContent: "center",
-              alignItems: "center",
+              mx: 2,
+              width: "100%",
+              textAlign: "center",
               "& .MuiInputBase-input": {
-                textAlign: "center", // Center align the text value
-                border: "none",
-                outline: 0,
+                textAlign: "center",
               },
-              paddingX: 5,
             }}
             value={`${bookingGuestCount} person`}
+            inputProps={{ readOnly: true }}
           />
-          {/* Button Increase */}
           <IconButton
             onClick={handleIncrease}
             sx={{
@@ -186,47 +180,42 @@ const HeroSection = () => {
               },
 
               borderRadius: "5px",
-              p: "8px",
-              ml: "0px",
-              mt: "16px",
-              "&:hover": {
-                backgroundColor: green[700],
-              },
+           
             }}
           >
             <Add />
           </IconButton>
         </Box>
         {/* Button Explore */}
-        <Button
-          onClick={() => {
-            navigate("/explore");
-          }}
-          sx={{
-            mt: 6,
-            px: { xs: 6, sm: 8, md: 10 },
-            fontSize: { xs: 16, sm: 18, md: 20 },
-            bgcolor: "rgba(50, 82, 223, 1)",
-          }}
-          variant="contained"
-        >
-          Explore
-        </Button>
+        <Box sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' }, mt: 4 }}>
+          <Button
+            onClick={() => navigate("/explore")}
+            sx={{
+              px: { xs: 6, md: 10 },
+              fontSize: { xs: 16, md: 20 },
+              bgcolor: "rgba(50, 82, 223, 1)",
+            }}
+            variant="contained"
+          >
+            Explore
+          </Button>
+        </Box>
       </Grid>
-      {/* Image */}
+      {/* Image Section */}
       <Grid
         container
         item
         xs={12}
-        sm={6}
         md={6}
         sx={{
-          marginTop: { xs: "20px", sm: "40px", md: "80px" },
+          mt: { xs: 4, md: 0 },
+          display: "flex",
+          justifyContent: "center",
         }}
       >
         <img
           src={image}
-          style={{ maxWidth: "100%", minWidth: "100%" }}
+          style={{ maxWidth: "100%", height: "auto" }}
           alt="Responsive content"
         />
       </Grid>
