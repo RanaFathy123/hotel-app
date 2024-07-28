@@ -8,14 +8,14 @@
 .css-1sgp51k {
   width: 90%;
 }
-#Field-addressLine1Input{
+#Field-addressLine1Input {
   margin-bottom: 10px !important;
 }
 .MuiFormControl-root {
-  background-color: #F5F6F8;
-width: 90%;
-  border-radius: 5px; 
+  background-color: #f5f6f8;
+  width: 90%;
+  border-radius: 5px;
 }
-.MuiContainer-root  {
+.MuiContainer-root {
   max-width: 1444px !important;
 }

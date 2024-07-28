@@ -5,9 +5,7 @@ import defaultImage from "../../../assets/images/defaultImage.jpg";
 import useFetchApi from "../../../hooks/useFetchApi";
 import HeroSection from "../../components/LandingPage/HeroSection";
 import PopularAds from "../../components/LandingPage/PopularAds";
-import  Reviews  from "../../components/LandingPage/Reviews/Reviews";
-
-
+import Reviews from "../../components/LandingPage/Reviews/Reviews";
 
 // interface
 interface ADS {
@@ -24,7 +22,7 @@ interface ADS {
 // Function Landing
 export default function Landing() {
   const [adsList, setAdsList] = useState<ADS[]>([]);
-  const { data, getData }: any = useFetchApi("/portal/ads?page=1&size=5");
+  const { data }: any = useFetchApi("/portal/ads?page=1&size=5");
 
   // hook use Effect
   useEffect(() => {
@@ -32,7 +30,9 @@ export default function Landing() {
       const adsData = data.ads;
       setAdsList(adsData);
     }
-  }, [getData]);
+  }, [data]);
+console.log(adsList);
+
 
   // Code tsx
   return (
@@ -73,7 +73,7 @@ export default function Landing() {
               Rooms
             </Typography>
             <Grid container sx={{ mt: "2rem" }}>
-              {adsList.slice(1).map((ad) => {
+              {adsList?.slice(1).map((ad) => {
                 return (
                   <Grid xl={3} key={ad._id}>
                     <img
@@ -96,7 +96,7 @@ export default function Landing() {
             </Grid>
           </Box>
         </Box>
-        <Reviews/>
+        <Reviews />
       </Container>
     </>
   );
