@@ -31,8 +31,6 @@ export default function Landing() {
       setAdsList(adsData);
     }
   }, [data]);
-console.log(adsList);
-
 
   // Code tsx
   return (
