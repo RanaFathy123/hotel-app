@@ -49,8 +49,8 @@ const HeroSection = () => {
       const startDate = selectedDateRange[0].format("YYYY-MM-DD");
       const endDate = selectedDateRange[1].format("YYYY-MM-DD");
       setSearchParams({ startDate, endDate });
-      localStorage.setItem('startDate', startDate);
-      localStorage.setItem('endDate', endDate);
+      localStorage.setItem("startDate", startDate);
+      localStorage.setItem("endDate", endDate);
     }
   }, [selectedDateRange, setSearchParams]);
 
@@ -110,19 +110,32 @@ const HeroSection = () => {
         {/* Pick a Date */}
         <Typography
           variant="h5"
-          sx={{ fontSize: { xs: "14px", md: "15px" }, mt: 1, textAlign: { xs: "center", md: "left" } }}
+          sx={{
+            fontSize: { xs: "14px", md: "15px" },
+            mt: 1,
+            textAlign: { xs: "center", md: "left" },
+          }}
           color="rgba(21, 44, 91, 1)"
         >
           Pick a Date
         </Typography>
         {/* Calendar */}
-        <Box sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' } }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "center", md: "flex-start" },
+          }}
+        >
           <Calendar {...{ selectedDateRange, setSelectedDateRange }} />
         </Box>
         {/* Capacity */}
         <Typography
           variant="h5"
-          sx={{ fontSize: { xs: "14px", md: "15px" }, mt: 2, textAlign: { xs: "center", md: "left" } }}
+          sx={{
+            fontSize: { xs: "14px", md: "15px" },
+            mt: 2,
+            textAlign: { xs: "center", md: "left" },
+          }}
           color="rgba(21, 44, 91, 1)"
         >
           Capacity
@@ -131,7 +144,7 @@ const HeroSection = () => {
         <Box
           sx={{
             display: "flex",
-            width:'100%',
+            width: "100%",
             justifyContent: { xs: "center", md: "flex-start" },
             alignItems: "center",
             mt: 2,
@@ -148,9 +161,10 @@ const HeroSection = () => {
                 sm: "8px 15px",
                 md: "10px 15px",
               },
-
               borderRadius: "5px",
-           
+              "&:hover": {
+                backgroundColor: red[500], // Keeping the same background color on hover
+              },
             }}
           >
             <Remove />
@@ -178,16 +192,23 @@ const HeroSection = () => {
                 sm: "8px 15px",
                 md: "10px 15px",
               },
-
+              "&:hover": {
+                backgroundColor: green[500], // Keeping the same background color on hover
+              },
               borderRadius: "5px",
-           
             }}
           >
             <Add />
           </IconButton>
         </Box>
         {/* Button Explore */}
-        <Box sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' }, mt: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: { xs: "center", md: "flex-start" },
+            mt: 4,
+          }}
+        >
           <Button
             onClick={() => navigate("/explore")}
             sx={{
